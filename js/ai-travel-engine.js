@@ -15,7 +15,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Iconic 330m iron lattice tower on Champ de Mars with panoramic city views.",
       "price": "Summit: €28.30",
-      "image": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=600&q=80",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/960px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "family": true,
       "adult": true
     },
@@ -26,7 +26,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Monumental arch honoring French soldiers at the head of Champs-Élysées.",
       "price": "Rooftop: €13.00",
-      "image": "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Arc_de_Triomphe%2C_Paris_21_October_2010.jpg/960px-Arc_de_Triomphe%2C_Paris_21_October_2010.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "family": true,
       "adult": true
     },
@@ -402,7 +402,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.6",
       "desc": "1.3km open-air gallery painted directly on the remaining Berlin Wall.",
       "price": "Free Walk",
-      "image": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -435,7 +435,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.6",
       "desc": "Moving memorial grid of 2,711 concrete slabs near Brandenburg Gate.",
       "price": "Free Entry",
-      "image": "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -446,7 +446,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Picturesque plaza framed by the French & German Cathedrals and Concert Hall.",
       "price": "Free Walk",
-      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1588733103629-b77afe0425ce?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -877,7 +877,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.6",
       "desc": "Reconstructed 17th-century home where Rembrandt lived and painted.",
       "price": "Entry: €17.50",
-      "image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Rembrandshuis.jpg/960px-Rembrandshuis.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "family": true,
       "adult": true
     },
@@ -1765,7 +1765,9 @@ const AITravelEngine = {
 
   // Helper to create single venue Google Maps live search link button
   createMapsLink(placeName, city, rating = '') {
-    const query = encodeURIComponent(`${placeName} ${city}`);
+    const cleanPlace = placeName.replace(/[()]/g, '').trim();
+    const cleanCity = city.split(',')[0].trim();
+    const query = encodeURIComponent(`${cleanPlace} ${cleanCity}`);
     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
     const ratingTag = rating ? ` (${rating})` : '';
     return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="View Live Google Maps Hours, Reviews & Photos">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
