@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>0 Margin EU Travel | AI Route Planner (Transit & Driving Routes with Google Maps Links)</title>
-  <meta name="description" content="0 Margin EU Travel: Smart AI Route Planner for Western Europe & Benelux (Paris, Amsterdam, Brussels, Luxembourg, Cologne, Munich, Berlin). Public Transit & Driving routes with live Google Maps links.">
+  <title>0 Margin EU Travel | Interactive Spot Selection & AI Route Planner</title>
+  <meta name="description" content="0 Margin EU Travel: Interactive Spot Selection & Custom AI Route Planner for Western Europe & Benelux (Paris, Amsterdam, Brussels, Luxembourg, Cologne, Munich, Berlin).">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,14 +16,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css?v=4.0">
+  <link rel="stylesheet" href="css/styles.css?v=5.0">
 </head>
 <body>
 
   <!-- Top Slogan Banner -->
   <div class="slogan-banner">
     <span>✨</span>
-    <span>0 Margin EU Travel: Smart AI Route Planner for Western Europe & Benelux. &nbsp;<strong class="font-serif">— "Freely you have received; freely give." (Matthew 10:8) —</strong></span>
+    <span>0 Margin EU Travel: Interactive Spot Selection & Custom AI Route Planner. &nbsp;<strong class="font-serif">— "Freely you have received; freely give." (Matthew 10:8) —</strong></span>
   </div>
 
   <!-- Navbar -->
@@ -55,7 +55,7 @@
       <!-- Tagline Hero Box -->
       <div class="hero-tagline-box">
         <span style="font-size:1.1rem; font-weight:800; letter-spacing:0.02em;">
-          "0 Margin EU Travel: AI Route Planner (Transit & Driving Routes)."
+          "0 Margin EU Travel: Choose Must-Visit Spots & Synthesize Custom Route."
         </span>
         <span class="font-serif" style="font-size:0.95rem; color:var(--primary-wood); font-style:italic;">
           📖 "Freely you have received; freely give." — Matthew 10:8
@@ -63,7 +63,7 @@
       </div>
 
       <h1 class="hero-title">
-        Western Europe & Benelux Travel Redefined.
+        Custom Travel Routes Built Around Your Must-Visit Spots.
       </h1>
 
       <div style="display:inline-flex; align-items:center; gap:0.8rem; background:var(--bg-card); border:2px solid var(--border-ink); padding:0.5rem 1.5rem; border-radius:9999px; font-size:1.1rem; font-weight:800; color:var(--primary-forest); box-shadow:2px 3px 0px var(--border-ink); margin-bottom:1.75rem;">
@@ -73,14 +73,16 @@
       </div>
 
       <p class="hero-subtitle">
-        Powered by <strong>AI Route & Logistics Optimization</strong>. Select <strong>Public Transit (🚆 電車・メトロ)</strong> or <strong>Car / Driving (🚗 車・ドライブ・駐車場)</strong> to generate unique, non-repeating itineraries across <strong>Paris, Amsterdam, Brussels, Luxembourg, Cologne, Munich, and Berlin</strong> with live Google Maps direct links.
+        1. Select your city & duration (Half Day / 1 Day / 2 Days Max).<br>
+        2. Pick your <strong>"Must-Visit Spots" (絶対行きたい場所)</strong> from verified ★4.5+ real venues with live Google Maps links and prices.<br>
+        3. Let AI synthesize a seamless, non-repeating custom route tailored for <strong>Public Transit (🚆)</strong> or <strong>Car / Driving (🚗)</strong>!
         <br><span class="font-hand">~ Handcrafted with care, built for human flourishing ~</span>
       </p>
 
       <!-- Prominent Primary CTA Buttons -->
       <div class="hero-buttons">
         <button class="btn btn-primary" onclick="switchTab('planner')">
-          🗺️ Plan EU Route (Public Transit or Car)
+          🗺️ Create Custom Travel Route
         </button>
         <button class="btn btn-secondary" onclick="configureGeminiKey()">
           🔑 Config Gemini API
@@ -93,26 +95,31 @@
   <!-- Main Navigation Tabs -->
   <div class="container" style="padding-top:0;">
     <nav class="tab-nav">
-      <button class="tab-btn active" data-tab="planner">🤖 AI Route & Itinerary Planner</button>
+      <button class="tab-btn active" data-tab="planner">🤖 AI Custom Route Planner</button>
       <button class="tab-btn" data-tab="calculator">🧮 0% Savings Calculator</button>
       <button class="tab-btn" data-tab="why">🌱 Why 0 Margin Travel?</button>
       <button class="tab-btn" id="myPageTabBtn" data-tab="mypage" style="display:none; background:#FFFDF9; border:1.5px solid #0284C7; color:#0369A1;">👤 My Travel Page</button>
     </nav>
 
-    <!-- TAB 1: AI ITINERARY PLANNER -->
+    <!-- TAB 1: INTERACTIVE AI CUSTOM ROUTE PLANNER -->
     <section id="tab-planner" class="tab-content active">
       <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; margin-bottom:2.25rem; box-shadow:var(--shadow-sketch);">
-        <span class="paper-tape">🤖 AI Travel & Route Planner (Western Europe & Benelux)</span>
-        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:0.5rem;">Smart Route Optimization (Public Transit or Car)</h2>
+        <span class="paper-tape">🤖 3-Step Interactive Custom AI Route Planner</span>
+        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:0.5rem;">インタラクティブ旅行プラン＆ルート作成</h2>
         <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1.5rem;">
-          Select duration (Half Day / 1 Day / 2 Days Max) and preferred mode of travel (🚆 Public Transit or 🚗 Car/Driving). Generate non-repeating real venue itineraries linked directly to Google Maps.
+          都市と条件を選び、候補の中から「絶対に行きたい場所」にチェックを入れるだけで、AIが移動手段（電車/車）に最適化したカスタム旅程を作成します。
         </p>
 
-        <form onsubmit="AITravelEngine.generateItinerary(event)" style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.75rem;">
+        <!-- STEP 1: BASIC CONDITIONS FORM -->
+        <form id="aiPlannerForm" onsubmit="AITravelEngine.generateItinerary(event)" style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.75rem; margin-bottom:2rem;">
+          <h3 style="font-size:1.15rem; font-family:var(--font-sans); color:var(--primary-wood); margin-bottom:1rem;">
+            Step 1: 基本条件の選択
+          </h3>
+
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label">Destination City / Anchor Hub (Western Europe & Benelux)</label>
-              <select id="aiPlanDestination" class="form-control">
+              <label class="form-label">目的地（都市）</label>
+              <select id="aiPlanDestination" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
                 <option value="Paris, France" selected>Paris (France)</option>
                 <option value="Amsterdam, Netherlands">Amsterdam (Netherlands)</option>
                 <option value="Brussels, Belgium">Brussels (Belgium)</option>
@@ -124,47 +131,56 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label">Transportation Mode (移動手段)</label>
+              <label class="form-label">移動手段</label>
               <select id="aiPlanTransport" class="form-control">
-                <option value="transit" selected>🚆 Public Transit (公共交通機関・電車・バス・メトロ)</option>
-                <option value="car">🚗 Car / Driving (車・レンタカー・ドライブ・駐車場案内付)</option>
+                <option value="transit" selected>🚆 公共交通機関 (電車・バス・メトロ)</option>
+                <option value="car">🚗 車 / レンタカー (ドライブ・駐車場案内付)</option>
               </select>
             </div>
           </div>
 
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label">Duration (半日・1日・最大2日限定)</label>
-              <select id="aiPlanDays" class="form-control">
-                <option value="0.5">Half Day Express (半日コース)</option>
-                <option value="1" selected>1 Day Full Explore (1日コース)</option>
-                <option value="2">2 Days Deep Stay (2日コース・最大)</option>
+              <label class="form-label">誰向け（旅行メンバー）</label>
+              <select id="aiPlanAudience" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
+                <option value="none" selected>⚪ 選択しない (全般)</option>
+                <option value="adults">👥 大人のみ (落ち着いた名所＆ビストロ)</option>
+                <option value="kids">👨‍👩‍👧 親子旅行 (ファミリー向けゆったり)</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label class="form-label">Main Travel Interest</label>
-              <select id="aiPlanInterest" class="form-control">
-                <option selected>Culture, History & Hidden Gems</option>
-                <option>Authentic Food & Local Bakeries</option>
-                <option>Nature, Parks & Scenic Loops</option>
-                <option>Art Galleries & Vintage Markets</option>
+              <label class="form-label">旅行期間（最大2日限定）</label>
+              <select id="aiPlanDays" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
+                <option value="0.5">半日コース (0.5日 — 必訪: 最大2箇所)</option>
+                <option value="1" selected>1日コース (1.0日 — 必訪: 最大4箇所)</option>
+                <option value="2">2日コース (2.0日 — 必訪: 最大7箇所)</option>
               </select>
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label">Budget Level</label>
-            <select id="aiPlanBudget" class="form-control">
-              <option selected>Moderate (0 Margin Friendly)</option>
-              <option>Budget Youth / Backpacker</option>
-              <option>Comfort Premium</option>
-            </select>
+          <!-- STEP 2: CANDIDATE SPOTS SELECTION GRID -->
+          <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:2px dashed var(--border-ink);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+              <h3 style="font-size:1.15rem; font-family:var(--font-sans); color:var(--primary-forest); margin:0;">
+                Step 2: 観光地・飲食店候補の中から「絶対行きたい場所」を選択
+              </h3>
+              <span id="spotsCounterBadge" style="font-size:0.85rem; font-weight:700; background:#FFF; border:1.5px solid var(--border-ink); padding:0.35rem 0.85rem; border-radius:9999px;"></span>
+            </div>
+            
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.25rem;">
+              カードのチェックボックスをタップして「絶対に行きたい場所」を指定してください。選択された場所を最優先に組み込み、残りの時間枠をAIが最適な高評価スポットで補完します。
+            </p>
+
+            <div id="candidateSpotsGrid" class="grid-2"></div>
           </div>
 
-          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.85rem; font-size:1.05rem;">
-            ⚡ Synthesize Real Route (Google Maps Live Links)
-          </button>
+          <!-- STEP 3: GENERATE ROUTE SUBMIT BUTTON -->
+          <div style="margin-top:2rem; text-align:center;">
+            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.95rem; font-size:1.1rem;">
+              ⚡ Step 3: 選択した「絶対行きたい場所」を含めてAIルートを作成する
+            </button>
+          </div>
         </form>
 
         <div id="aiPlanResult" style="display:none;"></div>
@@ -319,7 +335,7 @@
       <div>
         <div class="footer-brand">0 Margin EU Travel</div>
         <p class="footer-text">
-          Western Europe & Benelux AI Travel & Route Planner Platform.<br>
+          Western Europe & Benelux Interactive Spot Selection & AI Route Planner Platform.<br>
           <em>"Freely you have received; freely give." (Matthew 10:8)</em><br>
           Zero Exclusion (0) × Infinite Human Potential (∞)
         </p>
@@ -343,7 +359,7 @@
     <!-- UI Transparency Badge -->
     <div style="max-width:1200px; margin:0 auto 2rem; text-align:center;">
       <div style="display:inline-flex; align-items:center; gap:0.5rem; background:#FEF3C7; color:#78350F; border:1.5px solid #292524; padding:0.45rem 1rem; border-radius:14px; font-size:0.85rem; font-weight:700; box-shadow:2px 2px 0px #292524;">
-        ⚡ Powered by Efficient AI Route Optimization to keep 0 Margin EU Travel 100% free forever.
+        ⚡ Powered by Interactive Spot Selection & AI Route Engine to keep 0 Margin EU Travel 100% free forever.
       </div>
     </div>
 
@@ -354,8 +370,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/ai-travel-engine.js"></script>
-  <script src="js/travel-app.js"></script>
+  <script src="js/ai-travel-engine.js?v=5.0"></script>
+  <script src="js/travel-app.js?v=5.0"></script>
 
 </body>
 </html>
