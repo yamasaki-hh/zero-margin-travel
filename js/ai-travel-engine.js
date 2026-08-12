@@ -1,12 +1,12 @@
 /* ==========================================================================
-   0 Margin EU Travel — 4 Parallel Sub-Agents Engine (Max 2 Days Strict Limit)
-   100% Unique Real Named Spots, Google Ratings ★4.5+, Zero Repetition
+   0 Margin EU Travel — AI Travel & Route Engine
+   Live Google Maps Direct Links + Clean Customer-Facing UI
    ========================================================================== */
 
 const AITravelEngine = {
   config: {
     apiKey: localStorage.getItem('zmt_gemini_api_key') || '',
-    modelName: 'Gemini 1.5 Flash (Max 2 Days Unique Real Venues)'
+    modelName: 'Gemini 1.5 Flash'
   },
 
   setApiKey(key) {
@@ -19,47 +19,12 @@ const AITravelEngine = {
     return jpRegex.test(text) ? 'ja' : 'en';
   },
 
-  routeAgent(destination, days, lang) {
-    return {
-      id: 'agent_route',
-      name: '🗺️ Agent 1: Route & Logistics',
-      status: 'Transit & Bottleneck Optimization Complete',
-      details: lang === 'ja'
-        ? `最大2日間の短中距離行程（RER/Sバーン/メトロ/トラム）で、日ごとの重複をゼロにし最短移動を構築。`
-        : `Optimizing max 2-day itineraries (RER/S-Bahn/Tram/Metro) with zero duplicate schedules between days.`
-    };
-  },
-
-  curationAgent(destination, interest, lang) {
-    return {
-      id: 'agent_curation',
-      name: '⭐ Agent 2: Google Maps ★4.5+ Real Curation',
-      status: '100% Unique Real Named Spots Verified',
-      details: lang === 'ja'
-        ? `「地元の市場」等の抽象表現を完全禁止。日ごとに全店舗・名所が完全に異なる★4.5以上の実在店舗を抽出。`
-        : `Banning generic terms like 'local market'. Day 1 & Day 2 feature 100% DISTINCT ★4.5+ real named venues.`
-    };
-  },
-
-  gourmetAgent(destination, budget, lang) {
-    return {
-      name: '🍷 Agent 3: Local Gourmet & Bakery',
-      status: 'Signature Local Dishes & Real Pricing Filtered',
-      details: lang === 'ja'
-        ? `Le Train Bleu、Chez Janou、Maison Dandoy、Café de Klos 等、日ごとに異なる実在老舗の価格帯を特定。`
-        : `Pinpointing distinct real historic venues (Le Train Bleu, Chez Janou, Maison Dandoy, Café de Klos) per day.`
-    };
-  },
-
-  companionsAgent(destination, lang) {
-    return {
-      id: 'agent_companions',
-      name: '👥 Agent 4: Zero-Commission Companions',
-      status: 'Verified Local Companion Matched (0% Fee)',
-      details: lang === 'ja'
-        ? `${escapeHtml(destination)}在住の認証済み有志・学生ローカル仲間と直接メッセージ交流を構成。`
-        : `Matching verified local fellows and university students in ${escapeHtml(destination)} at 0% platform commission.`
-    };
+  // Helper to create Google Maps live search link button
+  createMapsLink(placeName, city, rating = '') {
+    const query = encodeURIComponent(`${placeName} ${city}`);
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+    const ratingTag = rating ? ` (${rating})` : '';
+    return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.5rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="Google Mapsでリアルタイム営業時間・口コミ・写真を見る">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
   },
 
   generateItinerary(event) {
@@ -67,7 +32,6 @@ const AITravelEngine = {
 
     const destination = document.getElementById('aiPlanDestination').value.trim() || 'Paris, France';
     let days = parseFloat(document.getElementById('aiPlanDays').value) || 1;
-    // Strict Cap: Max 2 Days
     if (days > 2) days = 2;
 
     const interest = document.getElementById('aiPlanInterest').value || 'Culture, History & Hidden Gems';
@@ -80,47 +44,23 @@ const AITravelEngine = {
 
     resultContainer.style.display = 'block';
     resultContainer.innerHTML = `
-      <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch);">
-        <div style="text-align:center; margin-bottom:1.5rem;">
-          <span class="paper-tape">⚡ 4 Parallel Sub-Agents Live Processing</span>
-          <h3 style="font-size:1.5rem; margin-top:0.4rem; font-family:var(--font-serif);" class="font-serif">
-            Synthesizing 100% Unique Real Places for ${escapeHtml(destination)} (${days === 0.5 ? 'Half Day' : days + ' Day(s)'})...
-          </h3>
+      <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2.5rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch); text-align:center;">
+        <div style="font-size:1.5rem; color:var(--primary-gold); font-family:var(--font-serif);" class="font-serif">
+          ⚡ ${lang === 'ja' ? '最適ルートとGoogle Maps高評価スポットを生成中...' : 'Generating Optimized Route & Google Maps Spots...'}
         </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.85rem; margin-bottom:1rem;">
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:12px; padding:0.85rem; animation:pulse 1.2s infinite;">
-            <strong style="color:var(--primary-forest); font-size:0.82rem;">🗺️ Agent 1: Transit & Route</strong>
-            <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Calculating station transfers...</p>
-          </div>
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:12px; padding:0.85rem; animation:pulse 1.2s infinite;">
-            <strong style="color:var(--primary-gold); font-size:0.82rem;">⭐ Agent 2: ★4.5+ Real Spots</strong>
-            <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Verifying UNIQUE real place names...</p>
-          </div>
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:12px; padding:0.85rem; animation:pulse 1.2s infinite;">
-            <strong style="color:var(--primary-wood); font-size:0.82rem;">🍷 Agent 3: Gourmet & Bakery</strong>
-            <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Matching distinct real restaurants...</p>
-          </div>
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:12px; padding:0.85rem; animation:pulse 1.2s infinite;">
-            <strong style="color:var(--primary-navy); font-size:0.82rem;">👥 Agent 4: 0% Companions</strong>
-            <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Pairing local student fellows...</p>
-          </div>
-        </div>
+        <p style="font-size:0.95rem; color:var(--text-secondary); margin-top:0.5rem;">
+          ${escapeHtml(destination)} (${days === 0.5 ? '半日コース' : days + '日コース'}) の実在名所・高評価ビストロ（★4.5+）を構成しています...
+        </p>
       </div>
     `;
 
-    const routeInfo = this.routeAgent(destination, days, lang);
-    const curationInfo = this.curationAgent(destination, interest, lang);
-    const gourmetInfo = this.gourmetAgent(destination, budget, lang);
-    const compInfo = this.companionsAgent(destination, lang);
-
     if (this.config.apiKey) {
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.config.apiKey}`;
-      const systemPrompt = `You are a 4-Parallel-Agent Travel Curator for Western Europe & Benelux. Respond in ${lang === 'ja' ? 'Japanese' : 'English'}.
+      const systemPrompt = `You are an expert AI Travel Curator for 0 Margin EU Travel. Respond in ${lang === 'ja' ? 'Japanese' : 'English'}.
 STRICT RULES:
 1. MAX DURATION IS ${days} DAY(S) (0.5 = Half Day, 1 = 1 Day, 2 = 2 Days max). DO NOT GENERATE DAY 3 OR BEYOND.
 2. ABSOLUTELY ZERO REPETITION: Day 1 and Day 2 MUST feature 100% COMPLETELY DIFFERENT venues, attractions, restaurants, and bakeries.
-3. NO GENERIC PLACEHOLDERS: Banned words: "Local Organic Bistro", "Artisan Market", "Historic Quarter", "Local market". Every single place MUST be a REAL named venue with Google rating ★4.5+ (e.g. Chez Janou, Le Train Bleu, Musée d'Orsay, Sainte-Chapelle, Maison Dandoy, Fin de Siècle, Pont des Arts).
+3. NO GENERIC PLACEHOLDERS: Banned words: "Local Organic Bistro", "Artisan Market", "Historic Quarter". Every single place MUST be a REAL named venue with Google rating ★4.5+ (e.g. Chez Janou, Le Train Bleu, Musée d'Orsay, Sainte-Chapelle, Maison Dandoy, Fin de Siècle, Pont des Arts).
 For each time slot (09:00 AM, 11:30 AM, 12:30 PM, 03:00 PM, 07:00 PM), output:
 - Real venue name & rating
 - Specific transit advice (e.g. Metro Line 1, RER C, 5 min walk)
@@ -140,22 +80,23 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
       .then(data => {
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!text) throw new Error('Empty payload');
-        this.render4AgentItineraryCard(destination, days, interest, text, routeInfo, curationInfo, gourmetInfo, compInfo, '⚡ Live Gemini 1.5 Flash (Unique Real Spots)');
+        this.renderItineraryCard(destination, days, interest, text, '⚡ Live Gemini 1.5 Flash (Real Google Maps Spots)');
       })
       .catch(err => {
         console.warn('Gemini API call fallback:', err);
         const fallbackText = this.buildRealVenueDatabase(destination, days, interest, budget, lang);
-        this.render4AgentItineraryCard(destination, days, interest, fallbackText, routeInfo, curationInfo, gourmetInfo, compInfo, '⚡ Dynamic 4-Agent Real-Data Engine');
+        this.renderItineraryCard(destination, days, interest, fallbackText, '⚡ AI Route Planner (Real Google Maps Spots)');
       });
 
     } else {
       setTimeout(() => {
         const fallbackText = this.buildRealVenueDatabase(destination, days, interest, budget, lang);
-        this.render4AgentItineraryCard(destination, days, interest, fallbackText, routeInfo, curationInfo, gourmetInfo, compInfo, '⚡ Dynamic 4-Agent Real-Data Engine');
+        this.renderItineraryCard(destination, days, interest, fallbackText, '⚡ AI Route Planner (Real Google Maps Spots)');
       }, 350);
     }
   },
 
+  // 100% Real Place Names & Direct Google Maps Search Links
   buildRealVenueDatabase(destination, days, interest, budget, lang) {
     const destLower = destination.toLowerCase();
 
@@ -175,12 +116,12 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
         html += `
           <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
             <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 半日コース: ${escapeHtml(destination)} 厳選ハイライト＆名店
+              📍 半日コース: ${escapeHtml(destination)} 厳選ハイライト＆Google Maps生リンク
             </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.8; padding-left:1.2rem;">
-              <li><strong>09:00 AM — 主要シンボル名所:</strong> ${isParis ? 'サント・シャペル教会（Sainte-Chapelle ★4.8 — メトロ4号線 Cité 駅）' : isAmsterdam ? 'アムステルダム国立美術館（Rijksmuseum ★4.7 — トラム2/5/12番）' : isBrussels ? 'グラン＝プラス（Grand-Place ★4.7 — 中央駅徒歩5分）' : 'ブランデンブルク門（Brandenburger Tor ★4.7）'}。</li>
-              <li><strong>11:30 AM — 老舗名物スイーツ:</strong> ${isParis ? 'マルシェ・デ・ザンファン・ルージュ（Marché des Enfants Rouges ★4.5 クレープ）' : isAmsterdam ? 'ヴァン・スターペレ（Van Stapele Koekmakerij ★4.8 焼きたてチョコクッキー €3）' : isBrussels ? 'メゾン・ダンドワ（Maison Dandoy ★4.6 リエージュワッフル）' : 'Café Einfein（★4.8）'}。</li>
-              <li><strong>12:30 PM — 絶品ランチ名店:</strong> ${isParis ? 'Le Petit Marché（★4.6 マレ地区鴨コンフィ €18–€26）' : isAmsterdam ? 'Café de Klos（★4.6 香ばしいスペアリブ €18–€26）' : isBrussels ? 'Fin de Siècle（★4.5 カルボナード牛肉ビール煮込み €16–€24）' : 'Brauhaus Sion（★4.4）'}。</li>
+            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+              <li><strong>09:00 AM — 主要シンボル名所:</strong> ${isParis ? this.createMapsLink('サント・シャペル教会', 'Paris', '★4.8') + '（メトロ4号線 Cité 駅）' : isAmsterdam ? this.createMapsLink('アムステルダム国立美術館', 'Amsterdam', '★4.7') + '（トラム2/5/12番）' : isBrussels ? this.createMapsLink('グラン＝プラス', 'Brussels', '★4.7') + '（中央駅徒歩5分）' : this.createMapsLink('ブランデンブルク門', 'Berlin', '★4.7')}。</li>
+              <li><strong>11:30 AM — 老舗名物スイーツ:</strong> ${isParis ? this.createMapsLink('マルシェ・デ・ザンファン・ルージュ', 'Paris', '★4.5') + '（焼きたてクレープ）' : isAmsterdam ? this.createMapsLink('ヴァンスターペレ', 'Van Stapele Amsterdam', '★4.8') + '（チョコクッキー €3）' : isBrussels ? this.createMapsLink('メゾン・ダンドワ', 'Maison Dandoy Brussels', '★4.6') + '（リエージュワッフル）' : this.createMapsLink('Café Einfein', 'Berlin', '★4.8')}。</li>
+              <li><strong>12:30 PM — 絶品ランチ名店:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + '（マレ地区の鴨コンフィ €18–€26）' : isAmsterdam ? 'カフェ・デ・クロース ' + this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + '（スペアリブ €18–€26）' : isBrussels ? this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5') + '（牛肉のビール煮込み €16–€24）' : this.createMapsLink('Brauhaus Sion', 'Cologne', '★4.4')}。</li>
             </ul>
           </div>
         `;
@@ -189,30 +130,30 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
         html += `
           <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
             <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 1日目: ${escapeHtml(destination)} マレ・中心部歴史名所＆★4.6+絶品ビストロ
+              📍 1日目: ${escapeHtml(destination)} 中心部歴史名所＆高評価ビストロ
             </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.8; padding-left:1.2rem;">
-              <li><strong>09:00 AM — 朝の特別観覧:</strong> ${isParis ? 'サント・シャペル教会（Sainte-Chapelle ★4.8 — メトロ4号線 Cité 駅）' : isAmsterdam ? 'アムステルダム国立美術館（Rijksmuseum ★4.7 — トラム2/5/12番）' : isBrussels ? 'グラン＝プラス（Grand-Place ★4.7 — 中央駅徒歩5分）' : isLuxembourg ? 'ボックの砲台（Bock Casemates ★4.6 — バス14/15番）' : isCologne ? 'ケルン大聖堂（Kölner Dom ★4.8 — ケルン中央駅直結）' : isMunich ? 'マリエン広場（Marienplatz ★4.7 — Sバーン直結）' : 'ブランデンブルク門（Brandenburger Tor ★4.7）'}。</li>
-              <li><strong>11:30 AM — 老舗名物スイーツ:</strong> ${isParis ? 'マルシェ・デ・ザンファン・ルージュ（Marché des Enfants Rouges ★4.5 手打ちクレープ）' : isAmsterdam ? 'ヴァン・スターペレ（Van Stapele Koekmakerij ★4.8 焼きたてチョコクッキー €3）' : isBrussels ? 'メゾン・ダンドワ（Maison Dandoy ★4.6 焼きたてリエージュワッフル）' : isLuxembourg ? 'Chocolate House Nathalie Bonn（★4.6 ホットスプーンチョコ）' : isCologne ? 'Café Reichard（★4.5 大聖堂ビューカフェ）' : isMunich ? 'Viktualienmarkt（★4.7 プレッツェル）' : 'Mustafa\'s Gemüse Kebab（★4.4）'}。</li>
-              <li><strong>12:30 PM — 1日目ランチ名店:</strong> ${isParis ? 'Le Petit Marché（★4.6 マレ地区の鴨コンフィ €18–€26）' : isAmsterdam ? 'Café de Klos（★4.6 スモーキー・スペアリブ €18–€26）' : isBrussels ? 'Fin de Siècle（★4.5 伝統カルボナード牛肉ビール煮込み €16–€24）' : isLuxembourg ? 'Brasserie du Cercle（★4.5 ダルム広場）' : isCologne ? 'Brauhaus Sion（★4.4 ケルシュビール＆シュヴァイネハクセ）' : isMunich ? 'Augustiner-Keller（★4.6 白ソーセージ＆ビール）' : 'Bistro Organic Mitte（★4.7）'}。</li>
-              <li><strong>03:00 PM — 文化散策:</strong> ${isParis ? 'パレ・ロワイヤル庭園（Palais-Royal ★4.7 — 白黒ストライプの柱）' : isAmsterdam ? '九つの街（De Negen Straatjes ★4.8 — 運河沿いセレクトショップ）' : isBrussels ? 'ギャルリ・サンチュベール（Royal Gallery of Saint-Hubert ★4.6）' : isLuxembourg ? 'シュマン・ド・ラ・コルニッシュ（Chemin de la Corniche ★4.8）' : isCologne ? 'ルートヴィヒ美術館（Museum Ludwig ★4.6）' : isMunich ? '英国庭園（Englischer Garten ★4.8）' : '博物館島（Museumsinsel ★4.8）'}。</li>
-              <li><strong>07:00 PM — 夜の散歩:</strong> ${isParis ? 'ポン・デ・ザール橋（Pont des Arts ★4.7 — 夕刻のセーヌ川鑑賞）' : '夕刻の街並み散策'}。</li>
+            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+              <li><strong>09:00 AM — 朝の特別観覧:</strong> ${isParis ? this.createMapsLink('サント・シャペル教会', 'Sainte Chapelle Paris', '★4.8') + '（メトロ4号線 Cité 駅徒歩3分）' : isAmsterdam ? this.createMapsLink('アムステルダム国立美術館', 'Rijksmuseum Amsterdam', '★4.7') + '（トラム2/5/12番）' : isBrussels ? this.createMapsLink('グラン＝プラス', 'Grand Place Brussels', '★4.7') + '（中央駅徒歩5分）' : isLuxembourg ? this.createMapsLink('ボックの砲台', 'Bock Casemates Luxembourg', '★4.6') + '（バス14/15番）' : isCologne ? this.createMapsLink('ケルン大聖堂', 'Kölner Dom', '★4.8') + '（ケルン中央駅直結）' : isMunich ? this.createMapsLink('マリエン広場', 'Marienplatz Munich', '★4.7') + '（Sバーン直結）' : this.createMapsLink('ブランデンブルク門', 'Brandenburg Gate Berlin', '★4.7')}。</li>
+              <li><strong>11:30 AM — 老舗名物スイーツ:</strong> ${isParis ? this.createMapsLink('マルシェ・デ・ザンファン・ルージュ', 'Marché des Enfants Rouges Paris', '★4.5') + '（最古の屋台市場クレープ）' : isAmsterdam ? this.createMapsLink('ヴァン・スターペレ', 'Van Stapele Koekmakerij Amsterdam', '★4.8') + '（絶品焼きたてチョコクッキー €3）' : isBrussels ? this.createMapsLink('メゾン・ダンドワ', 'Maison Dandoy Brussels', '★4.6') + '（焼きたてリエージュワッフル）' : isLuxembourg ? this.createMapsLink('Chocolate House Nathalie Bonn', 'Luxembourg', '★4.6') + '（ホットスプーンチョコ）' : isCologne ? this.createMapsLink('Café Reichard', 'Cologne', '★4.5') + '（大聖堂ビューカフェ）' : isMunich ? this.createMapsLink('Viktualienmarkt', 'Munich', '★4.7') + '（プレッツェル屋台）' : this.createMapsLink("Mustafa's Gemüse Kebab", 'Berlin', '★4.4')}。</li>
+              <li><strong>12:30 PM — 1日目ランチ名店:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Le Petit Marché Paris', '★4.6') + '（マレ地区の鴨コンフィ €18–€26）' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Café de Klos Amsterdam', '★4.6') + '（スモーキー・スペアリブ €18–€26）' : isBrussels ? this.createMapsLink('Fin de Siècle', 'Fin de Siècle Brussels', '★4.5') + '（カルボナード牛肉ビール煮込み €16–€24）' : isLuxembourg ? this.createMapsLink('Brasserie du Cercle', 'Luxembourg', '★4.5') + '（ダルム広場）' : isCologne ? this.createMapsLink('Brauhaus Sion', 'Cologne', '★4.4') + '（ケルシュビール＆シュヴァイネハクセ）' : isMunich ? this.createMapsLink('Augustiner-Keller', 'Munich', '★4.6') + '（白ソーセージ＆ビール）' : this.createMapsLink('Bistro Organic Mitte', 'Berlin', '★4.7')}。</li>
+              <li><strong>03:00 PM — 文化散策:</strong> ${isParis ? this.createMapsLink('パレ・ロワイヤル庭園', 'Palais Royal Paris', '★4.7') + '（白黒ストライプの柱）' : isAmsterdam ? this.createMapsLink('九つの街', 'De Negen Straatjes Amsterdam', '★4.8') + '（最美運河沿いセレクトショップ）' : isBrussels ? this.createMapsLink('ギャルリ・サンチュベール', 'Royal Gallery of Saint Hubert Brussels', '★4.6') : isLuxembourg ? this.createMapsLink('シュマン・ド・ラ・コルニッシュ', 'Chemin de la Corniche Luxembourg', '★4.8') : isCologne ? this.createMapsLink('ルートヴィヒ美術館', 'Museum Ludwig Cologne', '★4.6') : isMunich ? this.createMapsLink('英国庭園', 'Englischer Garten Munich', '★4.8') : this.createMapsLink('博物館島', 'Museum Island Berlin', '★4.8')}。</li>
+              <li><strong>07:00 PM — 夜の散步:</strong> ${isParis ? this.createMapsLink('ポン・デ・ザール橋', 'Pont des Arts Paris', '★4.7') + '（夕刻のセーヌ川鑑賞）' : 'ローカル仲間と評価★4.6以上の地元カフェで交流'}。</li>
             </ul>
           </div>
         `;
 
-        // DAY 2 (ONLY IF DAYS == 2) - 100% COMPLETELY DIFFERENT PLACES (ZERO REPETITION)
+        // DAY 2 (ONLY IF DAYS == 2) - 100% COMPLETELY DIFFERENT PLACES
         if (days >= 2) {
           html += `
             <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
               <h4 style="color:var(--primary-wood); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-                📍 2日目: 【全施設重複なし】${escapeHtml(destination)} オルセー/モンマルトル＆老舗シェ・ジャヌー
+                📍 2日目: 【全施設重複なし】${escapeHtml(destination)} オルセー/モンマルトル＆名店リンク
               </h4>
-              <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.8; padding-left:1.2rem;">
-                <li><strong>09:00 AM — 2日目朝の特別観覧:</strong> ${isParis ? 'オルセー美術館（Musée d\'Orsay ★4.8 — RER C線 Musée d\'Orsay 駅直結。印象派名画）' : isAmsterdam ? 'ゴッホ美術館（Van Gogh Museum ★4.8 — トラム2/5番 Museumplein 停）' : isBrussels ? 'アトミウム（Atomium ★4.4 — メトロ6号線 Heysel 駅直結）' : isLuxembourg ? 'グルンド歴史地区（Grund ★4.7 — 無料エレベーター谷底）' : isCologne ? 'ホーエンツォレルン橋（Hohenzollernbrücke ★4.7 — 愛の南京錠橋）' : isMunich ? 'ニンフェンブルク宮殿（Nymphenburg Palace ★4.7 — トラム17番）' : 'イーストサイドギャラリー（East Side Gallery ★4.6 — 壁アート）'}。</li>
-                <li><strong>11:30 AM — 2日目スイーツ名店:</strong> ${isParis ? 'ル・ムーリス・セドリック・グロレ（Cédric Grolet Le Meurice ★4.6 — 彫刻フルーツケーキ）' : isAmsterdam ? 'ウィンケル43（Winkel 43 ★4.6 — 伝統オランダ名物焼きたてアップルパイ €5）' : isBrussels ? 'ピエール・マルコリーニ（Pierre Marcolini ★4.7 — グラン・サブロン広場）' : isLuxembourg ? 'Oberweis Bakery（★4.6）' : isCologne ? 'Café Rizzoli（★4.6）' : isMunich ? 'Café Frischhut（★4.7 伝統揚げパン Schmalznudel）' : 'Zeit für Brot（★4.7 オーガニックシナモンロール）'}。</li>
-                <li><strong>12:30 PM — 2日目ランチ名店:</strong> ${isParis ? 'ル・トレン・ブルー（Le Train Bleu ★4.5 — リヨン駅構内豪華宮殿レストラン €25–€38）または シェ・ジャヌー（Chez Janou ★4.5 — プロヴァンス料理＆名物チョコムース）' : isAmsterdam ? 'Foodhallen Amsterdam（★4.5 — 旧路面電車車庫のリノベフードホール €15–€22）' : isBrussels ? 'Chez Léon（★4.6 — 1893年創業ムール貝＆フリッツ専門店 €18–€26）' : isLuxembourg ? 'Um Dietgen（★4.5）' : isCologne ? 'Peters Brauhaus（★4.5）' : isMunich ? 'Hofbräuhaus München（★4.5 1589年創業バイエルン伝統館）' : 'Prater Biergarten（★4.6 ベルリン最古のビアガーデン）'}。</li>
-                <li><strong>03:00 PM — 2日目午後散策:</strong> ${isParis ? 'モンマルトルの丘＆サクレ・クール寺院（Sacré-Cœur ★4.7 — メトロ2号線 Anvers 駅）' : isAmsterdam ? 'ザーンセ・スカンス風車村（Zaanse Schans ★4.6 — バス391番直通20分）' : isBrussels ? '王立軍事歴史博物館（Royal Museum of the Armed Forces ★4.7）' : isLuxembourg ? 'ヴィアンデン城（Vianden Castle ★4.7）' : isCologne ? 'ドラッヘンフェルス城（Drachenfels Castle ★4.6）' : isMunich ? 'レジデンツ宮殿（Munich Residenz ★4.8）' : 'ポツダム・サンスーシ宮殿庭園（Sanssouci Palace ★4.8）'}。</li>
+              <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+                <li><strong>09:00 AM — 2日目朝の特別観覧:</strong> ${isParis ? this.createMapsLink('オルセー美術館', 'Musée d Orsay Paris', '★4.8') + '（RER C線 Musée d\'Orsay 駅直結。印象派名画）' : isAmsterdam ? this.createMapsLink('ゴッホ美術館', 'Van Gogh Museum Amsterdam', '★4.8') + '（トラム2/5番 Museumplein）' : isBrussels ? this.createMapsLink('アトミウム', 'Atomium Brussels', '★4.4') + '（メトロ6号線 Heysel 駅直結）' : isLuxembourg ? this.createMapsLink('グルンド歴史地区', 'Grund Luxembourg', '★4.7') + '（エレベーター谷底）' : isCologne ? this.createMapsLink('ホーエンツォレルン橋', 'Hohenzollernbrücke Cologne', '★4.7') + '（愛の南京錠橋）' : isMunich ? this.createMapsLink('ニンフェンブルク宮殿', 'Nymphenburg Palace Munich', '★4.7') + '（トラム17番）' : this.createMapsLink('イーストサイドギャラリー', 'East Side Gallery Berlin', '★4.6')}。</li>
+                <li><strong>11:30 AM — 2日目スイーツ名店:</strong> ${isParis ? this.createMapsLink('セドリック・グロレ', 'Cédric Grolet Le Meurice Paris', '★4.6') + '（彫刻フルーツケーキ）' : isAmsterdam ? this.createMapsLink('ウィンケル43', 'Winkel 43 Amsterdam', '★4.6') + '（伝統名物アップルパイ €5）' : isBrussels ? this.createMapsLink('ピエール・マルコリーニ', 'Pierre Marcolini Brussels', '★4.7') + '（グラン・サブロン広場）' : isLuxembourg ? this.createMapsLink('Oberweis Bakery', 'Luxembourg', '★4.6') : isCologne ? this.createMapsLink('Café Rizzoli', 'Cologne', '★4.6') : isMunich ? this.createMapsLink('Café Frischhut', 'Munich', '★4.7') + '（伝統揚げパン Schmalznudel）' : this.createMapsLink('Zeit für Brot', 'Berlin', '★4.7')}。</li>
+                <li><strong>12:30 PM — 2日目ランチ名店:</strong> ${isParis ? this.createMapsLink('ル・トレン・ブルー', 'Le Train Bleu Paris', '★4.5') + '（リヨン駅構内豪華宮殿レストラン €25–€38）または ' + this.createMapsLink('シェ・ジャヌー', 'Chez Janou Paris', '★4.5') + '（プロヴァンス料理＆チョコムース）' : isAmsterdam ? this.createMapsLink('Foodhallen Amsterdam', 'Foodhallen Amsterdam', '★4.5') + '（リノベフードホール €15–€22）' : isBrussels ? this.createMapsLink('Chez Léon', 'Chez Léon Brussels', '★4.6') + '（1893年創業ムール貝＆フリッツ €18–€26）' : isLuxembourg ? this.createMapsLink('Um Dietgen', 'Luxembourg', '★4.5') : isCologne ? this.createMapsLink('Peters Brauhaus', 'Cologne', '★4.5') : isMunich ? this.createMapsLink('Hofbräuhaus München', 'Munich', '★4.5') + '（1589年創業バイエルン伝統館）' : this.createMapsLink('Prater Biergarten', 'Berlin', '★4.6')}。</li>
+                <li><strong>03:00 PM — 2日目午後散策:</strong> ${isParis ? this.createMapsLink('サクレ・クール寺院＆モンマルトルの丘', 'Sacré Cœur Paris', '★4.7') + '（メトロ2号線 Anvers 駅）' : isAmsterdam ? this.createMapsLink('ザーンセ・スカンス風車村', 'Zaanse Schans', '★4.6') + '（バス391番直通20分）' : isBrussels ? this.createMapsLink('王立軍事歴史博物館', 'Royal Museum of the Armed Forces Brussels', '★4.7') : isLuxembourg ? this.createMapsLink('ヴィアンデン城', 'Vianden Castle Luxembourg', '★4.7') : isCologne ? this.createMapsLink('ドラッヘンフェルス城', 'Drachenfels Castle', '★4.6') : isMunich ? this.createMapsLink('レジデンツ宮殿', 'Munich Residenz', '★4.8') : this.createMapsLink('ポツダム・サンスーシ宮殿庭園', 'Sanssouci Palace Potsdam', '★4.8')}。</li>
                 <li><strong>07:00 PM — フェアウェル交流:</strong> ローカル仲間と最終夜のセーヌ川/運河沿い散策。</li>
               </ul>
             </div>
@@ -220,17 +161,17 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
         }
       }
     } else {
-      // ENGLISH GENERATION - HALF DAY / 1 DAY / 2 DAYS MAX (100% UNIQUE REAL PLACES, ZERO REPETITION)
+      // ENGLISH GENERATION WITH GOOGLE MAPS DIRECT LINKS
       if (days === 0.5) {
         html += `
           <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
             <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 Half Day Express: ${escapeHtml(destination)} Top Real Spot Highlights
+              📍 Half Day Express: ${escapeHtml(destination)} Top Places with Live Google Maps Links
             </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.8; padding-left:1.2rem;">
-              <li><strong>09:00 AM — Primary Landmark:</strong> ${isParis ? 'Sainte-Chapelle (★4.8) — Metro Line 4 Cité Station' : isAmsterdam ? 'Rijksmuseum (★4.7) — Tram 2/5/12' : isBrussels ? 'Grand-Place (★4.7) — 5 min walk from Central Station' : 'Brandenburg Gate (★4.7)'}.</li>
-              <li><strong>11:30 AM — Signature Bakery:</strong> ${isParis ? 'Marché des Enfants Rouges (★4.5 crêpes)' : isAmsterdam ? 'Van Stapele Koekmakerij (★4.8 dark chocolate cookies €3)' : isBrussels ? 'Maison Dandoy (★4.6 Liège waffles)' : 'Café Einfein (★4.8)'}.</li>
-              <li><strong>12:30 PM — Recommended Restaurant:</strong> ${isParis ? 'Le Petit Marché (★4.6 Marais duck confit €18–€26)' : isAmsterdam ? 'Café de Klos (★4.6 smoked ribs €18–€26)' : isBrussels ? 'Fin de Siècle (★4.5 Carbonnade Flamande €16–€24)' : 'Brauhaus Sion (★4.4)'}.</li>
+            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+              <li><strong>09:00 AM — Primary Landmark:</strong> ${isParis ? this.createMapsLink('Sainte-Chapelle', 'Paris', '★4.8') + ' — Metro Line 4 Cité Station' : isAmsterdam ? this.createMapsLink('Rijksmuseum', 'Amsterdam', '★4.7') + ' — Tram 2/5/12' : isBrussels ? this.createMapsLink('Grand-Place', 'Brussels', '★4.7') + ' — 5 min walk from Central Station' : this.createMapsLink('Brandenburg Gate', 'Berlin', '★4.7')}。</li>
+              <li><strong>11:30 AM — Signature Bakery:</strong> ${isParis ? this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5') + ' (crêpes)' : isAmsterdam ? this.createMapsLink('Van Stapele Koekmakerij', 'Amsterdam', '★4.8') + ' (chocolate cookies €3)' : isBrussels ? this.createMapsLink('Maison Dandoy', 'Brussels', '★4.6') + ' (Liège waffles)' : this.createMapsLink('Café Einfein', 'Berlin', '★4.8')}。</li>
+              <li><strong>12:30 PM — Recommended Restaurant:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + ' (Marais duck confit €18–€26)' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + ' (smoked ribs €18–€26)' : isBrussels ? this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5') + ' (Carbonnade Flamande €16–€24)' : this.createMapsLink('Brauhaus Sion', 'Cologne', '★4.4')}。</li>
             </ul>
           </div>
         `;
@@ -239,14 +180,14 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
         html += `
           <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
             <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 Day 1: ${escapeHtml(destination)} Historic Highlights & Le Petit Marché
+              📍 Day 1: ${escapeHtml(destination)} Historic Landmarks & Le Petit Marché
             </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.8; padding-left:1.2rem;">
-              <li><strong>09:00 AM — Morning Landmark:</strong> ${isParis ? 'Sainte-Chapelle (★4.8) — Metro Line 4 Cité Station. Breathtaking 13th-century stained glass' : isAmsterdam ? 'Rijksmuseum (★4.7) — Tram 2/5/12. Rembrandt\'s "The Night Watch"' : isBrussels ? 'Grand-Place (★4.7) — 5 min walk from Central Station' : isLuxembourg ? 'Bock Casemates (★4.6)' : isCologne ? 'Cologne Cathedral / Kölner Dom (★4.8)' : isMunich ? 'Marienplatz (★4.7)' : 'Brandenburg Gate (★4.7)'}.</li>
-              <li><strong>11:30 AM — Signature Bakery:</strong> ${isParis ? 'Marché des Enfants Rouges (★4.5) — Paris\'s oldest covered market, fresh crêpes' : isAmsterdam ? 'Van Stapele Koekmakerij (★4.8) — Valrhona dark chocolate cookies (€3)' : isBrussels ? 'Maison Dandoy (★4.6) — Fresh Liège waffles with warm chocolate' : isLuxembourg ? 'Chocolate House Nathalie Bonn (★4.6)' : isCologne ? 'Café Reichard (★4.5)' : isMunich ? 'Viktualienmarkt (★4.7)' : 'Mustafa\'s Gemüse Kebab (★4.4)'}.</li>
-              <li><strong>12:30 PM — Day 1 Restaurant:</strong> ${isParis ? 'Le Petit Marché (★4.6) — Metro Line 1 Saint-Paul. Marais duck confit bistro (€18–€26)' : isAmsterdam ? 'Café de Klos (★4.6) — Kerkstraat 41. Smoked ribs & local craft beers (€18–€26)' : isBrussels ? 'Fin de Siècle (★4.5) — Authentic Carbonnade Flamande beef stew (€16–€24)' : isLuxembourg ? 'Brasserie du Cercle (★4.5)' : isCologne ? 'Brauhaus Sion (★4.4)' : isMunich ? 'Augustiner-Keller (★4.6)' : 'Bistro Organic Mitte (★4.7)'}.</li>
-              <li><strong>03:00 PM — Afternoon Walk:</strong> ${isParis ? 'Palais-Royal Courtyard (★4.7) — Black & white Buren columns & gardens' : isAmsterdam ? 'Nine Streets (De Negen Straatjes ★4.8) — Boutique art galleries & canals' : isBrussels ? 'Royal Gallery of Saint-Hubert (★4.6)' : isLuxembourg ? 'Chemin de la Corniche (★4.8)' : isCologne ? 'Museum Ludwig (★4.6)' : isMunich ? 'Englischer Garten (★4.8)' : 'Museum Island (★4.8)'}.</li>
-              <li><strong>07:00 PM — Evening Walk:</strong> ${isParis ? 'Pont des Arts (★4.7) — Sunset Seine river bridge walk' : 'Evening walk with local companions'}.</li>
+            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+              <li><strong>09:00 AM — Morning Landmark:</strong> ${isParis ? this.createMapsLink('Sainte-Chapelle', 'Sainte Chapelle Paris', '★4.8') + ' — Metro Line 4 Cité Station' : isAmsterdam ? this.createMapsLink('Rijksmuseum', 'Rijksmuseum Amsterdam', '★4.7') + ' — Tram 2/5/12' : isBrussels ? this.createMapsLink('Grand-Place', 'Grand Place Brussels', '★4.7') + ' — 5 min walk from Central Station' : isLuxembourg ? this.createMapsLink('Bock Casemates', 'Luxembourg', '★4.6') : isCologne ? this.createMapsLink('Cologne Cathedral', 'Kölner Dom', '★4.8') : isMunich ? this.createMapsLink('Marienplatz', 'Munich', '★4.7') : this.createMapsLink('Brandenburg Gate', 'Berlin', '★4.7')}。</li>
+              <li><strong>11:30 AM — Signature Bakery:</strong> ${isParis ? this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5') + ' — Paris\'s oldest covered market' : isAmsterdam ? this.createMapsLink('Van Stapele Koekmakerij', 'Amsterdam', '★4.8') + ' — Valrhona dark chocolate cookies (€3)' : isBrussels ? this.createMapsLink('Maison Dandoy', 'Brussels', '★4.6') + ' — Fresh Liège waffles with warm chocolate' : isLuxembourg ? this.createMapsLink('Chocolate House Nathalie Bonn', 'Luxembourg', '★4.6') : isCologne ? this.createMapsLink('Café Reichard', 'Cologne', '★4.5') : isMunich ? this.createMapsLink('Viktualienmarkt', 'Munich', '★4.7') : this.createMapsLink("Mustafa's Gemüse Kebab", 'Berlin', '★4.4')}。</li>
+              <li><strong>12:30 PM — Day 1 Restaurant:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + ' — Metro Line 1 Saint-Paul. Marais duck confit (€18–€26)' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + ' — Kerkstraat 41. Smoked ribs (€18–€26)' : isBrussels ? this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5') + ' — Authentic Carbonnade Flamande beef stew (€16–€24)' : isLuxembourg ? this.createMapsLink('Brasserie du Cercle', 'Luxembourg', '★4.5') : isCologne ? this.createMapsLink('Brauhaus Sion', 'Cologne', '★4.4') : isMunich ? this.createMapsLink('Augustiner-Keller', 'Munich', '★4.6') : this.createMapsLink('Bistro Organic Mitte', 'Berlin', '★4.7')}。</li>
+              <li><strong>03:00 PM — Afternoon Walk:</strong> ${isParis ? this.createMapsLink('Palais-Royal Courtyard', 'Palais Royal Paris', '★4.7') + ' — Black & white Buren columns' : isAmsterdam ? this.createMapsLink('Nine Streets', 'De Negen Straatjes Amsterdam', '★4.8') + ' — Boutique art galleries & canals' : isBrussels ? this.createMapsLink('Royal Gallery of Saint-Hubert', 'Brussels', '★4.6') : isLuxembourg ? this.createMapsLink('Chemin de la Corniche', 'Luxembourg', '★4.8') : isCologne ? this.createMapsLink('Museum Ludwig', 'Cologne', '★4.6') : isMunich ? this.createMapsLink('Englischer Garten', 'Munich', '★4.8') : this.createMapsLink('Museum Island', 'Berlin', '★4.8')}。</li>
+              <li><strong>07:00 PM — Evening Walk:</strong> ${isParis ? this.createMapsLink('Pont des Arts', 'Pont des Arts Paris', '★4.7') + ' — Sunset Seine river walk' : 'Evening walk with local companions'}。</li>
             </ul>
           </div>
         `;
@@ -258,11 +199,11 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
               <h4 style="color:var(--primary-wood); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
                 📍 Day 2: 【100% Unique Venues】 Musée d'Orsay, Montmartre & Chez Janou
               </h4>
-              <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.8; padding-left:1.2rem;">
-                <li><strong>09:00 AM — Day 2 Morning Landmark:</strong> ${isParis ? 'Musée d\'Orsay (★4.8) — RER C Musée d\'Orsay Station. Impressionist masterpieces' : isAmsterdam ? 'Van Gogh Museum (★4.8) — Tram 2/5 Museumplein' : isBrussels ? 'Atomium (★4.4) — Metro Line 6 Heysel Station' : isLuxembourg ? 'Grund Historic Quarter (★4.7)' : isCologne ? 'Hohenzollernbrücke Love Lock Bridge (★4.7)' : isMunich ? 'Nymphenburg Palace (★4.7)' : 'East Side Gallery (★4.6)'}.</li>
-                <li><strong>11:30 AM — Day 2 Bakery & Pastry:</strong> ${isParis ? 'Cédric Grolet Le Meurice (★4.6) — Sculpted fruit pastries' : isAmsterdam ? 'Winkel 43 (★4.6) — Famous Dutch warm apple pie with cream (€5)' : isBrussels ? 'Pierre Marcolini Chocolatier (★4.7)' : isLuxembourg ? 'Oberweis Bakery (★4.6)' : isCologne ? 'Café Rizzoli (★4.6)' : isMunich ? 'Café Frischhut (★4.7 Schmalznudel pastry)' : 'Zeit für Brot (★4.7 organic cinnamon roll)'}.</li>
-                <li><strong>12:30 PM — Day 2 Restaurant:</strong> ${isParis ? 'Le Train Bleu (★4.5) — Gare de Lyon palace dining (€25–€38) OR Chez Janou (★4.5) — Provençal bistro & chocolate mousse' : isAmsterdam ? 'Foodhallen Amsterdam (★4.5) — Renovated tram depot food hall (€15–€22)' : isBrussels ? 'Chez Léon (★4.6) — Mussels & frites since 1893 (€18–€26)' : isLuxembourg ? 'Um Dietgen (★4.5)' : isCologne ? 'Peters Brauhaus (★4.5)' : isMunich ? 'Hofbräuhaus München (★4.5 historic 1589 brewery)' : 'Prater Biergarten (★4.6 oldest beer garden)'}.</li>
-                <li><strong>03:00 PM — Day 2 Afternoon Excursion:</strong> ${isParis ? 'Sacré-Cœur Basilica & Montmartre (★4.7) — Metro Line 2 Anvers Station' : isAmsterdam ? 'Zaanse Schans Windmills (★4.6) — Bus 391 Direct 20 min' : isBrussels ? 'Royal Museum of the Armed Forces (★4.7)' : isLuxembourg ? 'Vianden Castle (★4.7)' : isCologne ? 'Drachenfels Castle (★4.6)' : isMunich ? 'Munich Residenz Palace (★4.8)' : 'Sanssouci Palace Potsdam (★4.8)'}.</li>
+              <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+                <li><strong>09:00 AM — Day 2 Morning Landmark:</strong> ${isParis ? this.createMapsLink("Musée d'Orsay", "Musée d Orsay Paris", '★4.8') + ' — RER C Musée d\'Orsay Station' : isAmsterdam ? this.createMapsLink('Van Gogh Museum', 'Amsterdam', '★4.8') + ' — Tram 2/5 Museumplein' : isBrussels ? this.createMapsLink('Atomium', 'Brussels', '★4.4') + ' — Metro Line 6 Heysel Station' : isLuxembourg ? this.createMapsLink('Grund Historic Quarter', 'Luxembourg', '★4.7') : isCologne ? this.createMapsLink('Hohenzollernbrücke', 'Cologne', '★4.7') : isMunich ? this.createMapsLink('Nymphenburg Palace', 'Munich', '★4.7') : this.createMapsLink('East Side Gallery', 'Berlin', '★4.6')}。</li>
+                <li><strong>11:30 AM — Day 2 Bakery & Pastry:</strong> ${isParis ? this.createMapsLink('Cédric Grolet Le Meurice', 'Paris', '★4.6') + ' — Sculpted fruit pastries' : isAmsterdam ? this.createMapsLink('Winkel 43', 'Amsterdam', '★4.6') + ' — Famous Dutch warm apple pie (€5)' : isBrussels ? this.createMapsLink('Pierre Marcolini', 'Brussels', '★4.7') : isLuxembourg ? this.createMapsLink('Oberweis Bakery', 'Luxembourg', '★4.6') : isCologne ? this.createMapsLink('Café Rizzoli', 'Cologne', '★4.6') : isMunich ? this.createMapsLink('Café Frischhut', 'Munich', '★4.7') : this.createMapsLink('Zeit für Brot', 'Berlin', '★4.7')}。</li>
+                <li><strong>12:30 PM — Day 2 Restaurant:</strong> ${isParis ? this.createMapsLink('Le Train Bleu', 'Le Train Bleu Paris', '★4.5') + ' (€25–€38) OR ' + this.createMapsLink('Chez Janou', 'Chez Janou Paris', '★4.5') + ' (Provençal bistro & chocolate mousse)' : isAmsterdam ? this.createMapsLink('Foodhallen Amsterdam', 'Amsterdam', '★4.5') + ' (€15–€22)' : isBrussels ? this.createMapsLink('Chez Léon', 'Brussels', '★4.6') + ' (Mussels & frites since 1893)' : isLuxembourg ? this.createMapsLink('Um Dietgen', 'Luxembourg', '★4.5') : isCologne ? this.createMapsLink('Peters Brauhaus', 'Cologne', '★4.5') : isMunich ? this.createMapsLink('Hofbräuhaus München', 'Munich', '★4.5') : this.createMapsLink('Prater Biergarten', 'Berlin', '★4.6')}。</li>
+                <li><strong>03:00 PM — Day 2 Afternoon Excursion:</strong> ${isParis ? this.createMapsLink('Sacré-Cœur Basilica & Montmartre', 'Sacré Cœur Paris', '★4.7') + ' — Metro Line 2 Anvers Station' : isAmsterdam ? this.createMapsLink('Zaanse Schans Windmills', 'Zaanse Schans', '★4.6') + ' — Bus 391 Direct' : isBrussels ? this.createMapsLink('Royal Museum of the Armed Forces', 'Brussels', '★4.7') : isLuxembourg ? this.createMapsLink('Vianden Castle', 'Luxembourg', '★4.7') : isCologne ? this.createMapsLink('Drachenfels Castle', 'Cologne', '★4.6') : isMunich ? this.createMapsLink('Munich Residenz Palace', 'Munich', '★4.8') : this.createMapsLink('Sanssouci Palace Potsdam', 'Potsdam', '★4.8')}。</li>
                 <li><strong>07:00 PM — Farewell Gathering:</strong> Evening walk along canal/river with local companions.</li>
               </ul>
             </div>
@@ -274,7 +215,8 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
     return html;
   },
 
-  render4AgentItineraryCard(destination, days, interest, itineraryHtml, routeInfo, curationInfo, gourmetInfo, compInfo, engineTag) {
+  // Render Clean Customer-Facing Card (No internal multi-agent status box)
+  renderItineraryCard(destination, days, interest, itineraryHtml, engineTag) {
     const resultContainer = document.getElementById('aiPlanResult');
     if (!resultContainer) return;
 
@@ -285,23 +227,16 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
           <div>
             <span class="paper-tape">${engineTag}</span>
             <h3 style="font-size:1.65rem; margin-top:0.4rem; font-family:var(--font-serif);">
-              ${escapeHtml(destination)} — ${days === 0.5 ? 'Half Day' : days + ' Day(s)'} Unique Real Venues Route (${escapeHtml(interest)})
+              ${escapeHtml(destination)} — ${days === 0.5 ? '半日コース' : days + '日コース'} 厳選ルート（${escapeHtml(interest)}）
             </h3>
           </div>
-          <span class="seed-points-badge">⭐ 100% REAL Venues (Max 2 Days Limit)</span>
+          <span class="seed-points-badge">📍 Google Maps 直結生リンク付き（★4.5+）</span>
         </div>
 
-        <!-- 4 Parallel Sub-Agents Execution Status Grid -->
-        <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.5rem;">
-          <h4 style="font-size:0.95rem; color:var(--primary-wood); margin-bottom:0.6rem; font-family:var(--font-sans);">
-            ⚡ 4 Parallel Sub-Agents Live Execution Status
-          </h4>
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem; font-size:0.8rem; color:var(--text-secondary);">
-            <div><strong>${routeInfo.name}:</strong><br>${routeInfo.details}</div>
-            <div><strong>${curationInfo.name}:</strong><br>${curationInfo.details}</div>
-            <div><strong>${gourmetInfo.name}:</strong><br>${gourmetInfo.details}</div>
-            <div><strong>${compInfo.name}:</strong><br>${compInfo.details}</div>
-          </div>
+        <!-- Google Maps Live Links Instruction Box -->
+        <div style="background:#EFF6FF; border:1.5px solid #3B82F6; border-radius:12px; padding:0.85rem 1.25rem; margin-bottom:1.5rem; font-size:0.85rem; color:#1E40AF; display:flex; align-items:center; gap:0.5rem;">
+          <span style="font-size:1.2rem;">🗺️</span>
+          <span><strong>ヒント:</strong> スポット名ボタン（例: <strong>📍 Sainte-Chapelle ↗</strong>）をタップすると、<strong>Googleマップの実際の店舗ページ（今日の営業時間・生の最新口コミ・写真）</strong>が直接開きます！</span>
         </div>
 
         <div style="margin-bottom:1.5rem;">
@@ -327,10 +262,10 @@ Format in clean HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.
 };
 
 function configureGeminiKey() {
-  const key = prompt('Optional: Enter your Gemini 1.5 Flash API Key to enable live Gemini API calls:\n(Leave empty for built-in 4-Agent Engine)', AITravelEngine.config.apiKey);
+  const key = prompt('Optional: Enter your Gemini 1.5 Flash API Key to enable live Gemini API calls:\n(Leave empty for built-in 0 Margin Travel Engine)', AITravelEngine.config.apiKey);
   if (key !== null) {
     AITravelEngine.setApiKey(key);
-    alert(key.trim() ? 'Gemini 1.5 Flash API Key saved! Live API responses enabled.' : 'Switched to Built-in 4-Agent Real-Data Engine.');
+    alert(key.trim() ? 'Gemini 1.5 Flash API Key saved! Live API responses enabled.' : 'Switched to Built-in 0 Margin Travel Engine.');
   }
 }
 
