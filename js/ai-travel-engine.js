@@ -372,7 +372,6 @@ const candidateSpotsDatabase = {
       "adult": true
     }
   ],
-
   "Berlin, Germany": [
     {
       "id": "b_b1",
@@ -727,7 +726,6 @@ const candidateSpotsDatabase = {
       "adult": true
     }
   ],
-
   "Amsterdam, Netherlands": [
     {
       "id": "a_1",
@@ -808,6 +806,127 @@ const candidateSpotsDatabase = {
     },
     {
       "id": "a_8",
+      "name": "Oude Kerk",
+      "category": "Landmark",
+      "rating": "★4.5",
+      "desc": "Amsterdam's oldest parish church (1306) in the Red Light District.",
+      "price": "Entry: €13.50",
+      "image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_9",
+      "name": "Begijnhof Courtyard",
+      "category": "Landmark",
+      "rating": "★4.6",
+      "desc": "Historic secluded 14th-century sanctuary courtyard with wooden houses.",
+      "price": "Free Walk",
+      "image": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_10",
+      "name": "Bloemenmarkt Floating Flower Market",
+      "category": "Landmark",
+      "rating": "★4.4",
+      "desc": "World's only floating flower market located on the Singel Canal.",
+      "price": "Free Walk",
+      "image": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_11",
+      "name": "A'DAM Lookout & Over The Edge Swing",
+      "category": "Landmark",
+      "rating": "★4.6",
+      "desc": "Observation deck across the IJ River featuring Europe's highest swing.",
+      "price": "Deck: €16.50",
+      "image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_12",
+      "name": "Jordaan Canal District",
+      "category": "Landmark",
+      "rating": "★4.8",
+      "desc": "Charming canal quarter lined with indie boutiques, cafes, and courtyards.",
+      "price": "Free Walk",
+      "image": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_13",
+      "name": "Stedelijk Museum",
+      "category": "Museum & Art",
+      "rating": "★4.6",
+      "desc": "International museum of modern art and design next to Van Gogh Museum.",
+      "price": "Entry: €22.50",
+      "image": "https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_14",
+      "name": "Rembrandt House Museum",
+      "category": "Museum & Art",
+      "rating": "★4.6",
+      "desc": "Reconstructed 17th-century home where Rembrandt lived and painted.",
+      "price": "Entry: €17.50",
+      "image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_15",
+      "name": "H'ART Museum Amsterdam",
+      "category": "Museum & Art",
+      "rating": "★4.5",
+      "desc": "Major art museum set in a grand 1687 building on the Amstel River.",
+      "price": "Entry: €18.00",
+      "image": "https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_16",
+      "name": "NEMO Science Museum",
+      "category": "Museum & Art",
+      "rating": "★4.5",
+      "desc": "Green ship-hull building offering 5 floors of interactive science exhibits.",
+      "price": "Entry: €17.50",
+      "image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_17",
+      "name": "MOCO Museum",
+      "category": "Museum & Art",
+      "rating": "★4.5",
+      "desc": "Independent museum displaying Banksy, Warhol, and immersive digital art.",
+      "price": "Entry: €21.95",
+      "image": "https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_18",
+      "name": "National Maritime Museum",
+      "category": "Museum & Art",
+      "rating": "★4.6",
+      "desc": "500 years of Dutch maritime history featuring a full-scale 1749 East Indiaman replica.",
+      "price": "Entry: €18.50",
+      "image": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_19",
       "name": "Café de Klos",
       "category": "Restaurant",
       "rating": "★4.6",
@@ -818,7 +937,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_9",
+      "id": "a_20",
       "name": "Foodhallen Amsterdam",
       "category": "Restaurant",
       "rating": "★4.5",
@@ -829,7 +948,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_10",
+      "id": "a_21",
       "name": "Moeders",
       "category": "Restaurant",
       "rating": "★4.5",
@@ -840,7 +959,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_11",
+      "id": "a_22",
       "name": "Cannibale Royale",
       "category": "Restaurant",
       "rating": "★4.6",
@@ -851,7 +970,51 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_12",
+      "id": "a_23",
+      "name": "Sea Palace",
+      "category": "Restaurant",
+      "rating": "★4.4",
+      "desc": "Europe's first floating Asian restaurant built in traditional pagoda style.",
+      "price": "Avg: €22–€38",
+      "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_24",
+      "name": "De Kas",
+      "category": "Restaurant",
+      "rating": "★4.7",
+      "desc": "Michelin-starred farm-to-table dining inside a 1926 glass greenhouse.",
+      "price": "Avg: €45–€75",
+      "image": "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80",
+      "family": false,
+      "adult": true
+    },
+    {
+      "id": "a_25",
+      "name": "d'Vijff Vlieghen",
+      "category": "Restaurant",
+      "rating": "★4.6",
+      "desc": "Historic 17th-century dining across 5 canal houses decorated with Rembrandt etchings.",
+      "price": "Avg: €35–€60",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
+      "family": false,
+      "adult": true
+    },
+    {
+      "id": "a_26",
+      "name": "Bakers & Roasters",
+      "category": "Restaurant",
+      "rating": "★4.6",
+      "desc": "New Zealand & Brazilian brunch cafe famous for poached eggs and artisan coffee.",
+      "price": "Avg: €14–€22",
+      "image": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "a_27",
       "name": "Van Stapele Koekmakerij",
       "category": "Café & Bakery",
       "rating": "★4.8",
@@ -862,7 +1025,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_13",
+      "id": "a_28",
       "name": "Winkel 43",
       "category": "Café & Bakery",
       "rating": "★4.6",
@@ -873,7 +1036,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_14",
+      "id": "a_29",
       "name": "Brouwerij 't IJ",
       "category": "Café & Bakery",
       "rating": "★4.6",
@@ -884,7 +1047,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_15",
+      "id": "a_30",
       "name": "Polaberry",
       "category": "Café & Bakery",
       "rating": "★4.5",
@@ -895,7 +1058,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "a_16",
+      "id": "a_31",
       "name": "Toki Coffee",
       "category": "Café & Bakery",
       "rating": "★4.6",
@@ -904,9 +1067,19 @@ const candidateSpotsDatabase = {
       "image": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
+    },
+    {
+      "id": "a_32",
+      "name": "Pluk Amsterdam",
+      "category": "Café & Bakery",
+      "rating": "★4.5",
+      "desc": "Chic Nine Streets lifestyle cafe featuring fresh juices and acai bowls.",
+      "price": "Avg: €8–€15",
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
     }
   ],
-
   "Brussels, Belgium": [
     {
       "id": "b_1",
@@ -959,7 +1132,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Elevated urban garden promenade offering iconic views of Brussels spire.",
       "price": "Free View",
-      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -970,12 +1143,122 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Urban park featuring a massive 1905 triple arch monument.",
       "price": "Free Walk",
-      "image": "https://images.unsplash.com/photo-1584003564911-a7a321c84e1c?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
     {
       "id": "b_7",
+      "name": "Royal Palace of Brussels",
+      "category": "Landmark",
+      "rating": "★4.6",
+      "desc": "Official palace of the King and Queen of the Belgians in Brussels Park.",
+      "price": "Free View",
+      "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_8",
+      "name": "Manneken Pis & Jeanneke Pis",
+      "category": "Landmark",
+      "rating": "★4.2",
+      "desc": "Famous 1619 bronze fountain sculpture and its female counterpart.",
+      "price": "Free View",
+      "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_9",
+      "name": "Notre-Dame du Sablon",
+      "category": "Landmark",
+      "rating": "★4.7",
+      "desc": "15th-century Brabantine Gothic church known for illuminated stained glass.",
+      "price": "Free Entry",
+      "image": "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_10",
+      "name": "Place du Petit Sablon Gardens",
+      "category": "Landmark",
+      "rating": "★4.7",
+      "desc": "Charming manicured garden surrounded by 48 bronze statues of medieval guilds.",
+      "price": "Free Walk",
+      "image": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_11",
+      "name": "Magritte Museum",
+      "category": "Museum & Art",
+      "rating": "★4.6",
+      "desc": "Dedicated museum displaying 230+ Surrealist masterpieces by René Magritte.",
+      "price": "Entry: €10.00",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_12",
+      "name": "Royal Museums of Fine Arts of Belgium",
+      "category": "Museum & Art",
+      "rating": "★4.7",
+      "desc": "Premier museum complex containing Old Masters, Modern, and End-of-Century art.",
+      "price": "Entry: €15.00",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_13",
+      "name": "Musical Instruments Museum (MIM)",
+      "category": "Museum & Art",
+      "rating": "★4.6",
+      "desc": "Art Nouveau Old England building housing 1,200+ historic instruments.",
+      "price": "Entry: €12.00",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_14",
+      "name": "Belgian Comic Strip Center",
+      "category": "Museum & Art",
+      "rating": "★4.4",
+      "desc": "Celebration of Tintin, the Smurfs, and Belgian comic strip history.",
+      "price": "Entry: €13.00",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_15",
+      "name": "Horta Museum",
+      "category": "Museum & Art",
+      "rating": "★4.7",
+      "desc": "Art Nouveau townhouse museum designed by legendary architect Victor Horta.",
+      "price": "Entry: €12.00",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_16",
+      "name": "Royal Museum of the Armed Forces",
+      "category": "Museum & Art",
+      "rating": "★4.7",
+      "desc": "Massive military history museum inside Cinquantenaire Park with aircraft hall.",
+      "price": "Entry: €11.00",
+      "image": "https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_17",
       "name": "Fin de Siècle",
       "category": "Restaurant",
       "rating": "★4.5",
@@ -986,7 +1269,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "b_8",
+      "id": "b_18",
       "name": "Chez Léon",
       "category": "Restaurant",
       "rating": "★4.6",
@@ -997,7 +1280,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "b_9",
+      "id": "b_19",
       "name": "Nüetnigenough",
       "category": "Restaurant",
       "rating": "★4.6",
@@ -1008,7 +1291,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "b_10",
+      "id": "b_20",
       "name": "Noordzee / La Mer du Nord",
       "category": "Restaurant",
       "rating": "★4.5",
@@ -1019,7 +1302,29 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "b_11",
+      "id": "b_21",
+      "name": "Toukoul",
+      "category": "Restaurant",
+      "rating": "★4.6",
+      "desc": "Authentic Ethiopian dining experience with shared injera platters near Place Sainte-Catherine.",
+      "price": "Avg: €16–€25",
+      "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_22",
+      "name": "Restobières",
+      "category": "Restaurant",
+      "rating": "★4.5",
+      "desc": "Rustic Marolles district restaurant where every dish is cooked with Belgian beer.",
+      "price": "Avg: €18–€28",
+      "image": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_23",
       "name": "Maison Dandoy",
       "category": "Café & Bakery",
       "rating": "★4.6",
@@ -1030,7 +1335,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "b_12",
+      "id": "b_24",
       "name": "Pierre Marcolini",
       "category": "Café & Bakery",
       "rating": "★4.7",
@@ -1041,7 +1346,7 @@ const candidateSpotsDatabase = {
       "adult": true
     },
     {
-      "id": "b_13",
+      "id": "b_25",
       "name": "Delirium Café",
       "category": "Park & Market",
       "rating": "★4.5",
@@ -1050,9 +1355,63 @@ const candidateSpotsDatabase = {
       "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=600&q=80",
       "family": false,
       "adult": true
+    },
+    {
+      "id": "b_26",
+      "name": "Laurent Gerbaud Chocolatier",
+      "category": "Café & Bakery",
+      "rating": "★4.7",
+      "desc": "Artisanal chocolate workshop pairing dark chocolate with dried fruits & spices.",
+      "price": "Avg: €8–€16",
+      "image": "https://images.unsplash.com/photo-1481391243133-f96216dcb5d2?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_27",
+      "name": "Café Belga",
+      "category": "Café & Bakery",
+      "rating": "★4.5",
+      "desc": "Iconic Art Deco Flagey building cafe overlooking the Ixelles Ponds.",
+      "price": "Avg: €5–€12",
+      "image": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_28",
+      "name": "Neuhaus Chocolates Grand-Place",
+      "category": "Café & Bakery",
+      "rating": "★4.7",
+      "desc": "Inventor of the Belgian praline (1912) flagship boutique.",
+      "price": "Chocolates: €10–€25",
+      "image": "https://images.unsplash.com/photo-1481391243133-f96216dcb5d2?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_29",
+      "name": "Wittamer Grand Sablon",
+      "category": "Café & Bakery",
+      "rating": "★4.6",
+      "desc": "Royal Warrant holder pastry & chocolate tearoom operating since 1910.",
+      "price": "Avg: €8–€18",
+      "image": "https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
+    },
+    {
+      "id": "b_30",
+      "name": "Le Pain Quotidien Dansaert",
+      "category": "Café & Bakery",
+      "rating": "★4.4",
+      "desc": "Original Belgian organic bakery chain serving rustic sourdough loaves on communal tables.",
+      "price": "Avg: €8–€15",
+      "image": "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80",
+      "family": true,
+      "adult": true
     }
   ],
-
   "Luxembourg City, Luxembourg": [
     {
       "id": "l_1",
@@ -1143,7 +1502,6 @@ const candidateSpotsDatabase = {
       "adult": true
     }
   ],
-
   "Cologne, Germany": [
     {
       "id": "c_1",
@@ -1256,7 +1614,6 @@ const candidateSpotsDatabase = {
       "adult": true
     }
   ],
-
   "Munich, Germany": [
     {
       "id": "m_1",
