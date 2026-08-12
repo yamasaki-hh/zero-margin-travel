@@ -1,73 +1,75 @@
 /* ==========================================================================
    0 Margin EU Travel — 100% English Interactive AI Route Planner
-   Full Multi-Stop Google Maps Navigation Link (Pre-loaded Turn-by-Turn Route)
+   Dynamic, Lightweight Spot Images + Fallback Handling + Google Maps Multi-Stop Navigation
    ========================================================================== */
+
+const SVG_FALLBACK_IMAGE = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="340" viewBox="0 0 600 340"><rect width="600" height="340" fill="%23FAF7F2"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="22" fill="%2378350F">🗺️ European Landmark</text></svg>`;
 
 const candidateSpotsDatabase = {
   'Paris, France': [
-    { id: 'p_1', name: 'Sainte-Chapelle', category: 'Landmark', rating: '★4.8', desc: 'Breathtaking 13th-century Gothic chapel with 1,113 stained glass panels.', price: 'Entry: €11.50', family: true, adult: true },
-    { id: 'p_2', name: "Musée d'Orsay", category: 'Landmark', rating: '★4.8', desc: 'World-renowned Impressionist art museum in a restored Beaux-Arts railway station.', price: 'Entry: €16.00', family: true, adult: true },
-    { id: 'p_3', name: 'Palais-Royal Courtyard', category: 'Landmark', rating: '★4.7', desc: 'Historic palace gardens featuring Buren\'s iconic black-and-white striped columns.', price: 'Free Entry', family: true, adult: true },
-    { id: 'p_4', name: 'Sacré-Cœur Basilica', category: 'Landmark', rating: '★4.7', desc: 'White domed basilica perched atop Montmartre with panoramic city views.', price: 'Free Entry', family: true, adult: true },
-    { id: 'p_5', name: 'Le Petit Marché', category: 'Restaurant', rating: '★4.6', desc: 'Cozy Le Marais bistro famous for seared duck breast and organic wines.', price: 'Avg: €18–€26', family: false, adult: true },
-    { id: 'p_6', name: 'Le Train Bleu', category: 'Restaurant', rating: '★4.5', desc: 'Opulent palace restaurant inside Gare de Lyon with frescoed ceilings.', price: 'Avg: €25–€38', family: true, adult: true },
-    { id: 'p_7', name: 'Chez Janou', category: 'Restaurant', rating: '★4.5', desc: 'Lively Provençal bistro featuring bottomless homemade chocolate mousse.', price: 'Avg: €16–€25', family: true, adult: true },
-    { id: 'p_8', name: 'Marché des Enfants Rouges', category: 'Café & Bakery', rating: '★4.5', desc: 'Paris\'s oldest covered food market serving authentic fresh crêpes.', price: 'Crêpes: €5–€9', family: true, adult: true },
-    { id: 'p_9', name: 'Cédric Grolet Le Meurice', category: 'Café & Bakery', rating: '★4.6', desc: 'World-famous haute pâtisserie featuring sculpted fruit pastries.', price: 'Pastries: €12–€18', family: true, adult: true }
+    { id: 'p_1', name: 'Sainte-Chapelle', category: 'Landmark', rating: '★4.8', desc: 'Breathtaking 13th-century Gothic chapel with 1,113 stained glass panels.', price: 'Entry: €11.50', image: 'https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_2', name: "Musée d'Orsay", category: 'Landmark', rating: '★4.8', desc: 'World-renowned Impressionist art museum in a restored Beaux-Arts railway station.', price: 'Entry: €16.00', image: 'https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_3', name: 'Palais-Royal Courtyard', category: 'Landmark', rating: '★4.7', desc: 'Historic palace gardens featuring Buren\'s iconic black-and-white striped columns.', price: 'Free Entry', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_4', name: 'Sacré-Cœur Basilica', category: 'Landmark', rating: '★4.7', desc: 'White domed basilica perched atop Montmartre with panoramic city views.', price: 'Free Entry', image: 'https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_5', name: 'Le Petit Marché', category: 'Restaurant', rating: '★4.6', desc: 'Cozy Le Marais bistro famous for seared duck breast and organic wines.', price: 'Avg: €18–€26', image: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80', family: false, adult: true },
+    { id: 'p_6', name: 'Le Train Bleu', category: 'Restaurant', rating: '★4.5', desc: 'Opulent palace restaurant inside Gare de Lyon with frescoed ceilings.', price: 'Avg: €25–€38', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_7', name: 'Chez Janou', category: 'Restaurant', rating: '★4.5', desc: 'Lively Provençal bistro featuring bottomless homemade chocolate mousse.', price: 'Avg: €16–€25', image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_8', name: 'Marché des Enfants Rouges', category: 'Café & Bakery', rating: '★4.5', desc: 'Paris\'s oldest covered food market serving authentic fresh crêpes.', price: 'Crêpes: €5–€9', image: 'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'p_9', name: 'Cédric Grolet Le Meurice', category: 'Café & Bakery', rating: '★4.6', desc: 'World-famous haute pâtisserie featuring sculpted fruit pastries.', price: 'Pastries: €12–€18', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80', family: true, adult: true }
   ],
 
   'Amsterdam, Netherlands': [
-    { id: 'a_1', name: 'Rijksmuseum', category: 'Landmark', rating: '★4.7', desc: 'Dutch national museum displaying Rembrandt\'s The Night Watch and Vermeer.', price: 'Entry: €22.50', family: true, adult: true },
-    { id: 'a_2', name: 'Van Gogh Museum', category: 'Landmark', rating: '★4.8', desc: 'The world\'s largest collection of artworks by Vincent van Gogh.', price: 'Entry: €20.00', family: true, adult: true },
-    { id: 'a_3', name: 'Nine Streets (De Negen Straatjes)', category: 'Landmark', rating: '★4.8', desc: 'Picturesque canal-side neighborhood with vintage boutiques and art galleries.', price: 'Free Walk', family: true, adult: true },
-    { id: 'a_4', name: 'Zaanse Schans Windmills', category: 'Landmark', rating: '★4.6', desc: 'Historic windmill village featuring cheese making and wooden clog workshops.', price: 'Free Entry', family: true, adult: true },
-    { id: 'a_5', name: 'Café de Klos', category: 'Restaurant', rating: '★4.6', desc: 'Legendary local pub famous for wood-fired smoked ribs and craft beer.', price: 'Avg: €18–€26', family: true, adult: true },
-    { id: 'a_6', name: 'Foodhallen Amsterdam', category: 'Restaurant', rating: '★4.5', desc: 'Trendy indoor food hall located in a converted historic tram depot.', price: 'Avg: €15–€22', family: true, adult: true },
-    { id: 'a_7', name: 'Van Stapele Koekmakerij', category: 'Café & Bakery', rating: '★4.8', desc: 'Famous bakery serving fresh-baked Valrhona dark chocolate cookies.', price: 'Cookie: €3.00', family: true, adult: true },
-    { id: 'a_8', name: 'Winkel 43', category: 'Café & Bakery', rating: '★4.6', desc: 'Iconic café world-renowned for traditional Dutch warm apple pie.', price: 'Apple Pie: €5.00', family: true, adult: true },
-    { id: 'a_9', name: 'Brouwerij \'t IJ', category: 'Café & Bakery', rating: '★4.6', desc: 'Artisanal organic craft brewery terrace right next to De Gooyer Windmill.', price: 'Beer: €5–€8', family: false, adult: true }
+    { id: 'a_1', name: 'Rijksmuseum', category: 'Landmark', rating: '★4.7', desc: 'Dutch national museum displaying Rembrandt\'s The Night Watch and Vermeer.', price: 'Entry: €22.50', image: 'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_2', name: 'Van Gogh Museum', category: 'Landmark', rating: '★4.8', desc: 'The world\'s largest collection of artworks by Vincent van Gogh.', price: 'Entry: €20.00', image: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_3', name: 'Nine Streets (De Negen Straatjes)', category: 'Landmark', rating: '★4.8', desc: 'Picturesque canal-side neighborhood with vintage boutiques and art galleries.', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_4', name: 'Zaanse Schans Windmills', category: 'Landmark', rating: '★4.6', desc: 'Historic windmill village featuring cheese making and wooden clog workshops.', price: 'Free Entry', image: 'https://images.unsplash.com/photo-1584003564911-a7a321c84e1c?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_5', name: 'Café de Klos', category: 'Restaurant', rating: '★4.6', desc: 'Legendary local pub famous for wood-fired smoked ribs and craft beer.', price: 'Avg: €18–€26', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_6', name: 'Foodhallen Amsterdam', category: 'Restaurant', rating: '★4.5', desc: 'Trendy indoor food hall located in a converted historic tram depot.', price: 'Avg: €15–€22', image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_7', name: 'Van Stapele Koekmakerij', category: 'Café & Bakery', rating: '★4.8', desc: 'Famous bakery serving fresh-baked Valrhona dark chocolate cookies.', price: 'Cookie: €3.00', image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_8', name: 'Winkel 43', category: 'Café & Bakery', rating: '★4.6', desc: 'Iconic café world-renowned for traditional Dutch warm apple pie.', price: 'Apple Pie: €5.00', image: 'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'a_9', name: 'Brouwerij \'t IJ', category: 'Café & Bakery', rating: '★4.6', desc: 'Artisanal organic craft brewery terrace right next to De Gooyer Windmill.', price: 'Beer: €5–€8', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=600&q=80', family: false, adult: true }
   ],
 
   'Brussels, Belgium': [
-    { id: 'b_1', name: 'Grand-Place', category: 'Landmark', rating: '★4.7', desc: 'UNESCO world heritage central square enclosed by ornate guildhouses.', price: 'Free Entry', family: true, adult: true },
-    { id: 'b_2', name: 'Royal Gallery of Saint-Hubert', category: 'Landmark', rating: '★4.6', desc: 'Glazed 19th-century shopping arcade filled with master chocolatiers.', price: 'Free Walk', family: true, adult: true },
-    { id: 'b_3', name: 'Atomium', category: 'Landmark', rating: '★4.4', desc: 'Futuristic 102m-tall iron crystal structure offering panoramic city views.', price: 'Entry: €16.00', family: true, adult: true },
-    { id: 'b_4', name: 'Fin de Siècle', category: 'Restaurant', rating: '★4.5', desc: 'Vibrant local tavern famous for Carbonnade Flamande (beer-braised beef stew).', price: 'Avg: €16–€24', family: true, adult: true },
-    { id: 'b_5', name: 'Chez Léon', category: 'Restaurant', rating: '★4.6', desc: 'Historic 1893 eatery serving traditional Belgian mussels and frites.', price: 'Avg: €18–€26', family: true, adult: true },
-    { id: 'b_6', name: 'Maison Dandoy', category: 'Café & Bakery', rating: '★4.6', desc: 'Fresh-baked authentic Liège waffles served with warm chocolate sauce.', price: 'Waffles: €4.50–€7', family: true, adult: true },
-    { id: 'b_7', name: 'Pierre Marcolini', category: 'Café & Bakery', rating: '★4.7', desc: 'Flagship haute chocolaterie in Grand Sablon square.', price: 'Chocolates: €8–€15', family: true, adult: true }
+    { id: 'b_1', name: 'Grand-Place', category: 'Landmark', rating: '★4.7', desc: 'UNESCO world heritage central square enclosed by ornate guildhouses.', price: 'Free Entry', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_2', name: 'Royal Gallery of Saint-Hubert', category: 'Landmark', rating: '★4.6', desc: 'Glazed 19th-century shopping arcade filled with master chocolatiers.', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1574007557239-acf6863bc375?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_3', name: 'Atomium', category: 'Landmark', rating: '★4.4', desc: 'Futuristic 102m-tall iron crystal structure offering panoramic city views.', price: 'Entry: €16.00', image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_4', name: 'Fin de Siècle', category: 'Restaurant', rating: '★4.5', desc: 'Vibrant local tavern famous for Carbonnade Flamande (beer-braised beef stew).', price: 'Avg: €16–€24', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_5', name: 'Chez Léon', category: 'Restaurant', rating: '★4.6', desc: 'Historic 1893 eatery serving traditional Belgian mussels and frites.', price: 'Avg: €18–€26', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_6', name: 'Maison Dandoy', category: 'Café & Bakery', rating: '★4.6', desc: 'Fresh-baked authentic Liège waffles served with warm chocolate sauce.', price: 'Waffles: €4.50–€7', image: 'https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_7', name: 'Pierre Marcolini', category: 'Café & Bakery', rating: '★4.7', desc: 'Flagship haute chocolaterie in Grand Sablon square.', price: 'Chocolates: €8–€15', image: 'https://images.unsplash.com/photo-1481391243133-f96216dcb5d2?auto=format&fit=crop&w=600&q=80', family: true, adult: true }
   ],
 
   'Luxembourg City, Luxembourg': [
-    { id: 'l_1', name: 'Bock Casemates', category: 'Landmark', rating: '★4.6', desc: 'Subterranean cliffside fortress passages carved into the rock face.', price: 'Entry: €8.00', family: true, adult: true },
-    { id: 'l_2', name: 'Chemin de la Corniche', category: 'Landmark', rating: '★4.8', desc: 'Scenic cliffside promenade dubbed "Europe\'s most beautiful balcony".', price: 'Free Walk', family: true, adult: true },
-    { id: 'l_3', name: 'Grund Historic Quarter', category: 'Landmark', rating: '★4.7', desc: 'Charming valley district accessed by elevator with cobblestone streets.', price: 'Free Walk', family: true, adult: true },
-    { id: 'l_4', name: 'Chocolate House Nathalie Bonn', category: 'Café & Bakery', rating: '★4.6', desc: 'Famous cafe opposite the Grand Ducal Palace serving hot chocolate spoons.', price: 'Avg: €14–€22', family: true, adult: true },
-    { id: 'l_5', name: 'Brasserie du Cercle', category: 'Restaurant', rating: '★4.5', desc: 'Traditional Luxembourgish dining overlooking Place d\'Armes.', price: 'Avg: €18–€28', family: true, adult: true }
+    { id: 'l_1', name: 'Bock Casemates', category: 'Landmark', rating: '★4.6', desc: 'Subterranean cliffside fortress passages carved into the rock face.', price: 'Entry: €8.00', image: 'https://images.unsplash.com/photo-1589708940348-18e388f8d672?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'l_2', name: 'Chemin de la Corniche', category: 'Landmark', rating: '★4.8', desc: 'Scenic cliffside promenade dubbed "Europe\'s most beautiful balcony".', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'l_3', name: 'Grund Historic Quarter', category: 'Landmark', rating: '★4.7', desc: 'Charming valley district accessed by elevator with cobblestone streets.', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'l_4', name: 'Chocolate House Nathalie Bonn', category: 'Café & Bakery', rating: '★4.6', desc: 'Famous cafe opposite the Grand Ducal Palace serving hot chocolate spoons.', price: 'Avg: €14–€22', image: 'https://images.unsplash.com/photo-1481391243133-f96216dcb5d2?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'l_5', name: 'Brasserie du Cercle', category: 'Restaurant', rating: '★4.5', desc: 'Traditional Luxembourgish dining overlooking Place d\'Armes.', price: 'Avg: €18–€28', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80', family: true, adult: true }
   ],
 
   'Cologne, Germany': [
-    { id: 'c_1', name: 'Cologne Cathedral (Kölner Dom)', category: 'Landmark', rating: '★4.8', desc: 'Colossal Twin-spired Gothic cathedral towering over the Rhine River.', price: 'Free (Tower: €6)', family: true, adult: true },
-    { id: 'c_2', name: 'Museum Ludwig', category: 'Landmark', rating: '★4.6', desc: 'Modern art museum housing one of Europe\'s largest Picasso collections.', price: 'Entry: €11.00', family: true, adult: true },
-    { id: 'c_3', name: 'Hohenzollernbrücke', category: 'Landmark', rating: '★4.7', desc: 'Iconic railway bridge covered with thousands of love padlocks.', price: 'Free Walk', family: true, adult: true },
-    { id: 'c_4', name: 'Brauhaus Sion', category: 'Restaurant', rating: '★4.4', desc: 'Traditional Kölsch brewery house serving hearty Schweinshaxe roast pork.', price: 'Avg: €15–€24', family: true, adult: true },
-    { id: 'c_5', name: 'Café Reichard', category: 'Café & Bakery', rating: '★4.5', desc: 'Classic German pastry cafe featuring direct views of the Cathedral.', price: 'Avg: €8–€14', family: true, adult: true }
+    { id: 'c_1', name: 'Cologne Cathedral (Kölner Dom)', category: 'Landmark', rating: '★4.8', desc: 'Colossal Twin-spired Gothic cathedral towering over the Rhine River.', price: 'Free (Tower: €6)', image: 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'c_2', name: 'Museum Ludwig', category: 'Landmark', rating: '★4.6', desc: 'Modern art museum housing one of Europe\'s largest Picasso collections.', price: 'Entry: €11.00', image: 'https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'c_3', name: 'Hohenzollernbrücke', category: 'Landmark', rating: '★4.7', desc: 'Iconic railway bridge covered with thousands of love padlocks.', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'c_4', name: 'Brauhaus Sion', category: 'Restaurant', rating: '★4.4', desc: 'Traditional Kölsch brewery house serving hearty Schweinshaxe roast pork.', price: 'Avg: €15–€24', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'c_5', name: 'Café Reichard', category: 'Café & Bakery', rating: '★4.5', desc: 'Classic German pastry cafe featuring direct views of the Cathedral.', price: 'Avg: €8–€14', image: 'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=600&q=80', family: true, adult: true }
   ],
 
   'Munich, Germany': [
-    { id: 'm_1', name: 'Marienplatz', category: 'Landmark', rating: '★4.7', desc: 'Central square famous for the New Town Hall Glockenspiel clock show.', price: 'Free View', family: true, adult: true },
-    { id: 'm_2', name: 'Englischer Garten', category: 'Landmark', rating: '★4.8', desc: 'Sprawling urban park famous for river surfing on the Eisbach wave.', price: 'Free Walk', family: true, adult: true },
-    { id: 'm_3', name: 'Nymphenburg Palace', category: 'Landmark', rating: '★4.7', desc: 'Grand Baroque palace with extensive parklands and waterways.', price: 'Park: Free', family: true, adult: true },
-    { id: 'm_4', name: 'Augustiner-Keller', category: 'Restaurant', rating: '★4.6', desc: 'Historic chestnut-tree beer garden serving Weisswurst & pretzels.', price: 'Avg: €14–€22', family: true, adult: true },
-    { id: 'm_5', name: 'Café Frischhut', category: 'Café & Bakery', rating: '★4.7', desc: 'Iconic bakery near Viktualienmarkt famous for Schmalznudel pastries.', price: 'Pastry: €3.00', family: true, adult: true }
+    { id: 'm_1', name: 'Marienplatz', category: 'Landmark', rating: '★4.7', desc: 'Central square famous for the New Town Hall Glockenspiel clock show.', price: 'Free View', image: 'https://images.unsplash.com/photo-1595867818082-083862f3d630?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'm_2', name: 'Englischer Garten', category: 'Landmark', rating: '★4.8', desc: 'Sprawling urban park famous for river surfing on the Eisbach wave.', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1584003564911-a7a321c84e1c?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'm_3', name: 'Nymphenburg Palace', category: 'Landmark', rating: '★4.7', desc: 'Grand Baroque palace with extensive parklands and waterways.', price: 'Park: Free', image: 'https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'm_4', name: 'Augustiner-Keller', category: 'Restaurant', rating: '★4.6', desc: 'Historic chestnut-tree beer garden serving Weisswurst & pretzels.', price: 'Avg: €14–€22', image: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'm_5', name: 'Café Frischhut', category: 'Café & Bakery', rating: '★4.7', desc: 'Iconic bakery near Viktualienmarkt famous for Schmalznudel pastries.', price: 'Pastry: €3.00', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80', family: true, adult: true }
   ],
 
   'Berlin, Germany': [
-    { id: 'b_b1', name: 'Brandenburg Gate', category: 'Landmark', rating: '★4.7', desc: '18th-century neoclassical monument and symbol of European unity.', price: 'Free View', family: true, adult: true },
-    { id: 'b_b2', name: 'Museum Island (Museumsinsel)', category: 'Landmark', rating: '★4.8', desc: 'UNESCO World Heritage complex housing world-famous antiquities.', price: 'Island: Free', family: true, adult: true },
-    { id: 'b_b3', name: 'East Side Gallery', category: 'Landmark', rating: '★4.6', desc: '1.3km open-air gallery painted directly on the historic Berlin Wall.', price: 'Free Walk', family: true, adult: true },
-    { id: 'b_b4', name: "Mustafa's Gemüse Kebab", category: 'Restaurant', rating: '★4.4', desc: 'Berlin\'s most famous street food stand for roasted vegetable kebabs.', price: 'Kebab: €7.00', family: true, adult: true },
-    { id: 'b_b5', name: 'Zeit für Brot', category: 'Café & Bakery', rating: '★4.7', desc: 'Organic bakery famous for warm, fluffy cinnamon rolls (Schnecken).', price: 'Cinnamon Roll: €4.50', family: true, adult: true }
+    { id: 'b_b1', name: 'Brandenburg Gate', category: 'Landmark', rating: '★4.7', desc: '18th-century neoclassical monument and symbol of European unity.', price: 'Free View', image: 'https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_b2', name: 'Museum Island (Museumsinsel)', category: 'Landmark', rating: '★4.8', desc: 'UNESCO World Heritage complex housing world-famous antiquities.', price: 'Island: Free', image: 'https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_b3', name: 'East Side Gallery', category: 'Landmark', rating: '★4.6', desc: '1.3km open-air gallery painted directly on the historic Berlin Wall.', price: 'Free Walk', image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_b4', name: "Mustafa's Gemüse Kebab", category: 'Restaurant', rating: '★4.4', desc: 'Berlin\'s most famous street food stand for roasted vegetable kebabs.', price: 'Kebab: €7.00', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80', family: true, adult: true },
+    { id: 'b_b5', name: 'Zeit für Brot', category: 'Café & Bakery', rating: '★4.7', desc: 'Organic bakery famous for warm, fluffy cinnamon rolls (Schnecken).', price: 'Cinnamon Roll: €4.50', image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80', family: true, adult: true }
   ]
 };
 
@@ -124,7 +126,7 @@ const AITravelEngine = {
     `;
   },
 
-  // Step 2: Render Interactive Candidate Spots with Selection Checkboxes
+  // Step 2: Render Interactive Candidate Spots with Selection Checkboxes & Lightweight Images
   renderCandidateSpots() {
     const city = document.getElementById('aiPlanDestination').value || 'Paris, France';
     const days = parseFloat(document.getElementById('aiPlanDays').value) || 1;
@@ -155,21 +157,30 @@ const AITravelEngine = {
 
     container.innerHTML = filteredSpots.map(s => {
       const isChecked = this.selectedMustVisitIds.has(s.id);
+      const imgUrl = s.image || SVG_FALLBACK_IMAGE;
+
       return `
-        <div class="card spot-candidate-card" style="border:2px solid ${isChecked ? 'var(--primary-gold)' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease;" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.4rem;">
-            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">${s.category}</span>
-            <span style="font-size:0.8rem; font-weight:800; color:#047857;">${s.rating}</span>
+        <div class="card spot-candidate-card" style="border:2px solid ${isChecked ? 'var(--primary-gold)' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between;" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
+          <div>
+            <!-- Lightweight Spot Thumbnail Image with Native Lazy Loading & SVG Fallback -->
+            <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+              <img src="${imgUrl}" alt="${escapeHtml(s.name)}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='${SVG_FALLBACK_IMAGE}';">
+              <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">${s.rating}</span>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">${s.category}</span>
+            </div>
+
+            <h4 style="font-size:1.05rem; margin-bottom:0.3rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.4rem;">
+              <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:18px; height:18px; cursor:pointer;">
+              <span>${escapeHtml(s.name)}</span>
+            </h4>
+
+            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">${escapeHtml(s.desc)}</p>
           </div>
 
-          <h4 style="font-size:1.05rem; margin-bottom:0.3rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.4rem;">
-            <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:18px; height:18px; cursor:pointer;">
-            <span>${escapeHtml(s.name)}</span>
-          </h4>
-
-          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.5rem;">${escapeHtml(s.desc)}</p>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.6rem; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.4rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
             <span style="font-weight:700; color:var(--primary-wood);">${escapeHtml(s.price)}</span>
             ${this.createMapsLink(s.name.split(' (')[0], city.split(',')[0])}
           </div>
@@ -342,14 +353,11 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
 
     const isCar = transportMode === 'car';
 
-    // Gather all visited venue names in order for Multi-Stop Google Maps Route Link
     let venueNames = [];
-
     if (mustVisitSpots && mustVisitSpots.length > 0) {
       venueNames = mustVisitSpots.map(s => s.name.split(' (')[0].trim());
     }
 
-    // Default fallback venue list if none selected
     if (venueNames.length === 0) {
       const destLower = destination.toLowerCase();
       if (destLower.includes('paris')) {
@@ -363,7 +371,6 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
       }
     }
 
-    // Generate Master Multi-Stop Google Maps Route Button HTML
     const multiStopMapsHtml = this.generateMultiStopMapsLink(venueNames, destination, transportMode);
 
     resultContainer.innerHTML = `
@@ -376,7 +383,7 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
               ${escapeHtml(destination)} — ${days === 0.5 ? 'Half Day' : days + ' Day(s)'} Custom Route
             </h3>
           </div>
-          <span class="seed-points-badge">${isCar ? '🚗 Car Mode with Parking' : '🚆 Public Transit Mode'}</span>
+          <span class="seed-points-badge">${isCar ? '🚗 Car Mode with Parking' : '轨 Public Transit Mode'}</span>
         </div>
 
         <!-- MASTER MULTI-STOP GOOGLE MAPS ROUTE BUTTON -->
