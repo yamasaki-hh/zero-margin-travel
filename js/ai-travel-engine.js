@@ -15,7 +15,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Iconic 330m iron lattice tower on Champ de Mars with panoramic city views.",
       "price": "Summit: €28.30",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/960px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "image": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -26,7 +26,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Monumental arch honoring French soldiers at the head of Champs-Élysées.",
       "price": "Rooftop: €13.00",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Arc_de_Triomphe%2C_Paris_21_October_2010.jpg/960px-Arc_de_Triomphe%2C_Paris_21_October_2010.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "image": "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -70,7 +70,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Historic palace gardens featuring Buren's iconic black-and-white striped columns.",
       "price": "Free Entry",
-      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -92,7 +92,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.8",
       "desc": "Iconic 17th-century Latin Quarter park featuring the Medici Fountain.",
       "price": "Free Entry",
-      "image": "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -103,7 +103,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.8",
       "desc": "Opulent 1,979-seat opera house with Chagall's ceiling painting.",
       "price": "Tour: €14.00",
-      "image": "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -114,7 +114,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.8",
       "desc": "Most ornate Beaux-Arts bridge over the Seine with gilded Pegasus statues.",
       "price": "Free Walk",
-      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -125,7 +125,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Golden-domed military museum complex housing Napoleon Bonaparte's tomb.",
       "price": "Entry: €14.00",
-      "image": "https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -191,7 +191,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Oval gallery built specifically to house Claude Monet's monumental Water Lilies.",
       "price": "Entry: €12.50",
-      "image": "https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -202,7 +202,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.7",
       "desc": "Sculpture museum set in Rodin's former mansion featuring The Thinker in rose gardens.",
       "price": "Entry: €13.00",
-      "image": "https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -213,7 +213,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.5",
       "desc": "Hôtel Salé mansion in Le Marais housing 5,000+ works by Pablo Picasso.",
       "price": "Entry: €14.00",
-      "image": "https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1561055657-b9e0bf0fa360?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
@@ -224,7 +224,7 @@ const candidateSpotsDatabase = {
       "rating": "★4.6",
       "desc": "Dedicated museum of Parisian history located in two adjacent Marais mansions.",
       "price": "Free Permanent Collection",
-      "image": "https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=600&q=80",
       "family": true,
       "adult": true
     },
