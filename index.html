@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>0 Margin Travel | AI Route Planner & Zero-Commission Local Companions Network</title>
-  <meta name="description" content="0 Margin Travel: Connecting Global Travelers with Local Companions at 0% Commission. Powered by Gemini 1.5 Flash AI Itinerary Planner.">
+  <title>0 Margin EU Travel | Parallel Multi-Agent AI Route Planner & Zero-Commission Companions Network</title>
+  <meta name="description" content="0 Margin EU Travel: Multi-Agent Parallel AI Route Planner for Western Europe & Benelux (Paris, Amsterdam, Brussels, Luxembourg, Cologne, Munich, Berlin) at 0% Commission.">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -16,14 +16,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <link rel="stylesheet" href="css/styles.css?v=2.0">
 </head>
 <body>
 
   <!-- Top Slogan Banner -->
   <div class="slogan-banner">
     <span>✨</span>
-    <span>0 Margin Travel: Connecting Travelers & Local Companions at 0% Commission. &nbsp;<strong class="font-serif">— "Freely you have received; freely give." (Matthew 10:8) —</strong></span>
+    <span>0 Margin EU Travel: Parallel Multi-Agent AI & Western Europe Companions at 0% Commission. &nbsp;<strong class="font-serif">— "Freely you have received; freely give." (Matthew 10:8) —</strong></span>
   </div>
 
   <!-- Navbar -->
@@ -32,14 +32,14 @@
       <div class="brand-logo">0MT</div>
       <div>
         <div style="display:flex; align-items:center; gap:0.5rem;">
-          <span class="brand-title">0 Margin Travel</span>
-          <span class="brand-badge">Global Movement</span>
+          <span class="brand-title">0 Margin EU Travel</span>
+          <span class="brand-badge">Western Europe & Benelux</span>
         </div>
       </div>
     </div>
     
     <ul class="nav-links">
-      <li><a class="nav-item active" onclick="switchTab('planner')">AI Itinerary Planner</a></li>
+      <li><a class="nav-item active" onclick="switchTab('planner')">Multi-Agent AI Planner</a></li>
       <li><a class="nav-item" onclick="switchTab('companions')">Local Companions</a></li>
       <li><a class="nav-item" onclick="switchTab('calculator')">0% Savings Calc</a></li>
       <li><a class="nav-item" onclick="switchTab('why')">Why 0 Margin?</a></li>
@@ -56,7 +56,7 @@
       <!-- Tagline Hero Box -->
       <div class="hero-tagline-box">
         <span style="font-size:1.1rem; font-weight:800; letter-spacing:0.02em;">
-          "0 Margin Travel: Zero platform cuts, infinite authentic human connections."
+          "0 Margin EU Travel: Western Europe & Benelux Multi-Agent AI Platform."
         </span>
         <span class="font-serif" style="font-size:0.95rem; color:var(--primary-wood); font-style:italic;">
           📖 "Freely you have received; freely give." — Matthew 10:8
@@ -64,7 +64,7 @@
       </div>
 
       <h1 class="hero-title">
-        Travel the world through authentic human connections.
+        Western Europe & Benelux Travel Redefined.
       </h1>
 
       <div style="display:inline-flex; align-items:center; gap:0.8rem; background:var(--bg-card); border:2px solid var(--border-ink); padding:0.5rem 1.5rem; border-radius:9999px; font-size:1.1rem; font-weight:800; color:var(--primary-forest); box-shadow:2px 3px 0px var(--border-ink); margin-bottom:1.75rem;">
@@ -74,14 +74,14 @@
       </div>
 
       <p class="hero-subtitle">
-        Discover crowd-free travel routes generated in real-time by <strong>Gemini 1.5 Flash AI</strong>, and connect directly with verified local companions in Berlin, Paris, Tokyo, Amsterdam, Rome, and Kyoto at <strong>0% platform commission</strong>.
+        Powered by <strong>Parallel Multi-Agent AI Processing</strong> (Route & Logistics Agent + Curation Agent [★4.0+ Google Maps] + Local Experience Agent). Explore <strong>Paris, Amsterdam, Brussels, Luxembourg, Cologne, Munich, and Berlin</strong> at <strong>0% platform commission</strong>.
         <br><span class="font-hand">~ Handcrafted with care, built for human flourishing ~</span>
       </p>
 
       <!-- Prominent Primary CTA Buttons -->
       <div class="hero-buttons">
         <button class="btn btn-primary" onclick="switchTab('planner')">
-          🗺️ Plan Trip with Gemini AI
+          🗺️ Plan EU Trip (Multi-Agent AI)
         </button>
         <button class="btn btn-emerald" onclick="switchTab('companions')">
           👥 Find Local Companion (0% Fee)
@@ -97,35 +97,44 @@
   <!-- Main Navigation Tabs -->
   <div class="container" style="padding-top:0;">
     <nav class="tab-nav">
-      <button class="tab-btn active" data-tab="planner">🤖 AI Itinerary Planner</button>
+      <button class="tab-btn active" data-tab="planner">🤖 Multi-Agent AI Planner</button>
       <button class="tab-btn" data-tab="companions" id="companionsSection">👥 Local Companions Directory</button>
       <button class="tab-btn" data-tab="calculator">🧮 0% Savings Calculator</button>
       <button class="tab-btn" data-tab="why">🌱 Why 0 Margin Travel?</button>
       <button class="tab-btn" id="myPageTabBtn" data-tab="mypage" style="display:none; background:#FFFDF9; border:1.5px solid #0284C7; color:#0369A1;">👤 My Travel Page</button>
     </nav>
 
-    <!-- TAB 1: AI ITINERARY PLANNER -->
+    <!-- TAB 1: MULTI-AGENT AI ITINERARY PLANNER -->
     <section id="tab-planner" class="tab-content active">
       <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; margin-bottom:2.25rem; box-shadow:var(--shadow-sketch);">
-        <span class="paper-tape">🤖 AI Travel & Route Planner (Gemini 1.5 Flash)</span>
-        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:0.5rem;">AI Smart Itinerary & Route Optimization</h2>
+        <span class="paper-tape">🤖 Multi-Agent AI Travel & Route Planner (Western Europe & Benelux)</span>
+        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:0.5rem;">Multi-Agent Parallel AI Synthesis</h2>
         <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1.5rem;">
-          Generate top-rated, time-blocked itineraries using Google Review standards (⭐ 4.8+ spots) and local companion insights to avoid tourist crowds.
+          Synthesized by 3 specialized sub-agents running in parallel: <strong>Route & Logistics Agent</strong> (transit & crowd avoidance) + <strong>Curation Agent</strong> (★4.0+ Google Maps spots) + <strong>Local Experience Agent</strong> (authentic eateries & 0% fee companions).
         </p>
 
         <form onsubmit="AITravelEngine.generateItinerary(event)" style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.75rem;">
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label">Destination City / Region</label>
-              <input type="text" id="aiPlanDestination" class="form-control" placeholder="e.g. Berlin, Tokyo, Paris, Amsterdam, Rome, Kyoto" value="Berlin, Germany">
+              <label class="form-label">Destination City / Anchor Hub (Western Europe & Benelux)</label>
+              <select id="aiPlanDestination" class="form-control">
+                <option value="Paris, France" selected>Paris (France)</option>
+                <option value="Amsterdam, Netherlands">Amsterdam (Netherlands)</option>
+                <option value="Brussels, Belgium">Brussels (Belgium)</option>
+                <option value="Luxembourg City, Luxembourg">Luxembourg City (Luxembourg)</option>
+                <option value="Cologne, Germany">Cologne / Köln (Germany)</option>
+                <option value="Munich, Germany">Munich / München (Germany)</option>
+                <option value="Berlin, Germany">Berlin (Germany)</option>
+              </select>
             </div>
             <div class="form-group">
               <label class="form-label">Duration (Days)</label>
               <select id="aiPlanDays" class="form-control">
                 <option value="1">1 Day Express</option>
                 <option value="3" selected>3 Days Full Explore</option>
-                <option value="5">5 Days Deep Cultural Stay</option>
-                <option value="7">7 Days Region Tour</option>
+                <option value="4">4 Days Hub & Suburbs</option>
+                <option value="5">5 Days Multi-City Tour</option>
+                <option value="7">7 Days Deep Region Stay</option>
               </select>
             </div>
           </div>
@@ -151,7 +160,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.85rem; font-size:1.05rem;">
-            🗺️ Generate AI Smart Itinerary & Authentic Local Route
+            ⚡ Synthesize Multi-Agent Route (★4.0+ Google Maps Standard)
           </button>
         </form>
 
@@ -188,16 +197,17 @@
           </p>
         </div>
 
-        <!-- City Filter Bar -->
+        <!-- Western Europe City Filter Bar -->
         <div class="filter-bar">
-          <span style="font-weight:700; font-size:0.9rem; color:var(--primary-wood);">📍 Filter by City:</span>
+          <span style="font-weight:700; font-size:0.9rem; color:var(--primary-wood);">📍 Filter by Western Europe Hub:</span>
           <button class="tab-btn filter-city-btn active" data-city="all" onclick="filterCompanionsByCity('all')">All Cities</button>
-          <button class="tab-btn filter-city-btn" data-city="Berlin" onclick="filterCompanionsByCity('Berlin')">Berlin</button>
-          <button class="tab-btn filter-city-btn" data-city="Tokyo" onclick="filterCompanionsByCity('Tokyo')">Tokyo</button>
-          <button class="tab-btn filter-city-btn" data-city="Amsterdam" onclick="filterCompanionsByCity('Amsterdam')">Amsterdam</button>
-          <button class="tab-btn filter-city-btn" data-city="Rome" onclick="filterCompanionsByCity('Rome')">Rome</button>
           <button class="tab-btn filter-city-btn" data-city="Paris" onclick="filterCompanionsByCity('Paris')">Paris</button>
-          <button class="tab-btn filter-city-btn" data-city="Kyoto" onclick="filterCompanionsByCity('Kyoto')">Kyoto</button>
+          <button class="tab-btn filter-city-btn" data-city="Amsterdam" onclick="filterCompanionsByCity('Amsterdam')">Amsterdam</button>
+          <button class="tab-btn filter-city-btn" data-city="Brussels" onclick="filterCompanionsByCity('Brussels')">Brussels</button>
+          <button class="tab-btn filter-city-btn" data-city="Luxembourg" onclick="filterCompanionsByCity('Luxembourg')">Luxembourg</button>
+          <button class="tab-btn filter-city-btn" data-city="Cologne" onclick="filterCompanionsByCity('Cologne')">Cologne</button>
+          <button class="tab-btn filter-city-btn" data-city="Munich" onclick="filterCompanionsByCity('Munich')">Munich</button>
+          <button class="tab-btn filter-city-btn" data-city="Berlin" onclick="filterCompanionsByCity('Berlin')">Berlin</button>
         </div>
 
         <div id="companionsGrid" class="grid-2"></div>
@@ -290,7 +300,7 @@
       <div id="companionChatMessages" style="background:#FAF7F2; border:1.5px solid var(--border-ink); border-radius:14px; height:280px; padding:1rem; overflow-y:auto; margin-bottom:1rem;"></div>
 
       <form onsubmit="sendCompanionChatMessage(event)" style="display:flex; gap:0.5rem;">
-        <input type="text" id="companionChatInput" class="form-control" placeholder="メッセージを入力... (例: 10/15にベルリンのカフェでお会いできますか？)" required>
+        <input type="text" id="companionChatInput" class="form-control" placeholder="メッセージを入力... (例: 10/15にパリのカフェでお会いできますか？)" required>
         <button type="submit" class="btn btn-primary" style="padding:0.6rem 1.25rem;">送信</button>
       </form>
     </div>
@@ -309,15 +319,15 @@
       <form onsubmit="submitCompanionRegistration(event)">
         <div class="form-group">
           <label class="form-label">お名前 / ニックネーム</label>
-          <input type="text" id="compRegName" class="form-control" placeholder="例: Lukas M. または ケンジ" required>
+          <input type="text" id="compRegName" class="form-control" placeholder="例: Camille L. または ケンジ" required>
         </div>
         <div class="form-group">
           <label class="form-label">活動地域（都市・エリア）</label>
-          <input type="text" id="compRegCity" class="form-control" placeholder="例: Berlin, Germany または 沖縄県那覇市" required>
+          <input type="text" id="compRegCity" class="form-control" placeholder="例: Paris, France または Brussels, Belgium" required>
         </div>
         <div class="form-group">
           <label class="form-label">得意分野・おすすめスポット</label>
-          <input type="text" id="compRegSpecialty" class="form-control" placeholder="例: 建築散歩、ローカルなベーカリー、穴場のビーチ">
+          <input type="text" id="compRegSpecialty" class="form-control" placeholder="例: 建築散歩、ローカルなベーカリー、穴場の美術館">
         </div>
         <div class="form-group">
           <label class="form-label">自己紹介 / メッセージ</label>
@@ -336,7 +346,7 @@
       <button class="modal-close" onclick="closeRegisterModal()">&times;</button>
       <div style="text-align:center; margin-bottom:1.25rem;">
         <span class="paper-tape">Fast Free Sign-Up</span>
-        <h2 style="font-size:1.55rem; font-family:var(--font-serif); margin-top:0.4rem;">Join 0 Margin Travel</h2>
+        <h2 style="font-size:1.55rem; font-family:var(--font-serif); margin-top:0.4rem;">Join 0 Margin EU Travel</h2>
         <p style="font-size:0.85rem; color:var(--text-secondary);">
           Simple 10-second sign-up. Both anonymous and real-name members are welcomed!
         </p>
@@ -405,9 +415,9 @@
   <footer>
     <div class="footer-grid">
       <div>
-        <div class="footer-brand">0 Margin Travel</div>
+        <div class="footer-brand">0 Margin EU Travel</div>
         <p class="footer-text">
-          Connecting Global Travelers with Local Companions at 0% Commission.<br>
+          Western Europe & Benelux Parallel Multi-Agent AI Travel Platform at 0% Commission.<br>
           <em>"Freely you have received; freely give." (Matthew 10:8)</em><br>
           Zero Exclusion (0) × Infinite Human Potential (∞)
         </p>
@@ -415,7 +425,7 @@
       <div>
         <h4 class="footer-heading">Platform Features</h4>
         <ul class="footer-links">
-          <li><a onclick="switchTab('planner')">AI Itinerary Planner</a></li>
+          <li><a onclick="switchTab('planner')">Multi-Agent AI Planner</a></li>
           <li><a onclick="switchTab('companions')">Local Companions Network</a></li>
           <li><a onclick="switchTab('calculator')">0% Savings Calculator</a></li>
           <li><a onclick="switchTab('why')">Why 0 Margin?</a></li>
@@ -433,12 +443,12 @@
     <!-- UI Transparency Badge -->
     <div style="max-width:1200px; margin:0 auto 2rem; text-align:center;">
       <div style="display:inline-flex; align-items:center; gap:0.5rem; background:#FEF3C7; color:#78350F; border:1.5px solid #292524; padding:0.45rem 1rem; border-radius:14px; font-size:0.85rem; font-weight:700; box-shadow:2px 2px 0px #292524;">
-        ⚡ Powered by Efficient Hybrid AI & Smart Caching to keep 0 Margin Travel 100% free forever.
+        ⚡ Powered by Parallel Multi-Agent AI Engine to keep 0 Margin EU Travel 100% free forever.
       </div>
     </div>
 
     <div class="footer-bottom">
-      <div>© 2026 0 Margin Travel Platform. Freely given, freely built.</div>
+      <div>© 2026 0 Margin EU Travel Platform. Freely given, freely built.</div>
       <div>Guided by Faith & Ethics Council</div>
     </div>
   </footer>

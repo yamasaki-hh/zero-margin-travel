@@ -1,75 +1,86 @@
 /* ==========================================================================
-   0 Margin Travel — Zero-Commission Local Companions Network
-   Friend Introductions & Cultural Exchange (0% Platform Fee)
+   0 Margin EU Travel — Zero-Commission Local Companions Network
+   Western Europe & Benelux Companion Directory (0% Platform Fee)
    ========================================================================== */
 
 const defaultCompanions = [
   {
-    id: 'comp_berlin_1',
-    name: 'Lukas M.',
-    city: 'Berlin',
-    location: 'Berlin, Germany (Kreuzberg / Mitte)',
-    role: 'Local University Fellow (Architecture Student)',
-    languages: 'German, English, Basic Japanese',
-    rate: 'Volunteer (Free Walk) or €15/hr (100% to Lukas)',
-    bio: 'Architecture student living in Berlin for 5 years. Loves showing friends hidden coffee shops, museum island, and WWII history walks.',
-    reviews: '⭐ 4.9 (24 friend walks)',
-    specialty: 'Contemporary Art, Vintage Flea Markets, Local Bakeries'
-  },
-  {
-    id: 'comp_tokyo_1',
-    name: 'Kenji & Yuka',
-    city: 'Tokyo',
-    location: 'Tokyo & Okinawa, Japan',
-    languages: 'Japanese, English, Korean',
-    rate: 'Volunteer (Free Walk) or ¥2,000/hr (100% to Kenji & Yuka)',
-    bio: 'Passionate about sharing authentic Okinawan history, Ryukyu cuisine, and hidden beach spots with international visitors.',
-    reviews: '⭐ 4.95 (42 friend walks)',
-    specialty: 'Okinawan Cuisine, Ryukyu History, Ocean Walks'
+    id: 'comp_paris_1',
+    name: 'Camille Laurent',
+    city: 'Paris',
+    location: 'Paris, France (Le Marais / Latin Quarter)',
+    role: 'Art History Fellow & Local Resident',
+    languages: 'French, English, Italian',
+    rate: 'Volunteer (Free Walk) or €18/hr (100% to Camille)',
+    bio: 'Art history researcher and Marais resident. Happy to share secret courtyard gardens, organic wine bars, and ★4.8+ local bakeries.',
+    reviews: '⭐ 4.96 (32 friend walks)',
+    specialty: 'Art History, Le Marais Secret Courtyards, Organic Bistros'
   },
   {
     id: 'comp_amsterdam_1',
     name: 'Hannah S.',
     city: 'Amsterdam',
-    location: 'Amsterdam, Netherlands (Jordaan)',
+    location: 'Amsterdam, Netherlands (Jordaan / Museumplein)',
     languages: 'Dutch, English, French',
     rate: 'Volunteer (Free Walk) or €18/hr (100% to Hannah)',
     bio: 'Researches urban sustainability and art history. Happy to bike together around canal loops and local organic cheese markets.',
-    reviews: '⭐ 4.88 (18 friend walks)',
+    reviews: '⭐ 4.88 (24 friend walks)',
     specialty: 'Canal Bicycle Tours, Eco-Cafes, Museum District'
   },
   {
-    id: 'comp_rome_1',
-    name: 'Marco Rossi',
-    city: 'Rome',
-    location: 'Rome, Italy (Trastevere)',
-    languages: 'Italian, English, Spanish',
-    rate: 'Volunteer (Free Walk) or €15/hr (100% to Marco)',
-    bio: 'Born and raised in Rome. Passionate about showing travelers crowd-free ancient ruins, authentic carbonara trattorias, and sunset viewpoints.',
-    reviews: '⭐ 4.92 (31 friend walks)',
-    specialty: 'Hidden Ancient Ruins, Authentic Trattorias, Espresso Spots'
+    id: 'comp_brussels_1',
+    name: 'Jean-Luc Dupont',
+    city: 'Brussels',
+    location: 'Brussels, Belgium (Sablon / Ixelles)',
+    languages: 'French, Dutch, English',
+    rate: 'Volunteer (Free Walk) or €16/hr (100% to Jean-Luc)',
+    bio: 'Political science fellow living in Ixelles. Eager to show travelers hidden antique shops, artisanal chocolatiers, and historic brasseries.',
+    reviews: '⭐ 4.91 (19 friend walks)',
+    specialty: 'Artisanal Chocolatiers, Sablon Antiques, Historic Brasseries'
   },
   {
-    id: 'comp_paris_1',
-    name: 'Camille Laurent',
-    city: 'Paris',
-    location: 'Paris, France (Le Marais)',
-    languages: 'French, English, Italian',
-    rate: 'Volunteer (Free Walk) or €18/hr (100% to Camille)',
-    bio: 'Art history researcher and Marais resident. Happy to share secret courtyard gardens, organic wine bars, and bohemian bookshops.',
-    reviews: '⭐ 4.96 (29 friend walks)',
-    specialty: 'Art History, Marais Cafes, Vintage Fashion'
+    id: 'comp_luxembourg_1',
+    name: 'Sophie Weber',
+    city: 'Luxembourg',
+    location: 'Luxembourg City (Grund / Ville Haute)',
+    languages: 'Luxembourgish, French, German, English',
+    rate: 'Volunteer (Free Walk) or €18/hr (100% to Sophie)',
+    bio: 'European studies fellow born in Luxembourg. Passionate about showing visitors the Alzette valley walks, Bock Casemates, and local cafes.',
+    reviews: '⭐ 4.93 (15 friend walks)',
+    specialty: 'Bock Casemates, Grund River Walks, Fine Dining'
   },
   {
-    id: 'comp_kyoto_1',
-    name: 'Sora & Mai',
-    city: 'Kyoto',
-    location: 'Kyoto, Japan (Arashiyama / Gion)',
-    languages: 'Japanese, English',
-    rate: 'Volunteer (Free Walk) or ¥2,000/hr (100% to Sora & Mai)',
-    bio: 'University students born in Kyoto. Showing international travelers quiet early-morning temple gardens and traditional matcha spots.',
-    reviews: '⭐ 4.94 (36 friend walks)',
-    specialty: 'Traditional Matcha, Early Temple Walks, Bamboo Groves'
+    id: 'comp_cologne_1',
+    name: 'Maximilian K.',
+    city: 'Cologne',
+    location: 'Cologne / Köln, Germany (Belgisches Viertel)',
+    languages: 'German, English',
+    rate: 'Volunteer (Free Walk) or €15/hr (100% to Max)',
+    bio: 'Design student living in Belgisches Viertel. Loves introducing travelers to traditional Brauhaus culture, Rhine promenades, and art spots.',
+    reviews: '⭐ 4.89 (21 friend walks)',
+    specialty: 'Belgian Quarter Cafes, Brauhaus Culture, Rhine Walks'
+  },
+  {
+    id: 'comp_munich_1',
+    name: 'Anna & Florian',
+    city: 'Munich',
+    location: 'Munich / München, Germany (Schwabing)',
+    languages: 'German, English, Spanish',
+    rate: 'Volunteer (Free Walk) or €18/hr (100% to Anna & Florian)',
+    bio: 'Environmental fellows living near English Garden. Eager to guide visitors through Surfer Wave spots, organic beer gardens, and Nymphenburg.',
+    reviews: '⭐ 4.95 (38 friend walks)',
+    specialty: 'English Garden Surfing, Organic Beer Gardens, Schwabing'
+  },
+  {
+    id: 'comp_berlin_1',
+    name: 'Lukas M.',
+    city: 'Berlin',
+    location: 'Berlin, Germany (Kreuzberg / Mitte)',
+    languages: 'German, English, Basic Japanese',
+    rate: 'Volunteer (Free Walk) or €15/hr (100% to Lukas)',
+    bio: 'Architecture student living in Berlin for 5 years. Loves showing friends hidden coffee shops, museum island, and WWII history walks.',
+    reviews: '⭐ 4.9 (28 friend walks)',
+    specialty: 'Contemporary Art, Vintage Flea Markets, Local Bakeries'
   }
 ];
 
@@ -153,7 +164,6 @@ function filterCompanionsByCity(city) {
   renderLocalCompanions(city);
 }
 
-// Companion Registration Handlers (0% Fee)
 function openRegisterCompanionModal() {
   const modal = document.getElementById('registerCompanionModal');
   if (modal) modal.classList.add('active');
@@ -203,7 +213,6 @@ function submitCompanionRegistration(event) {
   alert(`登録が完了しました！\n${name}さん、0 Margin Travelのローカル仲間として登録されました。手数料は一切かかりません。`);
 }
 
-// Direct In-Site Messaging Handlers
 function openCompanionChatModal(companionId, companionName) {
   const modal = document.getElementById('companionChatModal');
   if (!modal) return;
