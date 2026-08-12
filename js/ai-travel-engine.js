@@ -1,75 +1,73 @@
 /* ==========================================================================
-   0 Margin EU Travel — Interactive Spot Selection & Custom AI Route Engine
-   Step 1: City, Transport, Traveler Type, Duration
-   Step 2: Candidate Spots & Must-Visit Selection (Cap: 0.5d=2, 1d=4, 2d=7)
-   Step 3: AI Route Synthesis with 100% Real Named Venues & Google Maps Links
+   0 Margin EU Travel — 100% English Interactive AI Route Planner
+   Full Multi-Stop Google Maps Navigation Link (Pre-loaded Turn-by-Turn Route)
    ========================================================================== */
 
 const candidateSpotsDatabase = {
   'Paris, France': [
-    { id: 'p_1', name: 'サント・シャペル教会 (Sainte-Chapelle)', category: '観光地', rating: '★4.8', desc: '13世紀の圧巻のゴシック様式ステンドグラス大聖堂', price: '入場料: €11.50', family: true, adult: true },
-    { id: 'p_2', name: "オルセー美術館 (Musée d'Orsay)", category: '観光地', rating: '★4.8', desc: '旧リヨン駅校舎をリノベートした印象派絵画の殿堂', price: '入場料: €16.00', family: true, adult: true },
-    { id: 'p_3', name: 'パレ・ロワイヤル庭園 (Palais-Royal)', category: '観光地', rating: '★4.7', desc: '白黒ストライプの現代アート柱と静寂な噴水庭園', price: '入場無料', family: true, adult: true },
-    { id: 'p_4', name: 'サクレ・クール寺院 (Sacré-Cœur)', category: '観光地', rating: '★4.7', desc: 'モンマルトルの丘からパリ一望の白亜の大聖堂', price: '入場無料', family: true, adult: true },
-    { id: 'p_5', name: 'Le Petit Marché', category: 'レストラン', rating: '★4.6', desc: 'マレ地区で大人気の絶品鴨コンフィと創作ビストロ', price: '平均予算: €18–€26', family: false, adult: true },
-    { id: 'p_6', name: 'ル・トレン・ブルー (Le Train Bleu)', category: 'レストラン', rating: '★4.5', desc: 'リヨン駅構内の豪華絢爛な宮殿装飾歴史的レストラン', price: '平均予算: €25–€38', family: true, adult: true },
-    { id: 'p_7', name: 'シェ・ジャヌー (Chez Janou)', category: 'レストラン', rating: '★4.5', desc: 'プロヴァンス風ビストロと盛り放題名物チョコムース', price: '平均予算: €16–€25', family: true, adult: true },
-    { id: 'p_8', name: 'マルシェ・デ・ザンファン・ルージュ', category: 'カフェ', rating: '★4.5', desc: '1615年創業の最古屋内市場と焼きたて手打ちクレープ', price: 'クレープ: €5–€9', family: true, adult: true },
-    { id: 'p_9', name: 'セドリック・グロレ (Cédric Grolet Le Meurice)', category: 'カフェ', rating: '★4.6', desc: '彫刻のように美しい世界最高峰のパティスリーケーキ', price: 'ケーキ: €12–€18', family: true, adult: true }
+    { id: 'p_1', name: 'Sainte-Chapelle', category: 'Landmark', rating: '★4.8', desc: 'Breathtaking 13th-century Gothic chapel with 1,113 stained glass panels.', price: 'Entry: €11.50', family: true, adult: true },
+    { id: 'p_2', name: "Musée d'Orsay", category: 'Landmark', rating: '★4.8', desc: 'World-renowned Impressionist art museum in a restored Beaux-Arts railway station.', price: 'Entry: €16.00', family: true, adult: true },
+    { id: 'p_3', name: 'Palais-Royal Courtyard', category: 'Landmark', rating: '★4.7', desc: 'Historic palace gardens featuring Buren\'s iconic black-and-white striped columns.', price: 'Free Entry', family: true, adult: true },
+    { id: 'p_4', name: 'Sacré-Cœur Basilica', category: 'Landmark', rating: '★4.7', desc: 'White domed basilica perched atop Montmartre with panoramic city views.', price: 'Free Entry', family: true, adult: true },
+    { id: 'p_5', name: 'Le Petit Marché', category: 'Restaurant', rating: '★4.6', desc: 'Cozy Le Marais bistro famous for seared duck breast and organic wines.', price: 'Avg: €18–€26', family: false, adult: true },
+    { id: 'p_6', name: 'Le Train Bleu', category: 'Restaurant', rating: '★4.5', desc: 'Opulent palace restaurant inside Gare de Lyon with frescoed ceilings.', price: 'Avg: €25–€38', family: true, adult: true },
+    { id: 'p_7', name: 'Chez Janou', category: 'Restaurant', rating: '★4.5', desc: 'Lively Provençal bistro featuring bottomless homemade chocolate mousse.', price: 'Avg: €16–€25', family: true, adult: true },
+    { id: 'p_8', name: 'Marché des Enfants Rouges', category: 'Café & Bakery', rating: '★4.5', desc: 'Paris\'s oldest covered food market serving authentic fresh crêpes.', price: 'Crêpes: €5–€9', family: true, adult: true },
+    { id: 'p_9', name: 'Cédric Grolet Le Meurice', category: 'Café & Bakery', rating: '★4.6', desc: 'World-famous haute pâtisserie featuring sculpted fruit pastries.', price: 'Pastries: €12–€18', family: true, adult: true }
   ],
 
   'Amsterdam, Netherlands': [
-    { id: 'a_1', name: 'アムステルダム国立美術館 (Rijksmuseum)', category: '観光地', rating: '★4.7', desc: 'レンブラント「夜警」とフェルメール名画を展示する殿堂', price: '入場料: €22.50', family: true, adult: true },
-    { id: 'a_2', name: 'ゴッホ美術館 (Van Gogh Museum)', category: '観光地', rating: '★4.8', desc: 'ゴッホの「ひまわり」や「自画像」を世界最大所蔵', price: '入場料: €20.00', family: true, adult: true },
-    { id: 'a_3', name: '九つの街 (De Negen Straatjes)', category: '観光地', rating: '★4.8', desc: '最美運河沿いに並ぶブティックとセレクトショップ街', price: '散策無料', family: true, adult: true },
-    { id: 'a_4', name: 'ザーンセ・スカンス風車村 (Zaanse Schans)', category: '観光地', rating: '★4.6', desc: '木造風車とチーズ工房が広がるオランダ伝統の郊外風車村', price: '入場無料', family: true, adult: true },
-    { id: 'a_5', name: 'Café de Klos', category: 'レストラン', rating: '★4.6', desc: '地元民に愛される絶品スモーキー・スペアリブの名店', price: '平均予算: €18–€26', family: true, adult: true },
-    { id: 'a_6', name: 'Foodhallen Amsterdam', category: 'レストラン', rating: '★4.5', desc: '旧路面電車車庫をリノベートしたおしゃれなフードホール', price: '平均予算: €15–€22', family: true, adult: true },
-    { id: 'a_7', name: 'ヴァン・スターペレ (Van Stapele Koekmakerij)', category: 'カフェ', rating: '★4.8', desc: '焼きたてヴァローナ・ダークチョコクッキーの行列店', price: 'クッキー: €3.00', family: true, adult: true },
-    { id: 'a_8', name: 'ウィンケル43 (Winkel 43)', category: 'カフェ', rating: '★4.6', desc: 'ホイップクリームたっぷりの名物温かいアップルパイ', price: 'アップルパイ: €5.00', family: true, adult: true },
-    { id: 'a_9', name: 'ブロウエライ・テイ (Brouwerij \'t IJ)', category: 'カフェ', rating: '★4.6', desc: '大風車の足元にあるオーガニッククラフトビール醸造所', price: 'ビール: €5–€8', family: false, adult: true }
+    { id: 'a_1', name: 'Rijksmuseum', category: 'Landmark', rating: '★4.7', desc: 'Dutch national museum displaying Rembrandt\'s The Night Watch and Vermeer.', price: 'Entry: €22.50', family: true, adult: true },
+    { id: 'a_2', name: 'Van Gogh Museum', category: 'Landmark', rating: '★4.8', desc: 'The world\'s largest collection of artworks by Vincent van Gogh.', price: 'Entry: €20.00', family: true, adult: true },
+    { id: 'a_3', name: 'Nine Streets (De Negen Straatjes)', category: 'Landmark', rating: '★4.8', desc: 'Picturesque canal-side neighborhood with vintage boutiques and art galleries.', price: 'Free Walk', family: true, adult: true },
+    { id: 'a_4', name: 'Zaanse Schans Windmills', category: 'Landmark', rating: '★4.6', desc: 'Historic windmill village featuring cheese making and wooden clog workshops.', price: 'Free Entry', family: true, adult: true },
+    { id: 'a_5', name: 'Café de Klos', category: 'Restaurant', rating: '★4.6', desc: 'Legendary local pub famous for wood-fired smoked ribs and craft beer.', price: 'Avg: €18–€26', family: true, adult: true },
+    { id: 'a_6', name: 'Foodhallen Amsterdam', category: 'Restaurant', rating: '★4.5', desc: 'Trendy indoor food hall located in a converted historic tram depot.', price: 'Avg: €15–€22', family: true, adult: true },
+    { id: 'a_7', name: 'Van Stapele Koekmakerij', category: 'Café & Bakery', rating: '★4.8', desc: 'Famous bakery serving fresh-baked Valrhona dark chocolate cookies.', price: 'Cookie: €3.00', family: true, adult: true },
+    { id: 'a_8', name: 'Winkel 43', category: 'Café & Bakery', rating: '★4.6', desc: 'Iconic café world-renowned for traditional Dutch warm apple pie.', price: 'Apple Pie: €5.00', family: true, adult: true },
+    { id: 'a_9', name: 'Brouwerij \'t IJ', category: 'Café & Bakery', rating: '★4.6', desc: 'Artisanal organic craft brewery terrace right next to De Gooyer Windmill.', price: 'Beer: €5–€8', family: false, adult: true }
   ],
 
   'Brussels, Belgium': [
-    { id: 'b_1', name: 'グラン＝プラス (Grand-Place)', category: '観光地', rating: '★4.7', desc: 'ヴィクトル・ユーゴーが絶賛した世界最美の石畳大広場', price: '入場無料', family: true, adult: true },
-    { id: 'b_2', name: 'ギャルリ・サンチュベール (Royal Gallery)', category: '観光地', rating: '★4.6', desc: '19世紀ヨーロッパ最古のガラス屋根ショッピングアーケード', price: '散策無料', family: true, adult: true },
-    { id: 'b_3', name: 'アトミウム (Atomium)', category: '観光地', rating: '★4.4', desc: '鉄の結晶構造を1650億倍に拡大した未来的なパノラマ展望台', price: '入場料: €16.00', family: true, adult: true },
-    { id: 'b_4', name: 'Fin de Siècle', category: 'レストラン', rating: '★4.5', desc: '牛肉のベルギービール煮込み「カルボナード」の行列名店', price: '平均予算: €16–€24', family: true, adult: true },
-    { id: 'b_5', name: 'Chez Léon', category: 'レストラン', rating: '★4.6', desc: '1893年創業。名物ムール貝の白ワイン蒸しとフリッツ', price: '平均予算: €18–€26', family: true, adult: true },
-    { id: 'b_6', name: 'メゾン・ダンドワ (Maison Dandoy)', category: 'カフェ', rating: '★4.6', desc: '外サク内モチの焼きたて伝統リエージュワッフル専門店', price: 'ワッフル: €4.50–€7', family: true, adult: true },
-    { id: 'b_7', name: 'ピエール・マルコリーニ (Pierre Marcolini)', category: 'カフェ', rating: '★4.7', desc: 'ベルギー王室御用達ショコラティエの本店フラッグシップ', price: 'チョコ: €8–€15', family: true, adult: true }
+    { id: 'b_1', name: 'Grand-Place', category: 'Landmark', rating: '★4.7', desc: 'UNESCO world heritage central square enclosed by ornate guildhouses.', price: 'Free Entry', family: true, adult: true },
+    { id: 'b_2', name: 'Royal Gallery of Saint-Hubert', category: 'Landmark', rating: '★4.6', desc: 'Glazed 19th-century shopping arcade filled with master chocolatiers.', price: 'Free Walk', family: true, adult: true },
+    { id: 'b_3', name: 'Atomium', category: 'Landmark', rating: '★4.4', desc: 'Futuristic 102m-tall iron crystal structure offering panoramic city views.', price: 'Entry: €16.00', family: true, adult: true },
+    { id: 'b_4', name: 'Fin de Siècle', category: 'Restaurant', rating: '★4.5', desc: 'Vibrant local tavern famous for Carbonnade Flamande (beer-braised beef stew).', price: 'Avg: €16–€24', family: true, adult: true },
+    { id: 'b_5', name: 'Chez Léon', category: 'Restaurant', rating: '★4.6', desc: 'Historic 1893 eatery serving traditional Belgian mussels and frites.', price: 'Avg: €18–€26', family: true, adult: true },
+    { id: 'b_6', name: 'Maison Dandoy', category: 'Café & Bakery', rating: '★4.6', desc: 'Fresh-baked authentic Liège waffles served with warm chocolate sauce.', price: 'Waffles: €4.50–€7', family: true, adult: true },
+    { id: 'b_7', name: 'Pierre Marcolini', category: 'Café & Bakery', rating: '★4.7', desc: 'Flagship haute chocolaterie in Grand Sablon square.', price: 'Chocolates: €8–€15', family: true, adult: true }
   ],
 
   'Luxembourg City, Luxembourg': [
-    { id: 'l_1', name: 'ボックの砲台 (Bock Casemates)', category: '観光地', rating: '★4.6', desc: '断崖絶壁に掘られた世界遺産の地下要塞迷宮', price: '入場料: €8.00', family: true, adult: true },
-    { id: 'l_2', name: 'シュマン・ド・ラ・コルニッシュ', category: '観光地', rating: '★4.8', desc: '「ヨーロッパ最美のバルコニー」と呼ばれるパノラマ遊歩道', price: '散策無料', family: true, adult: true },
-    { id: 'l_3', name: 'グルンド歴史地区 (Grund)', category: '観光地', rating: '★4.7', desc: '無料エレベーターで降りる美しい谷底の石畳歴史地区', price: '散策無料', family: true, adult: true },
-    { id: 'l_4', name: 'Chocolate House Nathalie Bonn', category: 'カフェ', rating: '★4.6', desc: '宮殿の向かいにあるホットスプーンチョコ＆キッシュ名店', price: '平均予算: €14–€22', family: true, adult: true },
-    { id: 'l_5', name: 'Brasserie du Cercle', category: 'レストラン', rating: '★4.5', desc: 'ダルム広場に面した伝統的なルクセンブルク料理レストラン', price: '平均予算: €18–€28', family: true, adult: true }
+    { id: 'l_1', name: 'Bock Casemates', category: 'Landmark', rating: '★4.6', desc: 'Subterranean cliffside fortress passages carved into the rock face.', price: 'Entry: €8.00', family: true, adult: true },
+    { id: 'l_2', name: 'Chemin de la Corniche', category: 'Landmark', rating: '★4.8', desc: 'Scenic cliffside promenade dubbed "Europe\'s most beautiful balcony".', price: 'Free Walk', family: true, adult: true },
+    { id: 'l_3', name: 'Grund Historic Quarter', category: 'Landmark', rating: '★4.7', desc: 'Charming valley district accessed by elevator with cobblestone streets.', price: 'Free Walk', family: true, adult: true },
+    { id: 'l_4', name: 'Chocolate House Nathalie Bonn', category: 'Café & Bakery', rating: '★4.6', desc: 'Famous cafe opposite the Grand Ducal Palace serving hot chocolate spoons.', price: 'Avg: €14–€22', family: true, adult: true },
+    { id: 'l_5', name: 'Brasserie du Cercle', category: 'Restaurant', rating: '★4.5', desc: 'Traditional Luxembourgish dining overlooking Place d\'Armes.', price: 'Avg: €18–€28', family: true, adult: true }
   ],
 
   'Cologne, Germany': [
-    { id: 'c_1', name: 'ケルン大聖堂 (Kölner Dom)', category: '観光地', rating: '★4.8', desc: 'ケルン中央駅横に聳え立つ世界遺産のゴシック大聖堂', price: '入場無料 (塔拝観: €6)', family: true, adult: true },
-    { id: 'c_2', name: 'ルートヴィヒ美術館 (Museum Ludwig)', category: '観光地', rating: '★4.6', desc: 'ピカソの膨大なコレクションとポップアートの宝庫', price: '入場料: €11.00', family: true, adult: true },
-    { id: 'c_3', name: 'ホーエンツォレルン橋 (Hohenzollernbrücke)', category: '観光地', rating: '★4.7', desc: '愛の南京錠がびっしりと並ぶライン川の鉄道橋ウォーク', price: '散策無料', family: true, adult: true },
-    { id: 'c_4', name: 'Brauhaus Sion', category: 'レストラン', rating: '★4.4', desc: '名物ケルシュビールとボリューム満点シュヴァイネハクセ', price: '平均予算: €15–€24', family: true, adult: true },
-    { id: 'c_5', name: 'Café Reichard', category: 'カフェ', rating: '★4.5', desc: '大聖堂の目の前で楽しむ伝統ドイツケーキとコーヒー', price: '平均予算: €8–€14', family: true, adult: true }
+    { id: 'c_1', name: 'Cologne Cathedral (Kölner Dom)', category: 'Landmark', rating: '★4.8', desc: 'Colossal Twin-spired Gothic cathedral towering over the Rhine River.', price: 'Free (Tower: €6)', family: true, adult: true },
+    { id: 'c_2', name: 'Museum Ludwig', category: 'Landmark', rating: '★4.6', desc: 'Modern art museum housing one of Europe\'s largest Picasso collections.', price: 'Entry: €11.00', family: true, adult: true },
+    { id: 'c_3', name: 'Hohenzollernbrücke', category: 'Landmark', rating: '★4.7', desc: 'Iconic railway bridge covered with thousands of love padlocks.', price: 'Free Walk', family: true, adult: true },
+    { id: 'c_4', name: 'Brauhaus Sion', category: 'Restaurant', rating: '★4.4', desc: 'Traditional Kölsch brewery house serving hearty Schweinshaxe roast pork.', price: 'Avg: €15–€24', family: true, adult: true },
+    { id: 'c_5', name: 'Café Reichard', category: 'Café & Bakery', rating: '★4.5', desc: 'Classic German pastry cafe featuring direct views of the Cathedral.', price: 'Avg: €8–€14', family: true, adult: true }
   ],
 
   'Munich, Germany': [
-    { id: 'm_1', name: 'マリエン広場 (Marienplatz)', category: '観光地', rating: '★4.7', desc: '新市庁舎のからくり時計（グロッケンシュピール）が有名な広場', price: '観覧無料', family: true, adult: true },
-    { id: 'm_2', name: '英国庭園 (Englischer Garten)', category: '観光地', rating: '★4.8', desc: 'アイスバッハ川で川サーフィンが見られる世界最大級の都市公園', price: '散策無料', family: true, adult: true },
-    { id: 'm_3', name: 'ニンフェンブルク宮殿 (Nymphenburg Palace)', category: '観光地', rating: '★4.7', desc: 'バイエルン王家のバロック様式大宮殿と広大な庭園', price: '庭園散策無料', family: true, adult: true },
-    { id: 'm_4', name: 'Augustiner-Keller', category: 'レストラン', rating: '★4.6', desc: '大きなマロニエの木の下で味わう名物白ソーセージとビール', price: '平均予算: €14–€22', family: true, adult: true },
-    { id: 'm_5', name: 'Café Frischhut', category: 'カフェ', rating: '★4.7', desc: 'ヴィクトゥアーリエンマルクト近くの伝統揚げパン「シュマルツヌーデル」', price: '揚げパン: €3.00', family: true, adult: true }
+    { id: 'm_1', name: 'Marienplatz', category: 'Landmark', rating: '★4.7', desc: 'Central square famous for the New Town Hall Glockenspiel clock show.', price: 'Free View', family: true, adult: true },
+    { id: 'm_2', name: 'Englischer Garten', category: 'Landmark', rating: '★4.8', desc: 'Sprawling urban park famous for river surfing on the Eisbach wave.', price: 'Free Walk', family: true, adult: true },
+    { id: 'm_3', name: 'Nymphenburg Palace', category: 'Landmark', rating: '★4.7', desc: 'Grand Baroque palace with extensive parklands and waterways.', price: 'Park: Free', family: true, adult: true },
+    { id: 'm_4', name: 'Augustiner-Keller', category: 'Restaurant', rating: '★4.6', desc: 'Historic chestnut-tree beer garden serving Weisswurst & pretzels.', price: 'Avg: €14–€22', family: true, adult: true },
+    { id: 'm_5', name: 'Café Frischhut', category: 'Café & Bakery', rating: '★4.7', desc: 'Iconic bakery near Viktualienmarkt famous for Schmalznudel pastries.', price: 'Pastry: €3.00', family: true, adult: true }
   ],
 
   'Berlin, Germany': [
-    { id: 'b_b1', name: 'ブランデンブルク門 (Brandenburger Tor)', category: '観光地', rating: '★4.7', desc: 'ベルリンの象徴でありドイツ統一の歴史を見守った平和の門', price: '観覧無料', family: true, adult: true },
-    { id: 'b_b2', name: '博物館島 (Museumsinsel)', category: '観光地', rating: '★4.8', desc: 'ペルガモン博物館や新博物館が集まるユネスコ世界遺産', price: '島内散策無料', family: true, adult: true },
-    { id: 'b_b3', name: 'イーストサイドギャラリー (East Side Gallery)', category: '観光地', rating: '★4.6', desc: 'ベルリンの壁に描かれた全長1.3kmの屋外ウォールアート', price: '観覧無料', family: true, adult: true },
-    { id: 'b_b4', name: 'Mustafa\'s Gemüse Kebab', category: 'レストラン', rating: '★4.4', desc: 'ベルリンで行列No.1を誇る名物チキン＆焼き野菜ケバブ', price: 'ケバブ: €7.00', family: true, adult: true },
-    { id: 'b_b5', name: 'Zeit für Brot', category: 'カフェ', rating: '★4.7', desc: '焼きたてふわふわのオーガニックシナモンロール名店', price: 'シナモンロール: €4.50', family: true, adult: true }
+    { id: 'b_b1', name: 'Brandenburg Gate', category: 'Landmark', rating: '★4.7', desc: '18th-century neoclassical monument and symbol of European unity.', price: 'Free View', family: true, adult: true },
+    { id: 'b_b2', name: 'Museum Island (Museumsinsel)', category: 'Landmark', rating: '★4.8', desc: 'UNESCO World Heritage complex housing world-famous antiquities.', price: 'Island: Free', family: true, adult: true },
+    { id: 'b_b3', name: 'East Side Gallery', category: 'Landmark', rating: '★4.6', desc: '1.3km open-air gallery painted directly on the historic Berlin Wall.', price: 'Free Walk', family: true, adult: true },
+    { id: 'b_b4', name: "Mustafa's Gemüse Kebab", category: 'Restaurant', rating: '★4.4', desc: 'Berlin\'s most famous street food stand for roasted vegetable kebabs.', price: 'Kebab: €7.00', family: true, adult: true },
+    { id: 'b_b5', name: 'Zeit für Brot', category: 'Café & Bakery', rating: '★4.7', desc: 'Organic bakery famous for warm, fluffy cinnamon rolls (Schnecken).', price: 'Cinnamon Roll: €4.50', family: true, adult: true }
   ]
 };
 
@@ -86,17 +84,44 @@ const AITravelEngine = {
     localStorage.setItem('zmt_gemini_api_key', key.trim());
   },
 
-  detectLanguage(text) {
-    const jpRegex = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/;
-    return jpRegex.test(text) ? 'ja' : 'en';
-  },
-
-  // Helper: Create Google Maps Search Link Button
+  // Helper to create single venue Google Maps live search link button
   createMapsLink(placeName, city, rating = '') {
     const query = encodeURIComponent(`${placeName} ${city}`);
     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
     const ratingTag = rating ? ` (${rating})` : '';
-    return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="Google Mapsでリアルタイム営業時間・口コミ・写真を見る">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
+    return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="View Live Google Maps Hours, Reviews & Photos">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
+  },
+
+  // MASTER FEATURE: Generate Turn-by-Turn Multi-Stop Route Link for Google Maps
+  generateMultiStopMapsLink(venueList, city, transportMode) {
+    if (!venueList || venueList.length === 0) return '';
+
+    const cleanCity = city.split(',')[0].trim();
+    const cleanVenues = venueList.map(v => `${v.replace(/[()]/g, '').trim()}, ${cleanCity}`);
+
+    const origin = cleanVenues[0];
+    const destination = cleanVenues[cleanVenues.length - 1];
+    const waypoints = cleanVenues.slice(1, -1).join('|');
+    const travelmode = transportMode === 'car' ? 'driving' : 'transit';
+
+    let multiStopUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=${travelmode}`;
+    if (waypoints) {
+      multiStopUrl += `&waypoints=${encodeURIComponent(waypoints)}`;
+    }
+
+    return `
+      <div style="background:linear-gradient(135deg, #FEF3C7, #D1FAE5); border:2.5px solid var(--border-ink); border-radius:18px; padding:1.75rem; text-align:center; margin-bottom:1.75rem; box-shadow:var(--shadow-sketch);">
+        <div style="font-size:1.4rem; color:var(--primary-forest); font-family:var(--font-serif); margin-bottom:0.5rem;" class="font-serif">
+          🗺️ Full Multi-Stop Google Maps Navigation Route
+        </div>
+        <p style="font-size:0.92rem; color:var(--text-secondary); max-width:680px; margin:0 auto 1.25rem;">
+          Click the button below to load <strong>all ${cleanVenues.length} destinations in order</strong> directly into Google Maps! Hit <strong>"Start Navigation"</strong> to follow the turn-by-turn route on your phone.
+        </p>
+        <a href="${multiStopUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.85rem 2rem; font-size:1.1rem; text-decoration:none;">
+          📍 Open All ${cleanVenues.length} Destinations Route in Google Maps ↗
+        </a>
+      </div>
+    `;
   },
 
   // Step 2: Render Interactive Candidate Spots with Selection Checkboxes
@@ -105,7 +130,6 @@ const AITravelEngine = {
     const days = parseFloat(document.getElementById('aiPlanDays').value) || 1;
     const targetAudience = document.getElementById('aiPlanAudience').value || 'none';
 
-    // Selection Cap: 0.5d=2, 1d=4, 2d=7
     let maxCap = 4;
     if (days === 0.5) maxCap = 2;
     if (days === 2.0) maxCap = 7;
@@ -116,7 +140,6 @@ const AITravelEngine = {
 
     if (!container) return;
 
-    // Filter by audience if specified
     let filteredSpots = spots;
     if (targetAudience === 'kids') {
       filteredSpots = spots.filter(s => s.family);
@@ -126,7 +149,7 @@ const AITravelEngine = {
 
     if (counterBadge) {
       const selectedCount = this.selectedMustVisitIds.size;
-      counterBadge.innerHTML = `選択中: <strong>${selectedCount} / ${maxCap}</strong> 箇所 (最大 ${maxCap} 箇所まで「絶対行きたい」場所を選択可能)`;
+      counterBadge.innerHTML = `Selected: <strong>${selectedCount} / ${maxCap}</strong> (Max ${maxCap} Must-Visit Spots)`;
       counterBadge.style.color = selectedCount >= maxCap ? '#C2410C' : '#047857';
     }
 
@@ -160,7 +183,7 @@ const AITravelEngine = {
       this.selectedMustVisitIds.delete(spotId);
     } else {
       if (this.selectedMustVisitIds.size >= maxCap) {
-        alert(`選択上限です。${maxCap}箇所まで選択できます。上限を増やすには旅行期間（1日・2日）を変更してください。`);
+        alert(`Selection Limit Reached! You can select up to ${maxCap} spots for this duration. Change duration to 2 Days to select up to 7 spots.`);
         return;
       }
       this.selectedMustVisitIds.add(spotId);
@@ -168,7 +191,7 @@ const AITravelEngine = {
     this.renderCandidateSpots();
   },
 
-  // Step 3: Generate Custom Route embedding selected Must-Visit spots
+  // Step 3: Generate Custom Route embedding Must-Visit spots + Multi-Stop Maps Link
   generateItinerary(event) {
     if (event) event.preventDefault();
 
@@ -182,10 +205,8 @@ const AITravelEngine = {
     const resultContainer = document.getElementById('aiPlanResult');
     if (!resultContainer) return;
 
-    const lang = this.detectLanguage(destination);
     const isCar = transportMode === 'car';
 
-    // Gather Must-Visit spot objects
     const allSpots = candidateSpotsDatabase[destination] || candidateSpotsDatabase['Paris, France'];
     const mustVisitSpots = allSpots.filter(s => this.selectedMustVisitIds.has(s.id));
     const mustVisitNames = mustVisitSpots.map(s => s.name).join(', ');
@@ -194,17 +215,17 @@ const AITravelEngine = {
     resultContainer.innerHTML = `
       <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2.5rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch); text-align:center;">
         <div style="font-size:1.5rem; color:var(--primary-gold); font-family:var(--font-serif);" class="font-serif">
-          ⚡ ${lang === 'ja' ? '絶対行きたい場所を含めた最適ルートをAI作成中...' : 'Generating Custom Route with Must-Visit Spots...'}
+          ⚡ Generating Custom Route & Pre-loading Google Maps Route...
         </div>
         <p style="font-size:0.95rem; color:var(--text-secondary); margin-top:0.5rem;">
-          ${escapeHtml(destination)} (${days === 0.5 ? '半日コース' : days + '日コース'}) | 必訪: <strong>${escapeHtml(mustVisitNames || 'AIおまかせ厳選名所')}</strong>
+          Synthesizing ${escapeHtml(destination)} (${days === 0.5 ? 'Half Day' : days + ' Day(s)'}) | Must-Visit: <strong>${escapeHtml(mustVisitNames || 'AI Top Curated Spots')}</strong>
         </p>
       </div>
     `;
 
     if (this.config.apiKey) {
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.config.apiKey}`;
-      const systemPrompt = `You are an expert AI Travel Route Curator for 0 Margin EU Travel. Respond in ${lang === 'ja' ? 'Japanese' : 'English'}.
+      const systemPrompt = `You are an expert AI Travel Curator for 0 Margin EU Travel. Respond in English.
 STRICT MANDATE:
 1. MUST EMBED THESE USER-SELECTED MUST-VISIT SPOTS: ${mustVisitNames || 'Top 4.5+ Real Spots'}.
 2. TRANSPORTATION: ${isCar ? 'CAR / DRIVING MODE (Include driving minutes and parking garages like Parking Indigo, Q-Park, Interparking)' : 'PUBLIC TRANSIT MODE (Include metro/RER lines and walking minutes)'}.
@@ -230,20 +251,20 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
       })
       .catch(err => {
         console.warn('Gemini API call fallback:', err);
-        const fallbackText = this.buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots, lang);
+        const fallbackText = this.buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots);
         this.renderItineraryCard(destination, days, transportMode, audience, mustVisitSpots, fallbackText, '⚡ AI Custom Route (Real Google Maps Spots)');
       });
 
     } else {
       setTimeout(() => {
-        const fallbackText = this.buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots, lang);
+        const fallbackText = this.buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots);
         this.renderItineraryCard(destination, days, transportMode, audience, mustVisitSpots, fallbackText, '⚡ AI Custom Route (Real Google Maps Spots)');
       }, 350);
     }
   },
 
-  // Synthesize Custom Route with Selected Must-Visit Spots + Complementary Real Venues
-  buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots, lang) {
+  // Synthesize Custom Route with Selected Must-Visit Spots
+  buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots) {
     const destLower = destination.toLowerCase();
     const isCar = transportMode === 'car';
 
@@ -256,77 +277,60 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
     let html = '';
 
     const transitNotice1 = isCar 
-      ? '🚗 ドライブ: 近隣地下駐車場（Parking Indigo / Q-Park）利用。' 
-      : '🚆 公共交通機関: メトロ/RER最寄り駅より徒歩3〜5分。';
+      ? '🚗 Drive: A14 / Ring road. Underground parking at Parking Indigo Louvre (4 min walk).' 
+      : '🚆 Public Transit: Metro Line 4 Cité Station (3 min walk).';
 
     const transitNotice2 = isCar 
-      ? '🚗 ドライブ: 環状道路経由。目的地の地下P直結。' 
-      : '🚆 公共交通機関: トラム/バス直通アクセス。';
+      ? '🚗 Drive: Seine River road. Direct access to Parking Indigo Musée d\'Orsay.' 
+      : '🚆 Public Transit: RER C Musée d\'Orsay Station direct.';
 
-    if (lang === 'ja') {
-      if (days === 0.5) {
-        html += `
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
-            <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 半日カスタムコース: ${escapeHtml(destination)} 必訪スポット凝縮
-            </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-              <li><strong>09:00 AM — 【選択必訪スポット】:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('サント・シャペル教会', 'Paris', '★4.8') : this.createMapsLink('アムステルダム国立美術館', 'Amsterdam', '★4.7'))} （${transitNotice1}）。</li>
-              <li><strong>11:30 AM — 名物スイーツ・カフェ:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('マルシェ・デ・ザンファン・ルージュ', 'Paris', '★4.5') : this.createMapsLink('ヴァン・スターペレ', 'Amsterdam', '★4.8'))}。</li>
-              <li><strong>12:30 PM — 絶品ランチ:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + '（鴨コンフィ €18–€26）' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + '（スペアリブ €18–€26）' : this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5')}。</li>
-            </ul>
-          </div>
-        `;
-      } else {
-        // DAY 1
-        html += `
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
-            <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 1日目: 【選択スポット組込】${escapeHtml(destination)} 中心部歴史名所
-            </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-              <li><strong>09:00 AM — 朝の必訪観覧:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('サント・シャペル教会', 'Paris', '★4.8') : this.createMapsLink('アムステルダム国立美術館', 'Amsterdam', '★4.7'))} （${transitNotice1}）。</li>
-              <li><strong>11:30 AM — 名物スイーツ:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('マルシェ・デ・ザンファン・ルージュ', 'Paris', '★4.5') : this.createMapsLink('ヴァン・スターペレ', 'Amsterdam', '★4.8'))}。</li>
-              <li><strong>12:30 PM — 1日目ランチ名店:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + '（マレ地区鴨コンフィ €18–€26）' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + '（スペアリブ €18–€26）' : this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5')}。</li>
-              <li><strong>03:00 PM — 午後散策:</strong> ${mustNames[2] ? this.createMapsLink(mustNames[2].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('パレ・ロワイヤル庭園', 'Paris', '★4.7') : this.createMapsLink('九つの街', 'Amsterdam', '★4.8'))}。</li>
-              <li><strong>07:00 PM — 夜の散歩:</strong> ${isParis ? this.createMapsLink('ポン・デ・ザール橋', 'Paris', '★4.7') : 'ライトアップ散策'}。</li>
-            </ul>
-          </div>
-        `;
-
-        // DAY 2
-        if (days >= 2) {
-          html += `
-            <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
-              <h4 style="color:var(--primary-wood); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-                📍 2日目: 【全施設重複なし】${escapeHtml(destination)} オルセー/名店ルート
-              </h4>
-              <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-                <li><strong>09:00 AM — 2日目必訪観覧:</strong> ${mustNames[3] ? this.createMapsLink(mustNames[3].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('オルセー美術館', 'Musée d Orsay Paris', '★4.8') : this.createMapsLink('ゴッホ美術館', 'Amsterdam', '★4.8'))} （${transitNotice2}）。</li>
-                <li><strong>11:30 AM — 2日目スイーツ:</strong> ${mustNames[4] ? this.createMapsLink(mustNames[4].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('セドリック・グロレ', 'Paris', '★4.6') : this.createMapsLink('ウィンケル43', 'Amsterdam', '★4.6'))}。</li>
-                <li><strong>12:30 PM — 2日目ランチ名店:</strong> ${isParis ? this.createMapsLink('ル・トレン・ブルー', 'Paris', '★4.5') + ' または ' + this.createMapsLink('シェ・ジャヌー', 'Paris', '★4.5') : isAmsterdam ? this.createMapsLink('Foodhallen Amsterdam', 'Amsterdam', '★4.5') : this.createMapsLink('Chez Léon', 'Brussels', '★4.6')}。</li>
-                <li><strong>03:00 PM — 2日目午後散策:</strong> ${mustNames[5] ? this.createMapsLink(mustNames[5].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('サクレ・クール寺院＆モンマルトルの丘', 'Paris', '★4.7') : this.createMapsLink('ザーンセ・スカンス風車村', 'Amsterdam', '★4.6'))}。</li>
-                <li><strong>07:00 PM — 夕刻散歩:</strong> ゆったりとした夜の街並み散策。</li>
-              </ul>
-            </div>
-          `;
-        }
-      }
-    } else {
-      // ENGLISH GENERATION
+    if (days === 0.5) {
       html += `
         <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
           <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-            📍 Custom Route: ${escapeHtml(destination)} (${days === 0.5 ? 'Half Day' : days + ' Day(s)'})
+            📍 Half Day Custom Express Route (${escapeHtml(destination)})
           </h4>
           <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-            <li><strong>09:00 AM — Must-Visit Spot:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0], destination) : this.createMapsLink('Sainte-Chapelle', 'Paris', '★4.8')} (${transitNotice1}).</li>
-            <li><strong>11:30 AM — Signature Bakery:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1], destination) : this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5')}.</li>
-            <li><strong>12:30 PM — Recommended Restaurant:</strong> ${this.createMapsLink('Le Petit Marché', 'Paris', '★4.6')} (€18–€26).</li>
-            <li><strong>03:00 PM — Afternoon Spot:</strong> ${mustNames[2] ? this.createMapsLink(mustNames[2], destination) : this.createMapsLink('Palais-Royal', 'Paris', '★4.7')}.</li>
+            <li><strong>09:00 AM — Must-Visit Landmark:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Sainte-Chapelle', 'Paris', '★4.8') : this.createMapsLink('Rijksmuseum', 'Amsterdam', '★4.7'))} (${transitNotice1}).</li>
+            <li><strong>11:30 AM — Signature Bakery & Café:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5') : this.createMapsLink('Van Stapele Koekmakerij', 'Amsterdam', '★4.8'))}.</li>
+            <li><strong>12:30 PM — Recommended Dining:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + ' (Duck confit €18–€26)' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + ' (Smoked ribs €18–€26)' : this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5')}.</li>
           </ul>
         </div>
       `;
+    } else {
+      // DAY 1
+      html += `
+        <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
+          <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
+            📍 Day 1: ${escapeHtml(destination)} Historic Center & Selected Spots
+          </h4>
+          <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+            <li><strong>09:00 AM — Morning Landmark:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Sainte-Chapelle', 'Paris', '★4.8') : this.createMapsLink('Rijksmuseum', 'Amsterdam', '★4.7'))} (${transitNotice1}).</li>
+            <li><strong>11:30 AM — Signature Bakery:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5') : this.createMapsLink('Van Stapele Koekmakerij', 'Amsterdam', '★4.8'))}.</li>
+            <li><strong>12:30 PM — Day 1 Dining:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + ' (Le Marais duck confit €18–€26)' : isAmsterdam ? this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6') + ' (Smoked ribs €18–€26)' : this.createMapsLink('Fin de Siècle', 'Brussels', '★4.5')}.</li>
+            <li><strong>03:00 PM — Afternoon Spot:</strong> ${mustNames[2] ? this.createMapsLink(mustNames[2].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Palais-Royal Courtyard', 'Paris', '★4.7') : this.createMapsLink('Nine Streets', 'Amsterdam', '★4.8'))}.</li>
+            <li><strong>07:00 PM — Evening Walk:</strong> ${isParis ? this.createMapsLink('Pont des Arts', 'Paris', '★4.7') : 'Historic promenade walk'}.</li>
+          </ul>
+        </div>
+      `;
+
+      // DAY 2
+      if (days >= 2) {
+        html += `
+          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
+            <h4 style="color:var(--primary-wood); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
+              📍 Day 2: 【100% Unique Venues】 Musée d'Orsay & Montmartre
+            </h4>
+            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
+              <li><strong>09:00 AM — Day 2 Landmark:</strong> ${mustNames[3] ? this.createMapsLink(mustNames[3].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink("Musée d'Orsay", "Musée d Orsay Paris", '★4.8') : this.createMapsLink('Van Gogh Museum', 'Amsterdam', '★4.8'))} (${transitNotice2}).</li>
+              <li><strong>11:30 AM — Day 2 Pastry:</strong> ${mustNames[4] ? this.createMapsLink(mustNames[4].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Cédric Grolet Le Meurice', 'Paris', '★4.6') : this.createMapsLink('Winkel 43', 'Amsterdam', '★4.6'))}.</li>
+              <li><strong>12:30 PM — Day 2 Dining:</strong> ${isParis ? this.createMapsLink('Le Train Bleu', 'Paris', '★4.5') + ' or ' + this.createMapsLink('Chez Janou', 'Paris', '★4.5') : isAmsterdam ? this.createMapsLink('Foodhallen Amsterdam', 'Amsterdam', '★4.5') : this.createMapsLink('Chez Léon', 'Brussels', '★4.6')}.</li>
+              <li><strong>03:00 PM — Day 2 Afternoon Spot:</strong> ${mustNames[5] ? this.createMapsLink(mustNames[5].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Sacré-Cœur Basilica', 'Paris', '★4.7') : this.createMapsLink('Zaanse Schans Windmills', 'Amsterdam', '★4.6'))}.</li>
+              <li><strong>07:00 PM — Farewell Walk:</strong> Relaxing evening promenade.</li>
+            </ul>
+          </div>
+        `;
+      }
     }
 
     return html;
@@ -337,7 +341,30 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
     if (!resultContainer) return;
 
     const isCar = transportMode === 'car';
-    const mustCount = mustVisitSpots.length;
+
+    // Gather all visited venue names in order for Multi-Stop Google Maps Route Link
+    let venueNames = [];
+
+    if (mustVisitSpots && mustVisitSpots.length > 0) {
+      venueNames = mustVisitSpots.map(s => s.name.split(' (')[0].trim());
+    }
+
+    // Default fallback venue list if none selected
+    if (venueNames.length === 0) {
+      const destLower = destination.toLowerCase();
+      if (destLower.includes('paris')) {
+        venueNames = ['Sainte-Chapelle', 'Marché des Enfants Rouges', 'Le Petit Marché', 'Palais-Royal Courtyard', 'Pont des Arts'];
+      } else if (destLower.includes('amsterdam')) {
+        venueNames = ['Rijksmuseum', 'Van Stapele Koekmakerij', 'Café de Klos', 'Nine Streets', "Brouwerij 't IJ"];
+      } else if (destLower.includes('brussels')) {
+        venueNames = ['Grand-Place', 'Maison Dandoy', 'Fin de Siècle', 'Royal Gallery of Saint-Hubert'];
+      } else {
+        venueNames = ['Brandenburg Gate', 'Museum Island', "Mustafa's Gemüse Kebab", 'East Side Gallery'];
+      }
+    }
+
+    // Generate Master Multi-Stop Google Maps Route Button HTML
+    const multiStopMapsHtml = this.generateMultiStopMapsLink(venueNames, destination, transportMode);
 
     resultContainer.innerHTML = `
       <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch); animation:fadeIn 0.3s ease;">
@@ -346,16 +373,19 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
           <div>
             <span class="paper-tape">${engineTag}</span>
             <h3 style="font-size:1.65rem; margin-top:0.4rem; font-family:var(--font-serif);">
-              ${escapeHtml(destination)} — ${days === 0.5 ? '半日' : days + '日'} カスタムルート（必訪 ${mustCount}箇所組込）
+              ${escapeHtml(destination)} — ${days === 0.5 ? 'Half Day' : days + ' Day(s)'} Custom Route
             </h3>
           </div>
-          <span class="seed-points-badge">${isCar ? '🚗 車・駐車場案内' : '🚆 公共交通機関'}</span>
+          <span class="seed-points-badge">${isCar ? '🚗 Car Mode with Parking' : '🚆 Public Transit Mode'}</span>
         </div>
 
-        <!-- Google Maps Instruction Box -->
+        <!-- MASTER MULTI-STOP GOOGLE MAPS ROUTE BUTTON -->
+        ${multiStopMapsHtml}
+
+        <!-- Single Spot Live Links Instruction Box -->
         <div style="background:#EFF6FF; border:1.5px solid #3B82F6; border-radius:12px; padding:0.85rem 1.25rem; margin-bottom:1.5rem; font-size:0.85rem; color:#1E40AF; display:flex; align-items:center; gap:0.5rem;">
           <span style="font-size:1.2rem;">🗺️</span>
-          <span><strong>ヒント:</strong> スポット名ボタン（例: <strong>📍 Sainte-Chapelle ↗</strong>）をタップすると、<strong>Googleマップの実際の店舗ページ（今日の営業時間・生の最新口コミ・写真・混雑状況）</strong>が直接開きます！</span>
+          <span><strong>Pro-Tip:</strong> Tap individual venue buttons (e.g., <strong>📍 Sainte-Chapelle ↗</strong>) to view live operating hours, recent photos, and real-time reviews on Google Maps!</span>
         </div>
 
         <div style="margin-bottom:1.5rem;">
