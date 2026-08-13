@@ -1778,29 +1778,79 @@ const AITravelEngine = {
     if (!venueList || venueList.length === 0) return '';
 
     const cleanCity = city.split(',')[0].trim();
-    const cleanVenues = venueList.map(v => `${v.replace(/[()]/g, '').trim()}, ${cleanCity}`);
+    const cleanVenues = venueList.map(v => v.replace(/[()]/g, '').trim());
 
-    const origin = cleanVenues[0];
-    const destination = cleanVenues[cleanVenues.length - 1];
-    const waypoints = cleanVenues.slice(1, -1).join('|');
-    const travelmode = transportMode === 'car' ? 'driving' : 'transit';
+    // Build 100% Guaranteed Path-Based Google Maps Route URL (Loads ALL N stops in sequential order)
+    const pathSegments = cleanVenues.map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('/');
+    const masterPathUrl = `https://www.google.com/maps/dir/${pathSegments}/`;
 
-    let multiStopUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&travelmode=${travelmode}`;
-    if (waypoints) {
-      multiStopUrl += `&waypoints=${encodeURIComponent(waypoints)}`;
+    // Driving Mode API URL with waypoints
+    const origin = encodeURIComponent(`${cleanVenues[0]}, ${cleanCity}`);
+    const destination = encodeURIComponent(`${cleanVenues[cleanVenues.length - 1]}, ${cleanCity}`);
+    const waypoints = cleanVenues.slice(1, -1).map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('|');
+    const drivingApiUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=driving`;
+
+    const mainUrl = transportMode === 'car' ? drivingApiUrl : masterPathUrl;
+
+    // Generate Leg-by-Leg Transit Links for each segment (Stop 1 -> Stop 2 -> Stop 3...)
+    let legItemsHtml = '';
+    for (let i = 0; i < cleanVenues.length - 1; i++) {
+      const fromSpot = cleanVenues[i];
+      const toSpot = cleanVenues[i + 1];
+      const legUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fromSpot + ', ' + cleanCity)}&destination=${encodeURIComponent(toSpot + ', ' + cleanCity)}&travelmode=${transportMode === 'car' ? 'driving' : 'transit'}`;
+      
+      legItemsHtml += `
+        <div style="background:#FFF; border:1px solid #CBD5E1; border-radius:8px; padding:0.4rem 0.75rem; font-size:0.82rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-top:0.4rem;">
+          <span style="font-weight:700; color:var(--text-primary);">Leg ${i + 1}: ${escapeHtml(fromSpot)} ➔ ${escapeHtml(toSpot)}</span>
+          <a href="${legUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:none; background:#F0F9FF; padding:0.15rem 0.5rem; border-radius:4px; border:1px solid #BAE6FD;">
+            ${transportMode === 'car' ? '🚗 Drive Leg' : '🚆 Transit Leg'} ↗
+          </a>
+        </div>
+      `;
     }
+
+    const stopsListBadges = cleanVenues.map((v, idx) => `
+      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFF; color:#047857; border:1px solid #A7F3D0; padding:0.2rem 0.6rem; border-radius:6px; font-weight:700; font-size:0.82rem; margin:0.15rem;">
+        <span style="background:#047857; color:#FFF; border-radius:999px; width:18px; height:18px; display:inline-flex; justify-content:center; align-items:center; font-size:0.7rem;">${idx + 1}</span>
+        ${escapeHtml(v)}
+      </span>
+    `).join(' ➔ ');
 
     return `
       <div style="background:linear-gradient(135deg, #FEF3C7, #D1FAE5); border:2.5px solid var(--border-ink); border-radius:18px; padding:1.75rem; text-align:center; margin-bottom:1.75rem; box-shadow:var(--shadow-sketch);">
         <div style="font-size:1.4rem; color:var(--primary-forest); font-family:var(--font-serif); margin-bottom:0.5rem;" class="font-serif">
-          🗺️ Full Multi-Stop Google Maps Navigation Route
+          🗺️ Full ${cleanVenues.length}-Stop Google Maps Navigation Route
         </div>
+        
+        <!-- Sequential Stops List Badge -->
+        <div style="margin-bottom:1rem; line-height:1.8;">
+          ${stopsListBadges}
+        </div>
+
         <p style="font-size:0.92rem; color:var(--text-secondary); max-width:680px; margin:0 auto 1.25rem;">
-          Click the button below to load <strong>all ${cleanVenues.length} destinations in order</strong> directly into Google Maps! Hit <strong>"Start Navigation"</strong> to follow the turn-by-turn route on your phone.
+          Click the master button below to load <strong>ALL ${cleanVenues.length} DESTINATIONS IN ORDER</strong> (1 ➔ ${cleanVenues.length}) directly into Google Maps! Hit <strong>"Start Navigation"</strong> to follow the turn-by-turn route.
         </p>
-        <a href="${multiStopUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.85rem 2rem; font-size:1.1rem; text-decoration:none;">
-          📍 Open All ${cleanVenues.length} Destinations Route in Google Maps ↗
-        </a>
+
+        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+          <a href="${masterPathUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.85rem 1.75rem; font-size:1.05rem; text-decoration:none;">
+            📍 Open All ${cleanVenues.length} Stops Sequential Route in Google Maps ↗
+          </a>
+          ${transportMode === 'car' ? `
+            <a href="${drivingApiUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:0.85rem 1.75rem; font-size:1.05rem; text-decoration:none; background:#FFF;">
+              🚗 Open Driving Navigation API ↗
+            </a>
+          ` : ''}
+        </div>
+
+        <!-- Leg by Leg Collapsible Accordion -->
+        <details style="text-align:left; max-width:680px; margin:0.75rem auto 0; background:rgba(255,255,255,0.7); border-radius:10px; padding:0.5rem 0.85rem; border:1px solid #CBD5E1;">
+          <summary style="font-weight:700; color:var(--primary-forest); cursor:pointer; font-size:0.88rem;">
+            🚆 View Leg-by-Leg Direct Transit Links (${cleanVenues.length - 1} Segments)
+          </summary>
+          <div style="margin-top:0.5rem;">
+            ${legItemsHtml}
+          </div>
+        </details>
       </div>
     `;
   },
