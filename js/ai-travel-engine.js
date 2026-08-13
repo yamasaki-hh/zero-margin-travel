@@ -1987,7 +1987,8 @@ const AITravelEngine = {
 
     const pathString = formattedStops.join('/');
     return `https://www.google.com/maps/dir/${pathString}/?api=1${travelModeParam}`;
-  },
+  }
+};
 
 function configureGeminiKey() {
   const key = prompt('Optional: Enter your Gemini 1.5 Flash API Key to enable live Gemini API calls:\n(Leave empty for built-in 0 Margin Travel Engine)', AITravelEngine.config.apiKey);
