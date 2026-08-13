@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>0 Margin EU Travel | Interactive AI Route Planner with Multi-Stop Google Maps Route</title>
-  <meta name="description" content="0 Margin EU Travel: Interactive AI Route Planner for Western Europe & Benelux (Paris, Amsterdam, Brussels, Luxembourg, Cologne, Munich, Berlin). Select Must-Visit spots and launch multi-stop Google Maps routes.">
   
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="shortcut icon" href="favicon.svg">
-  
-  <!-- Google Fonts: Cinzel, Inter, Caveat -->
+  <title>0 Margin EU Travel — AI Route Planner & Multi-Stop Google Maps Navigation</title>
+  <meta name="description" content="Free AI Travel Planner for Western Europe & Benelux. Select candidate spots and launch pre-loaded multi-stop turn-by-turn routes directly in Google Maps.">
+
+  <!-- Google Fonts: Inter & Playfair Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css?v=6.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/index.css?v=6.0">
 </head>
 <body>
 
@@ -28,7 +24,7 @@
 
   <!-- Navbar -->
   <header class="navbar">
-    <div class="brand-container" onclick="switchTab('planner')">
+    <div class="brand-container" style="cursor:pointer;" onclick="window.scrollTo({top:0, behavior:'smooth'})">
       <div class="brand-logo">0MT</div>
       <div>
         <div style="display:flex; align-items:center; gap:0.5rem;">
@@ -37,15 +33,12 @@
         </div>
       </div>
     </div>
-    
-    <ul class="nav-links">
-      <li><a class="nav-item active" onclick="switchTab('planner')">AI Route Planner</a></li>
-      <li><a class="nav-item" onclick="switchTab('calculator')">0% Savings Calc</a></li>
-      <li><a class="nav-item" onclick="switchTab('why')">Why 0 Margin?</a></li>
-    </ul>
 
-    <!-- Member Sign Up Container -->
-    <div id="navMemberArea"></div>
+    <div>
+      <button class="btn btn-secondary" onclick="configureGeminiKey()" style="font-size:0.85rem; padding:0.4rem 0.85rem;">
+        🔑 Config Gemini API Key
+      </button>
+    </div>
   </header>
 
   <!-- Hero Section -->
@@ -66,306 +59,142 @@
         Select Must-Visit Spots. Get Pre-loaded Google Maps Routes.
       </h1>
 
-      <div style="display:inline-flex; align-items:center; gap:0.8rem; background:var(--bg-card); border:2px solid var(--border-ink); padding:0.5rem 1.5rem; border-radius:9999px; font-size:1.1rem; font-weight:800; color:var(--primary-forest); box-shadow:2px 3px 0px var(--border-ink); margin-bottom:1.75rem;">
-        <span>Zero Exclusion (0)</span>
-        <span style="color:var(--primary-gold); font-size:1.3rem;">×</span>
-        <span>Infinite Human Potential (∞)</span>
-      </div>
-
       <p class="hero-subtitle">
-        1. Pick your destination city, duration, and transit mode (Public Transit 🚆 or Driving 🚗).<br>
+        1. Pick your destination city, duration (Half Day, 1 Day, or 2 Days max), and transit mode (Public Transit 🚆 or Driving 🚗).<br>
         2. Select your <strong>"Must-Visit Spots"</strong> from real ★4.5+ Google Maps verified landmarks, bistros & cafes.<br>
         3. Click to generate a custom itinerary AND launch a <strong>single pre-loaded Multi-Stop Google Maps Route</strong> for seamless turn-by-turn navigation!
-        <br><span class="font-hand">~ Handcrafted with care, built for human flourishing ~</span>
       </p>
 
-      <!-- Prominent Primary CTA Buttons -->
+      <!-- Prominent Primary CTA Button -->
       <div class="hero-buttons">
-        <button class="btn btn-primary" onclick="switchTab('planner')">
+        <button class="btn btn-primary" onclick="document.getElementById('aiPlanDestination').scrollIntoView({behavior:'smooth'})">
           🗺️ Create Custom Travel Route
-        </button>
-        <button class="btn btn-secondary" onclick="configureGeminiKey()">
-          🔑 Config Gemini API
         </button>
       </div>
 
     </div>
   </section>
 
-  <!-- Main Navigation Tabs -->
-  <div class="container" style="padding-top:0;">
-    <nav class="tab-nav">
-      <button class="tab-btn active" data-tab="planner">🤖 AI Custom Route Planner</button>
-      <button class="tab-btn" data-tab="calculator">🧮 0% Savings Calculator</button>
-      <button class="tab-btn" data-tab="why">🌱 Why 0 Margin Travel?</button>
-      <button class="tab-btn" id="myPageTabBtn" data-tab="mypage" style="display:none; background:#FFFDF9; border:1.5px solid #0284C7; color:#0369A1;">👤 My Travel Page</button>
-    </nav>
+  <!-- Main AI Custom Route Planner Section -->
+  <div class="container" style="padding-top:1rem;">
 
-    <!-- TAB 1: INTERACTIVE AI CUSTOM ROUTE PLANNER -->
-    <section id="tab-planner" class="tab-content active">
-      <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; margin-bottom:2.25rem; box-shadow:var(--shadow-sketch);">
-        <span class="paper-tape">🤖 3-Step Interactive Custom AI Route Planner</span>
-        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:0.5rem;">Interactive Travel Route & Google Maps Generator</h2>
-        <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1.5rem;">
-          Select your city and conditions, check your must-visit spots, and let AI synthesize an optimized route with a single pre-loaded Multi-Stop Google Maps navigation link!
-        </p>
+    <section id="tab-planner">
+      <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; box-shadow:var(--shadow-sketch);">
+        
+        <div style="text-align:center; max-width:700px; margin:0 auto 2rem;">
+          <span class="paper-tape">Interactive Route Planner</span>
+          <h2 style="font-size:2.2rem; margin-top:0.4rem; margin-bottom:0.5rem;" class="font-serif">
+            Build Your Custom Travel Route
+          </h2>
+          <p style="font-size:0.95rem; color:var(--text-secondary);">
+            Step 1: Set parameters. Step 2: Select candidate spots. Step 3: Synthesize route and launch in Google Maps!
+          </p>
+        </div>
 
-        <!-- STEP 1: BASIC CONDITIONS FORM -->
-        <form id="aiPlannerForm" onsubmit="AITravelEngine.generateItinerary(event)" style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.75rem; margin-bottom:2rem;">
-          <h3 style="font-size:1.15rem; font-family:var(--font-sans); color:var(--primary-wood); margin-bottom:1rem;">
-            Step 1: Select Basic Travel Parameters
-          </h3>
-
-          <div class="grid-2">
-            <div class="form-group">
-              <label class="form-label">Destination City (Western Europe & Benelux)</label>
-              <select id="aiPlanDestination" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
-                <option value="Paris, France" selected>Paris (France)</option>
-                <option value="Amsterdam, Netherlands">Amsterdam (Netherlands)</option>
-                <option value="Brussels, Belgium">Brussels (Belgium)</option>
-                <option value="Luxembourg City, Luxembourg">Luxembourg City (Luxembourg)</option>
-                <option value="Cologne, Germany">Cologne / Köln (Germany)</option>
-                <option value="Munich, Germany">Munich / München (Germany)</option>
-                <option value="Berlin, Germany">Berlin (Germany)</option>
-              </select>
+        <form id="aiPlannerForm" onsubmit="AITravelEngine.generateItinerary(event)">
+          
+          <!-- STEP 1: TRIP PARAMETERS -->
+          <div style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.75rem; margin-bottom:2rem;">
+            <div style="font-size:1.15rem; font-weight:800; color:var(--primary-forest); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.5rem;" class="font-serif">
+              <span>1️⃣</span> <span>Step 1: Destination, Transit & Duration</span>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Transportation Mode</label>
-              <select id="aiPlanTransport" class="form-control">
-                <option value="transit" selected>🚆 Public Transit (Metro, Bus & Train)</option>
-                <option value="car">🚗 Car / Driving (Driving Route with Parking Garages)</option>
-              </select>
+            <div class="grid-2">
+              <div>
+                <label class="form-label">Destination City:</label>
+                <select id="aiPlanDestination" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
+                  <option value="Paris, France" selected>🇫🇷 Paris, France</option>
+                  <option value="Berlin, Germany">🇩🇪 Berlin, Germany</option>
+                  <option value="Amsterdam, Netherlands">🇳🇱 Amsterdam, Netherlands</option>
+                  <option value="Brussels, Belgium">🇧🇪 Brussels, Belgium</option>
+                  <option value="Luxembourg City, Luxembourg">🇱🇺 Luxembourg City, Luxembourg</option>
+                  <option value="Cologne, Germany">🇩🇪 Cologne, Germany</option>
+                  <option value="Munich, Germany">🇩🇪 Munich, Germany</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="form-label">Transportation Mode:</label>
+                <select id="aiPlanTransport" class="form-control">
+                  <option value="transit" selected>🚆 Public Transit (Metro / S-Bahn / Bus)</option>
+                  <option value="car">🚗 Rental Car / Driving (Includes Parking Guidance)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="form-label">Traveler Type:</label>
+                <select id="aiPlanAudience" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
+                  <option value="none" selected>✨ All Travelers (Default)</option>
+                  <option value="adults">🍷 Adults Only (Relaxed Fine Dining Pace)</option>
+                  <option value="kids">👨‍👩‍👧 Family with Kids (Kid-Friendly Attractions)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="form-label">Trip Duration (Max 2 Days):</label>
+                <select id="aiPlanDays" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
+                  <option value="0.5">⏱️ Half Day Express (Max 2 Must-Visit Spots)</option>
+                  <option value="1.0" selected>☀️ 1 Full Day (Max 4 Must-Visit Spots)</option>
+                  <option value="2.0">🌙 2 Full Days (Max 7 Must-Visit Spots)</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <div class="grid-2">
-            <div class="form-group">
-              <label class="form-label">Traveler Type (Audience)</label>
-              <select id="aiPlanAudience" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
-                <option value="none" selected>⚪ No Preference (General)</option>
-                <option value="adults">👥 Adults Only (Fine Dining & Fine Art)</option>
-                <option value="kids">👨‍👩‍👧 Family with Kids (Kid-Friendly & Relaxed Pace)</option>
-              </select>
+          <!-- STEP 2: INTERACTIVE CANDIDATE SPOTS SELECTION -->
+          <div style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.75rem; margin-bottom:2rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+              <div style="font-size:1.15rem; font-weight:800; color:var(--primary-forest); display:flex; align-items:center; gap:0.5rem;" class="font-serif">
+                <span>2️⃣</span> <span>Step 2: Select Must-Visit Candidate Spots</span>
+              </div>
+              
+              <span id="spotsCounterBadge" style="font-size:0.88rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.35rem 0.85rem; border-radius:9999px; border:1.5px solid #0284C7;">
+                Selected: <strong>0 / 4</strong> (Max 4 Must-Visit Spots)
+              </span>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Duration (Max 2 Days Limit)</label>
-              <select id="aiPlanDays" class="form-control" onchange="AITravelEngine.renderCandidateSpots()">
-                <option value="0.5">Half Day Express (Max 2 Must-Visit Spots)</option>
-                <option value="1" selected>1 Day Full Explore (Max 4 Must-Visit Spots)</option>
-                <option value="2">2 Days Deep Stay (Max 7 Must-Visit Spots)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- STEP 2: CANDIDATE SPOTS SELECTION GRID -->
-          <div style="margin-top:1.5rem; padding-top:1.5rem; border-top:2px dashed var(--border-ink);">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
-              <h3 style="font-size:1.15rem; font-family:var(--font-sans); color:var(--primary-forest); margin:0;">
-                Step 2: Select "Must-Visit Spots" from Verified Real Venues
-              </h3>
-              <span id="spotsCounterBadge" style="font-size:0.85rem; font-weight:700; background:#FFF; border:1.5px solid var(--border-ink); padding:0.35rem 0.85rem; border-radius:9999px;"></span>
-            </div>
-            
-            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.25rem;">
-              Check the boxes for your top priority venues below. AI will embed these selected spots first and complement the remaining time slots with top-rated local venues!
+            <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:1.25rem;">
+              Check the boxes for spots you definitely want to visit. The AI engine will route them along with curated nearby landmarks into a single multi-stop Google Maps navigation path!
             </p>
 
-            <div id="candidateSpotsGrid" class="grid-2"></div>
+            <div id="candidateSpotsGrid" class="grid-3">
+              <!-- Dynamically populated candidate spots cards -->
+            </div>
           </div>
 
-          <!-- STEP 3: GENERATE ROUTE SUBMIT BUTTON -->
-          <div style="margin-top:2rem; text-align:center;">
-            <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; padding:0.95rem; font-size:1.1rem;">
-              ⚡ Step 3: Synthesize Custom Route & Pre-load Google Maps Route
+          <!-- STEP 3: GENERATE ROUTE BUTTON -->
+          <div style="text-align:center;">
+            <button type="submit" class="btn btn-emerald" style="padding:1.1rem 2.75rem; font-size:1.2rem; border-radius:16px;">
+              ⚡ Synthesize Custom AI Route & Pre-load Google Maps Route ↗
             </button>
           </div>
+
         </form>
 
-        <div id="aiPlanResult" style="display:none;"></div>
-      </div>
-    </section>
-
-    <!-- TAB 2: 0% SAVINGS CALCULATOR -->
-    <section id="tab-calculator" class="tab-content">
-      <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; box-shadow:var(--shadow-sketch);">
-        <span class="paper-tape">0% Fee Transparency</span>
-        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:1rem;">0% Commission Savings Calculator</h2>
-        <p style="font-size:0.95rem; color:var(--text-secondary); margin-bottom:1.5rem;">
-          Traditional travel platforms extract heavy 20% to 30% commission cuts. At 0 Margin Travel, <strong>0% commission is taken</strong>—100% of value stays with you and local businesses.
-        </p>
-
-        <div class="calc-box">
-          <div class="grid-2" style="align-items:center;">
-            <div>
-              <label class="form-label">Total Travel / Activity Budget ($ / € / ¥):</label>
-              <input type="number" id="calcInput" class="form-control" value="1000" step="100">
-            </div>
-            <div>
-              <div class="calc-row">
-                <span>Traditional Commercial Platform Cut (25%):</span>
-                <span id="calcTraditionalFee" style="color:#C2410C; font-weight:700;">$250</span>
-              </div>
-              <div class="calc-row">
-                <span>0 Margin Travel Cut (0%):</span>
-                <span style="color:#047857; font-weight:800;">$0</span>
-              </div>
-              <div class="calc-row">
-                <span><strong>Money Saved for You:</strong></span>
-                <span id="calcSavings" class="calc-highlight">$250</span>
-              </div>
-              <div class="calc-row">
-                <span><strong>100% Direct Payout to Community:</strong></span>
-                <span id="calcNet" style="font-size:1.2rem; font-weight:800; color:#1C1917;">$1,000</span>
-              </div>
-            </div>
-          </div>
+        <!-- RESULT CONTAINER -->
+        <div id="aiPlanResult" style="display:none;">
+          <!-- Dynamically populated custom itinerary card with master multi-stop link -->
         </div>
+
       </div>
     </section>
 
-    <!-- TAB 3: WHY 0 MARGIN TRAVEL? -->
-    <section id="tab-why" class="tab-content">
-      <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; box-shadow:var(--shadow-sketch);">
-        <span class="paper-tape">Core Principles</span>
-        <h2 style="font-size:2rem; margin-top:0.4rem; margin-bottom:1rem;">Why 0 Margin Travel?</h2>
-        <p style="font-size:1.05rem; line-height:1.85; color:var(--text-secondary); margin-bottom:1.5rem;">
-          In a world dominated by commercial booking algorithms, authentic travel experiences and route optimization have been monetized and middleman-extracted.
-        </p>
-
-        <div class="grid-2">
-          <div style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.5rem;">
-            <h3 style="font-size:1.2rem; color:var(--primary-forest); margin-bottom:0.75rem;">1. 100% Free Core Platform</h3>
-            <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.65;">
-              AI route planning, Google Maps multi-stop navigation, and transit optimization are <strong>100% free forever</strong> for global travelers.
-            </p>
-          </div>
-
-          <div style="background:#FFFDF9; border:2px solid var(--border-ink); border-radius:18px; padding:1.5rem;">
-            <h3 style="font-size:1.2rem; color:var(--primary-wood); margin-bottom:0.75rem;">2. Direct Support for Real Local Businesses</h3>
-            <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.65;">
-              We feature authentic ★4.5+ local bistros, historic bakeries, and family-owned venues directly without taking platform cuts.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 4: MY PAGE -->
-    <section id="tab-mypage" class="tab-content">
-      <div id="myPageContentArea"></div>
-    </section>
   </div>
 
-  <!-- Ultra-Simple Sign-Up Modal -->
-  <div id="registerModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeRegisterModal()">&times;</button>
-      <div style="text-align:center; margin-bottom:1.25rem;">
-        <span class="paper-tape">Fast Free Sign-Up</span>
-        <h2 style="font-size:1.55rem; font-family:var(--font-serif); margin-top:0.4rem;">Join 0 Margin EU Travel</h2>
-        <p style="font-size:0.85rem; color:var(--text-secondary);">
-          Simple 10-second sign-up. Both anonymous and real-name members are welcomed!
-        </p>
-      </div>
-
-      <form onsubmit="handleRegisterSubmit(event)">
-        <div class="form-group">
-          <label class="form-label">Name / Display Name</label>
-          <input type="text" id="regName" class="form-control" placeholder="e.g. Kenji Yamasaki or Anonymous Traveler" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" id="regEmail" class="form-control" placeholder="name@example.com" required>
-        </div>
-        
-        <div style="background:#FFFDF9; border:1.5px solid var(--border-ink); border-radius:12px; padding:0.85rem; margin-bottom:1.25rem;">
-          <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; font-size:0.85rem; font-weight:600; color:#1C1917;">
-            <input type="checkbox" id="regVerifiedCheck" style="width:18px; height:18px;">
-            <span>Verify Real-Name now (Get 🔵 Verified Member Badge)</span>
-          </label>
-        </div>
-
-        <button type="submit" class="btn btn-emerald" style="width:100%; justify-content:center; padding:0.75rem;">
-          Create Free Account
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Real-Name Verification Upgrade Modal -->
-  <div id="verifyModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeVerifyModal()">&times;</button>
-      <div style="text-align:center; margin-bottom:1.25rem;">
-        <span class="verified-badge" style="font-size:0.85rem; padding:0.3rem 0.8rem;">🔵 Trust Verification</span>
-        <h2 style="font-size:1.55rem; font-family:var(--font-serif); margin-top:0.4rem;">Verify Real-Name Account</h2>
-        <p style="font-size:0.85rem; color:var(--text-secondary);">
-          Verification grants your profile top priority trust ranking.
-        </p>
-      </div>
-
-      <form onsubmit="handleVerificationSubmit(event)">
-        <div class="form-group">
-          <label class="form-label">Legal Real Name</label>
-          <input type="text" id="verifyRealName" class="form-control" placeholder="e.g. Kenji Yamasaki" required>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Verification Method</label>
-          <select id="verifyDocType" class="form-control">
-            <option>Passport Verification</option>
-            <option>Government Driver License / National ID</option>
-            <option>Facebook Profile Link Verification</option>
-            <option>University Student ID Verification</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn btn-indigo" style="width:100%; justify-content:center; padding:0.75rem;">
-          Submit & Get 🔵 Verified Trust Badge (+150 pts)
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">0 Margin EU Travel</div>
-        <p class="footer-text">
-          Western Europe & Benelux AI Travel Planner & Multi-Stop Google Maps Navigation Platform.<br>
-          <em>"Freely you have received; freely give." (Matthew 10:8)</em><br>
-          Zero Exclusion (0) × Infinite Human Potential (∞)
-        </p>
-      </div>
-      <div>
-        <h4 class="footer-heading">Platform Features</h4>
-        <ul class="footer-links">
-          <li><a onclick="switchTab('planner')">AI Route Planner</a></li>
-          <li><a onclick="switchTab('calculator')">0% Savings Calculator</a></li>
-          <li><a onclick="switchTab('why')">Why 0 Margin?</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="footer-heading">Ethics & Safety</h4>
-        <ul class="footer-links">
-          <li><a onclick="openRegisterModal()">Member Registration</a></li>
-        </ul>
-      </div>
-    </div>
-    
-    <!-- UI Transparency Badge -->
-    <div style="max-width:1200px; margin:0 auto 2rem; text-align:center;">
-      <div style="display:inline-flex; align-items:center; gap:0.5rem; background:#FEF3C7; color:#78350F; border:1.5px solid #292524; padding:0.45rem 1rem; border-radius:14px; font-size:0.85rem; font-weight:700; box-shadow:2px 2px 0px #292524;">
+  <!-- Minimal Footer -->
+  <footer style="margin-top:4rem;">
+    <div style="max-width:1200px; margin:0 auto; text-align:center; padding:2rem 1rem;">
+      <div class="footer-brand" style="margin-bottom:0.5rem;">0 Margin EU Travel</div>
+      <p class="footer-text" style="margin-bottom:1.25rem;">
+        Western Europe & Benelux AI Travel Planner & Multi-Stop Google Maps Navigation Platform.<br>
+        <em>"Freely you have received; freely give." (Matthew 10:8)</em>
+      </p>
+      <div style="display:inline-flex; align-items:center; gap:0.5rem; background:#FEF3C7; color:#78350F; border:1.5px solid #292524; padding:0.45rem 1.25rem; border-radius:14px; font-size:0.85rem; font-weight:700;">
         ⚡ Powered by Interactive Spot Selection & Multi-Stop Google Maps Navigation Engine.
       </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div>© 2026 0 Margin EU Travel Platform. Freely given, freely built.</div>
-      <div>Guided by Faith & Ethics Council</div>
+      <div class="footer-bottom" style="margin-top:1.5rem; border-top:1px dashed #EADEC9; padding-top:1rem;">
+        <div>© 2026 0 Margin EU Travel Platform. Freely given, freely built.</div>
+      </div>
     </div>
   </footer>
 
