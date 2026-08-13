@@ -1773,79 +1773,106 @@ const AITravelEngine = {
     return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="View Live Google Maps Hours, Reviews & Photos">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
   },
 
-  // MASTER FEATURE: Generate Turn-by-Turn Multi-Stop Route Link for Google Maps
-  generateMultiStopMapsLink(venueList, city, transportMode) {
-    if (!venueList || venueList.length === 0) return '';
+  // MASTER FEATURE: Generate Dual Turn-by-Turn Routes for Google Maps (Route A: Selected Only & Route B: Full 1-Day AI Itinerary)
+  generateMultiStopMapsLink(mustVisitVenues, fullDayVenues, city, transportMode) {
+    if ((!mustVisitVenues || mustVisitVenues.length === 0) && (!fullDayVenues || fullDayVenues.length === 0)) return '';
 
     const cleanCity = city.split(',')[0].trim();
-    const cleanVenues = venueList.map(v => v.replace(/[()]/g, '').trim());
 
-    // Build 100% Guaranteed Path-Based Google Maps Route URL (Loads ALL N stops in sequential order)
-    const pathSegments = cleanVenues.map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('/');
-    const masterPathUrl = `https://www.google.com/maps/dir/${pathSegments}/`;
+    // ROUTE A: Must-Visit Selected Spots Only Route
+    const cleanMust = (mustVisitVenues || []).map(v => v.replace(/[()]/g, '').trim());
+    const pathSegmentsA = cleanMust.map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('/');
+    const masterUrlA = `https://www.google.com/maps/dir/${pathSegmentsA}/`;
 
-    // Driving Mode API URL with waypoints
-    const origin = encodeURIComponent(`${cleanVenues[0]}, ${cleanCity}`);
-    const destination = encodeURIComponent(`${cleanVenues[cleanVenues.length - 1]}, ${cleanCity}`);
-    const waypoints = cleanVenues.slice(1, -1).map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('|');
-    const drivingApiUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&waypoints=${waypoints}&travelmode=driving`;
+    // ROUTE B: Full 1-Day AI Recommended Itinerary Route (All Destinations)
+    const cleanFull = (fullDayVenues || []).map(v => v.replace(/[()]/g, '').trim());
+    const pathSegmentsB = cleanFull.map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('/');
+    const masterUrlB = `https://www.google.com/maps/dir/${pathSegmentsB}/`;
 
-    const mainUrl = transportMode === 'car' ? drivingApiUrl : masterPathUrl;
+    // Badges for Route A
+    const badgesA = cleanMust.map((v, idx) => `
+      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFF; color:#047857; border:1px solid #A7F3D0; padding:0.2rem 0.55rem; border-radius:6px; font-weight:700; font-size:0.8rem; margin:0.15rem;">
+        <span style="background:#047857; color:#FFF; border-radius:999px; width:17px; height:17px; display:inline-flex; justify-content:center; align-items:center; font-size:0.68rem;">${idx + 1}</span>
+        ${escapeHtml(v)}
+      </span>
+    `).join(' ➔ ');
 
-    // Generate Leg-by-Leg Transit Links for each segment (Stop 1 -> Stop 2 -> Stop 3...)
+    // Badges for Route B
+    const badgesB = cleanFull.map((v, idx) => `
+      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFF; color:#B45309; border:1px solid #FDE68A; padding:0.2rem 0.55rem; border-radius:6px; font-weight:700; font-size:0.8rem; margin:0.15rem;">
+        <span style="background:#B45309; color:#FFF; border-radius:999px; width:17px; height:17px; display:inline-flex; justify-content:center; align-items:center; font-size:0.68rem;">${idx + 1}</span>
+        ${escapeHtml(v)}
+      </span>
+    `).join(' ➔ ');
+
+    // Leg-by-Leg Transit links for Route B
     let legItemsHtml = '';
-    for (let i = 0; i < cleanVenues.length - 1; i++) {
-      const fromSpot = cleanVenues[i];
-      const toSpot = cleanVenues[i + 1];
+    for (let i = 0; i < cleanFull.length - 1; i++) {
+      const fromSpot = cleanFull[i];
+      const toSpot = cleanFull[i + 1];
       const legUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fromSpot + ', ' + cleanCity)}&destination=${encodeURIComponent(toSpot + ', ' + cleanCity)}&travelmode=${transportMode === 'car' ? 'driving' : 'transit'}`;
       
       legItemsHtml += `
         <div style="background:#FFF; border:1px solid #CBD5E1; border-radius:8px; padding:0.4rem 0.75rem; font-size:0.82rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-top:0.4rem;">
           <span style="font-weight:700; color:var(--text-primary);">Leg ${i + 1}: ${escapeHtml(fromSpot)} ➔ ${escapeHtml(toSpot)}</span>
           <a href="${legUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:none; background:#F0F9FF; padding:0.15rem 0.5rem; border-radius:4px; border:1px solid #BAE6FD;">
-            ${transportMode === 'car' ? '🚗 Drive Leg' : '🚆 Transit Leg'} ↗
+            ${transportMode === 'car' ? '🚗 Drive Leg' : '轨 Transit Leg'} ↗
           </a>
         </div>
       `;
     }
 
-    const stopsListBadges = cleanVenues.map((v, idx) => `
-      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFF; color:#047857; border:1px solid #A7F3D0; padding:0.2rem 0.6rem; border-radius:6px; font-weight:700; font-size:0.82rem; margin:0.15rem;">
-        <span style="background:#047857; color:#FFF; border-radius:999px; width:18px; height:18px; display:inline-flex; justify-content:center; align-items:center; font-size:0.7rem;">${idx + 1}</span>
-        ${escapeHtml(v)}
-      </span>
-    `).join(' ➔ ');
-
     return `
       <div style="background:linear-gradient(135deg, #FEF3C7, #D1FAE5); border:2.5px solid var(--border-ink); border-radius:18px; padding:1.75rem; text-align:center; margin-bottom:1.75rem; box-shadow:var(--shadow-sketch);">
-        <div style="font-size:1.4rem; color:var(--primary-forest); font-family:var(--font-serif); margin-bottom:0.5rem;" class="font-serif">
-          🗺️ Full ${cleanVenues.length}-Stop Google Maps Navigation Route
-        </div>
-        
-        <!-- Sequential Stops List Badge -->
-        <div style="margin-bottom:1rem; line-height:1.8;">
-          ${stopsListBadges}
+        <div style="font-size:1.4rem; color:var(--primary-forest); font-family:var(--font-serif); margin-bottom:0.75rem;" class="font-serif">
+          🗺️ Dual Google Maps Navigation Routes
         </div>
 
-        <p style="font-size:0.92rem; color:var(--text-secondary); max-width:680px; margin:0 auto 1.25rem;">
-          Click the master button below to load <strong>ALL ${cleanVenues.length} DESTINATIONS IN ORDER</strong> (1 ➔ ${cleanVenues.length}) directly into Google Maps! Hit <strong>"Start Navigation"</strong> to follow the turn-by-turn route.
-        </p>
-
-        <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
-          <a href="${masterPathUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.85rem 1.75rem; font-size:1.05rem; text-decoration:none;">
-            📍 Open All ${cleanVenues.length} Stops Sequential Route in Google Maps ↗
-          </a>
-          ${transportMode === 'car' ? `
-            <a href="${drivingApiUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding:0.85rem 1.75rem; font-size:1.05rem; text-decoration:none; background:#FFF;">
-              🚗 Open Driving Navigation API ↗
+        <!-- DUAL ROUTE SELECTION BUTTONS -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+          
+          <!-- ROUTE A CARD -->
+          <div style="background:#FFF; border:2px solid #047857; border-radius:14px; padding:1.25rem; text-align:left; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="font-weight:800; color:#047857; font-size:1rem; margin-bottom:0.4rem;" class="font-serif">
+                📍 Route A: Selected Spots Only (${cleanMust.length} Stops)
+              </div>
+              <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+                Loads <strong>ONLY</strong> your ${cleanMust.length} checked candidate spots directly into Google Maps:
+              </p>
+              <div style="margin-bottom:1rem; line-height:1.8;">
+                ${badgesA}
+              </div>
+            </div>
+            <a href="${masterUrlA}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.75rem 1.25rem; font-size:0.95rem; text-decoration:none; text-align:center; width:100%; justify-content:center;">
+              📍 Open Route A (${cleanMust.length} Selected Spots) ↗
             </a>
-          ` : ''}
+          </div>
+
+          <!-- ROUTE B CARD -->
+          <div style="background:#FFF; border:2px solid #B45309; border-radius:14px; padding:1.25rem; text-align:left; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="font-weight:800; color:#B45309; font-size:1rem; margin-bottom:0.4rem;" class="font-serif">
+                ✨ Route B: Full 1-Day AI Recommended Route (${cleanFull.length} Total Stops)
+              </div>
+              <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+                Loads your selected spots <strong>PLUS AI-curated landmarks & dining</strong> for a full 1-day experience:
+              </p>
+              <div style="margin-bottom:1rem; line-height:1.8;">
+                ${badgesB}
+              </div>
+            </div>
+            <a href="${masterUrlB}" target="_blank" rel="noopener noreferrer" class="btn btn-emerald" style="padding:0.75rem 1.25rem; font-size:0.95rem; text-decoration:none; text-align:center; width:100%; justify-content:center; background:#B45309;">
+              ✨ Open Route B (Full 1-Day AI Itinerary) ↗
+            </a>
+          </div>
+
         </div>
 
         <!-- Leg by Leg Collapsible Accordion -->
-        <details style="text-align:left; max-width:680px; margin:0.75rem auto 0; background:rgba(255,255,255,0.7); border-radius:10px; padding:0.5rem 0.85rem; border:1px solid #CBD5E1;">
+        <details style="text-align:left; max-width:100%; background:rgba(255,255,255,0.7); border-radius:10px; padding:0.5rem 0.85rem; border:1px solid #CBD5E1;">
           <summary style="font-weight:700; color:var(--primary-forest); cursor:pointer; font-size:0.88rem;">
-            🚆 View Leg-by-Leg Direct Transit Links (${cleanVenues.length - 1} Segments)
+            🚆 View Leg-by-Leg Direct Transit Links (${cleanFull.length - 1} Segments)
           </summary>
           <div style="margin-top:0.5rem;">
             ${legItemsHtml}
@@ -2082,28 +2109,45 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
     if (!resultContainer) return;
 
     const isCar = transportMode === 'car';
+    const destLower = destination.toLowerCase();
 
-    let venueNames = [];
+    let mustVisitNames = [];
     if (mustVisitSpots && mustVisitSpots.length > 0) {
-      venueNames = mustVisitSpots.map(s => s.name.split(' (')[0].trim());
+      mustVisitNames = mustVisitSpots.map(s => s.name.split(' (')[0].trim());
     }
 
-    if (venueNames.length === 0) {
-      const destLower = destination.toLowerCase();
+    if (mustVisitNames.length === 0) {
       if (destLower.includes('paris')) {
-        venueNames = ['Eiffel Tower', 'Louvre Museum', 'Arc de Triomphe', 'Musée d\'Orsay', 'Sainte-Chapelle', 'Le Petit Marché'];
+        mustVisitNames = ['Sainte-Chapelle', 'Musée d'Orsay', 'Le Petit Marché'];
       } else if (destLower.includes('berlin')) {
-        venueNames = ['Brandenburg Gate', 'Museum Island', 'Reichstag Building', "Mustafa's Gemüse Kebab", 'Zeit für Brot', 'East Side Gallery'];
+        mustVisitNames = ['Brandenburg Gate', 'Museum Island', 'Reichstag Building'];
       } else if (destLower.includes('amsterdam')) {
-        venueNames = ['Rijksmuseum', 'Van Stapele Koekmakerij', 'Café de Klos', 'Nine Streets', "Brouwerij 't IJ"];
+        mustVisitNames = ['Rijksmuseum', 'Van Stapele Koekmakerij', 'Café de Klos'];
       } else if (destLower.includes('brussels')) {
-        venueNames = ['Grand-Place', 'Maison Dandoy', 'Fin de Siècle', 'Royal Gallery of Saint-Hubert'];
+        mustVisitNames = ['Grand-Place', 'Maison Dandoy', 'Fin de Siècle'];
       } else {
-        venueNames = ['Cologne Cathedral', 'Museum Ludwig', 'Brauhaus Sion', 'Hohenzollernbrücke'];
+        mustVisitNames = ['Cologne Cathedral', 'Museum Ludwig', 'Brauhaus Sion'];
       }
     }
 
-    const multiStopMapsHtml = this.generateMultiStopMapsLink(venueNames, destination, transportMode);
+    // Build Full 1-Day AI Recommended Itinerary Venues (All Destinations)
+    let fullDayNames = [];
+    if (destLower.includes('paris')) {
+      fullDayNames = ['Eiffel Tower', 'Marché des Enfants Rouges', ...mustVisitNames, 'Louvre Museum', 'Pont des Arts'];
+    } else if (destLower.includes('berlin')) {
+      fullDayNames = ['Brandenburg Gate', 'Zeit für Brot', ...mustVisitNames, 'East Side Gallery', 'Zur Letzten Instanz'];
+    } else if (destLower.includes('amsterdam')) {
+      fullDayNames = ['Rijksmuseum', 'Winkel 43', ...mustVisitNames, 'Nine Streets', "Brouwerij 't IJ"];
+    } else if (destLower.includes('brussels')) {
+      fullDayNames = ['Grand-Place', 'Maison Dandoy', ...mustVisitNames, 'Atomium', 'Delirium Café'];
+    } else {
+      fullDayNames = ['Cologne Cathedral', 'Café Reichard', ...mustVisitNames, 'Hohenzollernbrücke', 'Brauhaus Sion'];
+    }
+
+    // Remove duplicates while preserving sequential order
+    fullDayNames = Array.from(new Set(fullDayNames));
+
+    const dualRoutesMapsHtml = this.generateMultiStopMapsLink(mustVisitNames, fullDayNames, destination, transportMode);
 
     resultContainer.innerHTML = `
       <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch); animation:fadeIn 0.3s ease;">
@@ -2118,8 +2162,8 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
           <span class="seed-points-badge">${isCar ? '🚗 Car Mode with Parking' : '轨 Public Transit Mode'}</span>
         </div>
 
-        <!-- MASTER MULTI-STOP GOOGLE MAPS ROUTE BUTTON -->
-        ${multiStopMapsHtml}
+        <!-- DUAL MASTER MULTI-STOP GOOGLE MAPS ROUTES -->
+        ${dualRoutesMapsHtml}
 
         <!-- Single Spot Live Links Instruction Box -->
         <div style="background:#EFF6FF; border:1.5px solid #3B82F6; border-radius:12px; padding:0.85rem 1.25rem; margin-bottom:1.5rem; font-size:0.85rem; color:#1E40AF; display:flex; align-items:center; gap:0.5rem;">
