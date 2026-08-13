@@ -1770,7 +1770,7 @@ const AITravelEngine = {
     const query = encodeURIComponent(`${cleanPlace} ${cleanCity}`);
     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
     const ratingTag = rating ? ` (${rating})` : '';
-    return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="View Live Google Maps Hours, Reviews & Photos">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
+    return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="View Live Google Maps Hours, Reviews & Photos">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
   },
 
   // MASTER DUAL ROUTE GENERATOR: Route A (Must-Visit Selected Spots) & Route B (Full 1-Day AI Recommended Course)
@@ -1923,11 +1923,19 @@ const AITravelEngine = {
     `;
   },
 
+  lastCity: '',
+
   // Step 2: Render Interactive Candidate Spots with Selection Checkboxes & Lightweight Images
   renderCandidateSpots() {
-    const city = document.getElementById('aiPlanDestination').value || 'Paris, France';
-    const days = parseFloat(document.getElementById('aiPlanDays').value) || 1;
-    const targetAudience = document.getElementById('aiPlanAudience').value || 'none';
+    const city = document.getElementById('aiPlanDestination')?.value || 'Paris, France';
+    const days = parseFloat(document.getElementById('aiPlanDays')?.value) || 1;
+    const targetAudience = document.getElementById('aiPlanAudience')?.value || 'none';
+
+    // Clear stale selections if city changed
+    if (this.lastCity && this.lastCity !== city) {
+      this.selectedMustVisitIds.clear();
+    }
+    this.lastCity = city;
 
     let maxCap = 4;
     if (days === 0.5) maxCap = 2;
@@ -1957,7 +1965,13 @@ const AITravelEngine = {
       const imgUrl = s.image || SVG_FALLBACK_IMAGE;
 
       return `
-        <div class="card spot-candidate-card" style="border:2px solid ${isChecked ? 'var(--primary-gold)' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between;" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
+        <div class="card spot-candidate-card" style="border:2.5px solid ${isChecked ? '#B45309' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:${isChecked ? '0 0 0 3px #FDE68A' : 'none'};" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
+          ${isChecked ? `
+            <div style="position:absolute; top:-10px; left:-10px; background:#047857; color:#FFF; font-weight:800; font-size:0.75rem; padding:0.25rem 0.65rem; border-radius:999px; border:2px solid #FFF; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:10;">
+              ✓ SELECTED
+            </div>
+          ` : ''}
+
           <div>
             <!-- Lightweight Spot Thumbnail Image with Native Lazy Loading & SVG Fallback -->
             <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
@@ -1969,8 +1983,8 @@ const AITravelEngine = {
               <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">${s.category}</span>
             </div>
 
-            <h4 style="font-size:1.05rem; margin-bottom:0.3rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.4rem;">
-              <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:18px; height:18px; cursor:pointer;">
+            <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+              <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
               <span>${escapeHtml(s.name)}</span>
             </h4>
 
@@ -1984,6 +1998,19 @@ const AITravelEngine = {
         </div>
       `;
     }).join('');
+  },
+
+  toggleSpotSelection(spotId, maxCap) {
+    if (this.selectedMustVisitIds.has(spotId)) {
+      this.selectedMustVisitIds.delete(spotId);
+    } else {
+      if (this.selectedMustVisitIds.size >= maxCap) {
+        alert(`Selection Limit Reached! You can select up to ${maxCap} spots for this duration. Change duration to 2 Days to select up to 7 spots.`);
+        return;
+      }
+      this.selectedMustVisitIds.add(spotId);
+    }
+    this.renderCandidateSpots();
   },
 
   toggleSpotSelection(spotId, maxCap) {
