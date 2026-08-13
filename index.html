@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
   <!-- Correct CSS Path to Warm Organic Atelier Design System -->
-  <link rel="stylesheet" href="css/styles.css?v=8.0">
+  <link rel="stylesheet" href="css/styles.css?v=9.0">
 </head>
 <body>
 
@@ -86,7 +86,7 @@
   <!-- Main AI Custom Route Planner Section -->
   <div class="container" style="padding-top:1rem;">
 
-    <section id="tab-planner">
+    <section id="tab-planner" class="tab-content active" style="display:block !important; opacity:1 !important;">
       <div style="background:var(--bg-card); border:2.5px solid var(--border-ink); border-radius:255px 15px 225px 15px/15px 225px 15px 255px; padding:2.5rem; box-shadow:var(--shadow-sketch);">
         
         <div style="text-align:center; max-width:700px; margin:0 auto 2rem;">
@@ -165,7 +165,7 @@
               Check the boxes for spots you definitely want to visit. The AI engine will generate both <strong>Route A (Selected Spots Only)</strong> and <strong>Route B (Full 1-Day AI Course)</strong> for Google Maps navigation!
             </p>
 
-            <div id="candidateSpotsGrid" class="grid-3">
+            <div id="candidateSpotsGrid" class="grid-3" style="display:grid !important; visibility:visible !important;">
               <!-- Dynamically populated candidate spots cards -->
             </div>
           </div>
@@ -181,7 +181,7 @@
 
         <!-- RESULT CONTAINER -->
         <div id="aiPlanResult" style="display:none;">
-          <!-- Dynamically populated custom itinerary card with dual master links -->
+          <!-- Dynamically populated custom itinerary card with master multi-stop links -->
         </div>
 
       </div>
@@ -208,8 +208,21 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/ai-travel-engine.js?v=8.0"></script>
-  <script src="js/travel-app.js?v=8.0"></script>
+  <script src="js/ai-travel-engine.js?v=9.0"></script>
+  <script src="js/travel-app.js?v=9.0"></script>
+  <script>
+    // Inline execution fallback to guarantee candidate spots grid renders instantly on DOM load
+    window.addEventListener('load', function() {
+      if (window.AITravelEngine) {
+        window.AITravelEngine.renderCandidateSpots();
+      }
+    });
+    setTimeout(function() {
+      if (window.AITravelEngine) {
+        window.AITravelEngine.renderCandidateSpots();
+      }
+    }, 100);
+  </script>
 
 </body>
 </html>
