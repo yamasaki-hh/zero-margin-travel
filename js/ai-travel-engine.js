@@ -1616,30 +1616,25 @@ const AITravelEngine = {
   },
 
   lastCity: '',
+  selectedMustVisitIds: new Set(),
+  routeA_spots: [],
+  routeB_spots: [],
 
-  lastCity: '',
-
-  // Step 2: Render Interactive Candidate Spots with Selection Checkboxes & Lightweight Images (100% Bulletproof)
+  // Step 2: Render Interactive Candidate Spots (Max Cap: 8)
   renderCandidateSpots() {
     try {
       const selectElem = document.getElementById('aiPlanDestination');
       const city = selectElem ? selectElem.value : 'Paris, France';
-      const daysElem = document.getElementById('aiPlanDays');
-      const days = daysElem ? (parseFloat(daysElem.value) || 1) : 1;
       const audienceElem = document.getElementById('aiPlanAudience');
       const targetAudience = audienceElem ? audienceElem.value : 'none';
 
-      // Clear stale selections if city changed
       if (this.lastCity && this.lastCity !== city) {
         this.selectedMustVisitIds.clear();
       }
       this.lastCity = city;
 
-      let maxCap = 4;
-      if (days === 0.5) maxCap = 2;
-      if (days === 2.0) maxCap = 7;
+      const maxCap = 8;
 
-      // Robust Fuzzy Lookup for Candidate Spots Database Key
       let spots = candidateSpotsDatabase[city];
       if (!spots || spots.length === 0) {
         const cleanCityName = city.split(',')[0].trim().toLowerCase();
@@ -1666,15 +1661,14 @@ const AITravelEngine = {
         filteredSpots = spots.filter(s => s.adult);
       }
 
-      // If filtering produces empty array, fallback to all spots for that city
       if (!filteredSpots || filteredSpots.length === 0) {
         filteredSpots = spots;
       }
 
       if (counterBadge) {
         const selectedCount = this.selectedMustVisitIds.size;
-        counterBadge.innerHTML = `Selected: <strong>${selectedCount} / ${maxCap}</strong> (Max ${maxCap} Must-Visit Spots)`;
-        counterBadge.style.color = selectedCount >= maxCap ? '#C2410C' : '#047857';
+        counterBadge.innerHTML = `Selected: <strong>${selectedCount} / 8</strong> (Max 8 Must-Visit Spots)`;
+        counterBadge.style.color = selectedCount >= 8 ? '#C2410C' : '#047857';
       }
 
       container.innerHTML = filteredSpots.map(s => {
@@ -1682,7 +1676,7 @@ const AITravelEngine = {
         const imgUrl = s.image || SVG_FALLBACK_IMAGE;
 
         return `
-          <div class="card spot-candidate-card" style="border:2.5px solid ${isChecked ? '#B45309' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:${isChecked ? '0 0 0 3px #FDE68A' : 'none'};" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
+          <div class="card spot-candidate-card" style="border:2.5px solid ${isChecked ? '#B45309' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:${isChecked ? '0 0 0 3px #FDE68A' : 'none'};" onclick="AITravelEngine.toggleSpotSelection('${s.id}', 8)">
             ${isChecked ? `
               <div style="position:absolute; top:-10px; left:-10px; background:#047857; color:#FFF; font-weight:800; font-size:0.75rem; padding:0.25rem 0.65rem; border-radius:999px; border:2px solid #FFF; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:10;">
                 ✓ SELECTED
@@ -1690,7 +1684,6 @@ const AITravelEngine = {
             ` : ''}
 
             <div>
-              <!-- Lightweight Spot Thumbnail Image with Native Lazy Loading & SVG Fallback -->
               <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
                 <img src="${imgUrl}" alt="${escapeHtml(s.name)}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='${SVG_FALLBACK_IMAGE}';">
                 <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">${s.rating}</span>
@@ -1701,7 +1694,7 @@ const AITravelEngine = {
               </div>
 
               <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
-                <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+                <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', 8)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
                 <span>${escapeHtml(s.name)}</span>
               </h4>
 
@@ -1720,12 +1713,12 @@ const AITravelEngine = {
     }
   },
 
-  toggleSpotSelection(spotId, maxCap) {
+  toggleSpotSelection(spotId, maxCap = 8) {
     if (this.selectedMustVisitIds.has(spotId)) {
       this.selectedMustVisitIds.delete(spotId);
     } else {
-      if (this.selectedMustVisitIds.size >= maxCap) {
-        alert(`Selection Limit Reached! You can select up to ${maxCap} spots for this duration. Change duration to 2 Days to select up to 7 spots.`);
+      if (this.selectedMustVisitIds.size >= 8) {
+        alert('Selection Limit Reached! You can select up to 8 Must-Visit spots.');
         return;
       }
       this.selectedMustVisitIds.add(spotId);
@@ -1751,225 +1744,250 @@ const AITravelEngine = {
     if (event) event.preventDefault();
 
     const destination = document.getElementById('aiPlanDestination').value.trim() || 'Paris, France';
-    let days = parseFloat(document.getElementById('aiPlanDays').value) || 1;
-    if (days > 2) days = 2;
-
     const transportMode = document.getElementById('aiPlanTransport').value || 'transit';
     const audience = document.getElementById('aiPlanAudience').value || 'none';
 
     const resultContainer = document.getElementById('aiPlanResult');
     if (!resultContainer) return;
 
-    const isCar = transportMode === 'car';
-
     const allSpots = candidateSpotsDatabase[destination] || candidateSpotsDatabase['Paris, France'];
-    const mustVisitSpots = allSpots.filter(s => this.selectedMustVisitIds.has(s.id));
-    const mustVisitNames = mustVisitSpots.map(s => s.name).join(', ');
-
-    resultContainer.style.display = 'block';
-    resultContainer.innerHTML = `
-      <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2.5rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch); text-align:center;">
-        <div style="font-size:1.5rem; color:var(--primary-gold); font-family:var(--font-serif);" class="font-serif">
-          ⚡ Generating Custom Route & Pre-loading Google Maps Route...
-        </div>
-        <p style="font-size:0.95rem; color:var(--text-secondary); margin-top:0.5rem;">
-          Synthesizing ${escapeHtml(destination)} (${days === 0.5 ? 'Half Day' : days + ' Day(s)'}) | Must-Visit: <strong>${escapeHtml(mustVisitNames || 'AI Top Curated Spots')}</strong>
-        </p>
-      </div>
-    `;
-
-    if (this.config.apiKey) {
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.config.apiKey}`;
-      const systemPrompt = `You are an expert AI Travel Curator for 0 Margin EU Travel. Respond in English.
-STRICT MANDATE:
-1. MUST EMBED THESE USER-SELECTED MUST-VISIT SPOTS: ${mustVisitNames || 'Top 4.5+ Real Spots'}.
-2. TRANSPORTATION: ${isCar ? 'CAR / DRIVING MODE (Include driving minutes and parking garages like Parking Indigo, Q-Park, Interparking)' : 'PUBLIC TRANSIT MODE (Include metro/RER lines and walking minutes)'}.
-3. TARGET AUDIENCE: ${audience === 'kids' ? 'Family with kids (kid-friendly tips & easy pace)' : audience === 'adults' ? 'Adults only (fine dining & relaxed pace)' : 'All travelers'}.
-4. DURATION LIMIT: MAX ${days} DAY(S) (0.5 = Half Day, 1 = 1 Day, 2 = 2 Days max). NO DAY 3.
-5. ABSOLUTELY ZERO REPETITION: Day 1 and Day 2 MUST feature 100% COMPLETELY DIFFERENT venues.
-Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 words.`;
-
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: 'user', parts: [{ text: `Generate custom route for ${destination} containing ${mustVisitNames}` }] }],
-          generationConfig: { maxOutputTokens: 750, temperature: 0.5 }
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!text) throw new Error('Empty payload');
-        this.renderItineraryCard(destination, days, transportMode, audience, mustVisitSpots, text, '⚡ Live Gemini 1.5 Flash (Custom Route)');
-      })
-      .catch(err => {
-        console.warn('Gemini API call fallback:', err);
-        const fallbackText = this.buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots);
-        this.renderItineraryCard(destination, days, transportMode, audience, mustVisitSpots, fallbackText, '⚡ AI Custom Route (Real Google Maps Spots)');
-      });
-
-    } else {
-      setTimeout(() => {
-        const fallbackText = this.buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots);
-        this.renderItineraryCard(destination, days, transportMode, audience, mustVisitSpots, fallbackText, '⚡ AI Custom Route (Real Google Maps Spots)');
-      }, 350);
-    }
-  },
-
-  // Synthesize Custom Route with Selected Must-Visit Spots
-  buildCustomRouteItinerary(destination, days, transportMode, audience, mustVisitSpots) {
-    const destLower = destination.toLowerCase();
-    const isCar = transportMode === 'car';
-
-    const isParis = destLower.includes('paris');
-    const isAmsterdam = destLower.includes('amsterdam');
-    const isBrussels = destLower.includes('brussels') || destLower.includes('bruxelles');
-    const isBerlin = destLower.includes('berlin');
-
-    const mustNames = mustVisitSpots.map(s => s.name);
-
-    let html = '';
-
-    const transitNotice1 = isCar 
-      ? '🚗 Drive: Ring road. Underground parking at Q-Park / Parking Indigo (4 min walk).' 
-      : '🚆 Public Transit: Metro / S-Bahn station (3 min walk).';
-
-    const transitNotice2 = isCar 
-      ? '🚗 Drive: River road access. Direct parking garage on site.' 
-      : '🚆 Public Transit: Tram / Bus direct line.';
-
-    if (days === 0.5) {
-      html += `
-        <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
-          <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-            📍 Half Day Custom Express Route (${escapeHtml(destination)})
-          </h4>
-          <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-            <li><strong>09:00 AM — Must-Visit Landmark:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Eiffel Tower', 'Paris', '★4.7') : isBerlin ? this.createMapsLink('Brandenburg Gate', 'Berlin', '★4.7') : this.createMapsLink('Rijksmuseum', 'Amsterdam', '★4.7'))} (${transitNotice1}).</li>
-            <li><strong>11:30 AM — Signature Bakery & Café:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5') : isBerlin ? this.createMapsLink('Zeit für Brot', 'Berlin', '★4.7') : this.createMapsLink('Van Stapele Koekmakerij', 'Amsterdam', '★4.8'))}.</li>
-            <li><strong>12:30 PM — Recommended Dining:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') + ' (Duck confit €18–€26)' : isBerlin ? this.createMapsLink("Mustafa's Gemüse Kebab", 'Berlin', '★4.4') + ' (€7)' : this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6')}.</li>
-          </ul>
-        </div>
-      `;
-    } else {
-      // DAY 1
-      html += `
-        <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
-          <h4 style="color:var(--primary-forest); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-            📍 Day 1: ${escapeHtml(destination)} Historic Center & Selected Spots
-          </h4>
-          <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-            <li><strong>09:00 AM — Morning Landmark:</strong> ${mustNames[0] ? this.createMapsLink(mustNames[0].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Eiffel Tower', 'Paris', '★4.7') : isBerlin ? this.createMapsLink('Brandenburg Gate', 'Berlin', '★4.7') : this.createMapsLink('Rijksmuseum', 'Amsterdam', '★4.7'))} (${transitNotice1}).</li>
-            <li><strong>11:30 AM — Signature Bakery:</strong> ${mustNames[1] ? this.createMapsLink(mustNames[1].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Marché des Enfants Rouges', 'Paris', '★4.5') : isBerlin ? this.createMapsLink('Zeit für Brot', 'Berlin', '★4.7') : this.createMapsLink('Van Stapele Koekmakerij', 'Amsterdam', '★4.8'))}.</li>
-            <li><strong>12:30 PM — Day 1 Dining:</strong> ${isParis ? this.createMapsLink('Le Petit Marché', 'Paris', '★4.6') : isBerlin ? this.createMapsLink("Mustafa's Gemüse Kebab", 'Berlin', '★4.4') : this.createMapsLink('Café de Klos', 'Amsterdam', '★4.6')}.</li>
-            <li><strong>03:00 PM — Afternoon Spot:</strong> ${mustNames[2] ? this.createMapsLink(mustNames[2].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Louvre Museum', 'Paris', '★4.7') : isBerlin ? this.createMapsLink('Museum Island', 'Berlin', '★4.8') : this.createMapsLink('Nine Streets', 'Amsterdam', '★4.8'))}.</li>
-            <li><strong>07:00 PM — Evening Walk:</strong> ${isParis ? this.createMapsLink('Pont des Arts', 'Paris', '★4.7') : isBerlin ? this.createMapsLink('East Side Gallery', 'Berlin', '★4.6') : 'Historic promenade walk'}.</li>
-          </ul>
-        </div>
-      `;
-
-      // DAY 2
-      if (days >= 2) {
-        html += `
-          <div style="background:#FFF; border:1.5px solid var(--border-ink); border-radius:14px; padding:1.25rem; margin-bottom:1.25rem;">
-            <h4 style="color:var(--primary-wood); font-size:1.05rem; margin-bottom:0.5rem; font-family:var(--font-sans);">
-              📍 Day 2: 【100% Unique Venues】 Musée d'Orsay & Arc de Triomphe
-            </h4>
-            <ul style="font-size:0.92rem; color:var(--text-primary); line-height:1.85; padding-left:1.2rem;">
-              <li><strong>09:00 AM — Day 2 Landmark:</strong> ${mustNames[3] ? this.createMapsLink(mustNames[3].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink("Musée d'Orsay", "Musée d Orsay Paris", '★4.8') : isBerlin ? this.createMapsLink('Reichstag Building', 'Berlin', '★4.7') : this.createMapsLink('Van Gogh Museum', 'Amsterdam', '★4.8'))} (${transitNotice2}).</li>
-              <li><strong>11:30 AM — Day 2 Pastry:</strong> ${mustNames[4] ? this.createMapsLink(mustNames[4].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Cédric Grolet Le Meurice', 'Paris', '★4.6') : isBerlin ? this.createMapsLink('The Barn Coffee Roasters', 'Berlin', '★4.5') : this.createMapsLink('Winkel 43', 'Amsterdam', '★4.6'))}.</li>
-              <li><strong>12:30 PM — Day 2 Dining:</strong> ${isParis ? this.createMapsLink('Le Train Bleu', 'Paris', '★4.5') + ' or ' + this.createMapsLink('Chez Janou', 'Paris', '★4.5') : isBerlin ? this.createMapsLink('Zur Letzten Instanz', 'Berlin', '★4.4') : this.createMapsLink('Foodhallen Amsterdam', 'Amsterdam', '★4.5')}.</li>
-              <li><strong>03:00 PM — Day 2 Afternoon Spot:</strong> ${mustNames[5] ? this.createMapsLink(mustNames[5].split(' (')[0], destination.split(',')[0]) : (isParis ? this.createMapsLink('Arc de Triomphe', 'Paris', '★4.7') : isBerlin ? this.createMapsLink('Charlottenburg Palace', 'Berlin', '★4.6') : this.createMapsLink('Zaanse Schans Windmills', 'Amsterdam', '★4.6'))}.</li>
-              <li><strong>07:00 PM — Farewell Walk:</strong> ${isParis ? this.createMapsLink('Sacré-Cœur Basilica', 'Paris', '★4.7') : isBerlin ? this.createMapsLink('Gendarmenmarkt Square', 'Berlin', '★4.7') : 'Relaxing evening promenade'}.</li>
-            </ul>
-          </div>
-        `;
-      }
+    
+    // Extract selected spots for Route A
+    let selectedSpots = allSpots.filter(s => this.selectedMustVisitIds.has(s.id));
+    if (selectedSpots.length === 0) {
+      // Fallback top 3 spots if none selected
+      selectedSpots = allSpots.slice(0, 3);
     }
 
-    return html;
+    // Build Route A (Selected Spots Only)
+    this.routeA_spots = selectedSpots.map(s => ({
+      name: s.name.split(' (')[0].trim(),
+      category: s.category,
+      rating: s.rating,
+      price: s.price
+    }));
+
+    // Build Route B (Full 10-Spot Course: Selected + Top AI Curated Spots)
+    const selectedNames = new Set(this.routeA_spots.map(s => s.name));
+    const extraSpots = allSpots.filter(s => !selectedNames.has(s.name.split(' (')[0].trim()));
+
+    const targetBCount = 10;
+    const needed = targetBCount - this.routeA_spots.length;
+
+    this.routeB_spots = [...this.routeA_spots];
+    if (needed > 0) {
+      const addedExtras = extraSpots.slice(0, needed).map(s => ({
+        name: s.name.split(' (')[0].trim(),
+        category: s.category,
+        rating: s.rating,
+        price: s.price
+      }));
+      this.routeB_spots.push(...addedExtras);
+    }
+
+    this.renderDualRouteManager(destination, transportMode);
   },
 
-  renderItineraryCard(destination, days, transportMode, audience, mustVisitSpots, itineraryHtml, engineTag) {
+  renderDualRouteManager(destination, transportMode) {
     const resultContainer = document.getElementById('aiPlanResult');
     if (!resultContainer) return;
 
+    resultContainer.style.display = 'block';
+
     const isCar = transportMode === 'car';
-    const destLower = destination.toLowerCase();
+    const cityClean = destination.split(',')[0].trim();
 
-    let mustVisitNames = [];
-    if (mustVisitSpots && mustVisitSpots.length > 0) {
-      mustVisitNames = mustVisitSpots.map(s => s.name.split(' (')[0].trim());
-    }
+    // Generate Route A Google Maps URL
+    const namesA = this.routeA_spots.map(s => s.name);
+    const mapsUrlA = this.buildMasterGoogleMapsPath(namesA, destination, transportMode);
 
-    if (mustVisitNames.length === 0) {
-      if (destLower.includes('paris')) {
-        mustVisitNames = ['Sainte-Chapelle', "Musée d'Orsay", 'Le Petit Marché'];
-      } else if (destLower.includes('berlin')) {
-        mustVisitNames = ['Brandenburg Gate', 'Museum Island', 'Reichstag Building'];
-      } else if (destLower.includes('amsterdam')) {
-        mustVisitNames = ['Rijksmuseum', 'Van Stapele Koekmakerij', 'Café de Klos'];
-      } else if (destLower.includes('brussels')) {
-        mustVisitNames = ['Grand-Place', 'Maison Dandoy', 'Fin de Siècle'];
-      } else {
-        mustVisitNames = ['Cologne Cathedral', 'Museum Ludwig', 'Brauhaus Sion'];
-      }
-    }
-
-    // Build Full 1-Day AI Recommended Itinerary Venues (All Destinations)
-    let fullDayNames = [];
-    if (destLower.includes('paris')) {
-      fullDayNames = ['Eiffel Tower', 'Marché des Enfants Rouges', ...mustVisitNames, 'Louvre Museum', 'Pont des Arts'];
-    } else if (destLower.includes('berlin')) {
-      fullDayNames = ['Brandenburg Gate', 'Zeit für Brot', ...mustVisitNames, 'East Side Gallery', 'Zur Letzten Instanz'];
-    } else if (destLower.includes('amsterdam')) {
-      fullDayNames = ['Rijksmuseum', 'Winkel 43', ...mustVisitNames, 'Nine Streets', "Brouwerij 't IJ"];
-    } else if (destLower.includes('brussels')) {
-      fullDayNames = ['Grand-Place', 'Maison Dandoy', ...mustVisitNames, 'Atomium', 'Delirium Café'];
-    } else {
-      fullDayNames = ['Cologne Cathedral', 'Café Reichard', ...mustVisitNames, 'Hohenzollernbrücke', 'Brauhaus Sion'];
-    }
-
-    // Remove duplicates while preserving sequential order
-    fullDayNames = Array.from(new Set(fullDayNames));
-
-    const dualRoutesMapsHtml = this.generateMultiStopMapsLink(mustVisitNames, fullDayNames, destination, transportMode);
+    // Generate Route B Google Maps URL
+    const namesB = this.routeB_spots.map(s => s.name);
+    const mapsUrlB = this.buildMasterGoogleMapsPath(namesB, destination, transportMode);
 
     resultContainer.innerHTML = `
       <div style="background:var(--bg-card-warm); border:2.5px solid var(--border-ink); border-radius:22px; padding:2rem; margin-top:1.5rem; box-shadow:var(--shadow-sketch); animation:fadeIn 0.3s ease;">
         
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
-          <div>
-            <span class="paper-tape">${engineTag}</span>
-            <h3 style="font-size:1.65rem; margin-top:0.4rem; font-family:var(--font-serif);">
-              ${escapeHtml(destination)} — ${days === 0.5 ? 'Half Day' : days + ' Day(s)'} Custom Route
-            </h3>
+        <div style="text-align:center; max-width:700px; margin:0 auto 1.5rem;">
+          <span class="paper-tape">Pre-loaded Multi-Stop Google Maps Navigation</span>
+          <h3 style="font-size:1.8rem; margin-top:0.4rem; font-family:var(--font-serif);">
+            ${escapeHtml(destination)} — Custom AI Dual Routes
+          </h3>
+          <p style="font-size:0.9rem; color:var(--text-secondary);">
+            Reorder items (▲/▼) or remove items (❌). The master <strong>Open Route in Google Maps</strong> button updates in real-time!
+          </p>
+        </div>
+
+        <div class="grid-2" style="gap:1.5rem;">
+          
+          <!-- ROUTE A CARD: Selected Spots Only -->
+          <div style="background:#FFF; border:2px solid #047857; border-radius:18px; padding:1.5rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(4,120,87,0.1);">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                <span style="font-size:0.8rem; font-weight:800; background:#D1FAE5; color:#047857; padding:0.25rem 0.65rem; border-radius:999px; border:1px solid #059669;">
+                  📍 ROUTE A: SELECTED SPOTS ONLY (${this.routeA_spots.length} SPOTS)
+                </span>
+                <span style="font-size:0.8rem; font-weight:700; color:#047857;">${isCar ? '🚗 Driving Mode' : '🚆 Transit Mode'}</span>
+              </div>
+
+              <h4 style="font-size:1.15rem; color:var(--text-primary); margin-bottom:0.35rem;" class="font-serif">
+                Must-Visit Selected Course
+              </h4>
+              <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:1rem;">
+                Contains strictly your checked must-visit landmarks.
+              </p>
+
+              <!-- Reorderable & Deletable Spot Item List A -->
+              <div id="routeA_itemList" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.25rem;">
+                ${this.renderSpotItemsHtml(this.routeA_spots, 'A', cityClean)}
+              </div>
+            </div>
+
+            <div>
+              <a href="${mapsUrlA}" target="_blank" rel="noopener noreferrer" id="btn_maps_RouteA" class="btn btn-emerald" style="width:100%; text-align:center; padding:0.85rem; font-size:1rem; border-radius:12px; display:inline-block; text-decoration:none;">
+                🗺️ Open Route A in Google Maps (${this.routeA_spots.length} Stops) ↗
+              </a>
+            </div>
           </div>
-          <span class="seed-points-badge">${isCar ? '🚗 Car Mode with Parking' : '轨 Public Transit Mode'}</span>
+
+          <!-- ROUTE B CARD: Full 10-Spot Course -->
+          <div style="background:#FFF; border:2px solid #B45309; border-radius:18px; padding:1.5rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(180,83,9,0.1);">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+                <span style="font-size:0.8rem; font-weight:800; background:#FEF3C7; color:#B45309; padding:0.25rem 0.65rem; border-radius:999px; border:1px solid #D97706;">
+                  ✨ ROUTE B: FULL AI 10-SPOT COURSE (${this.routeB_spots.length} SPOTS)
+                </span>
+                <span style="font-size:0.8rem; font-weight:700; color:#B45309;">${isCar ? '🚗 Driving Mode' : '🚆 Transit Mode'}</span>
+              </div>
+
+              <h4 style="font-size:1.15rem; color:var(--text-primary); margin-bottom:0.35rem;" class="font-serif">
+                Full 1-Day AI Curated Course
+              </h4>
+              <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:1rem;">
+                Combines your selected spots with AI-curated bistros & attractions to form a full 10-stop route.
+              </p>
+
+              <!-- Reorderable & Deletable Spot Item List B -->
+              <div id="routeB_itemList" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.25rem;">
+                ${this.renderSpotItemsHtml(this.routeB_spots, 'B', cityClean)}
+              </div>
+            </div>
+
+            <div>
+              <a href="${mapsUrlB}" target="_blank" rel="noopener noreferrer" id="btn_maps_RouteB" class="btn btn-primary" style="width:100%; text-align:center; padding:0.85rem; font-size:1rem; border-radius:12px; display:inline-block; text-decoration:none;">
+                🗺️ Open Route B in Google Maps (${this.routeB_spots.length} Stops) ↗
+              </a>
+            </div>
+          </div>
+
         </div>
 
-        <!-- DUAL MASTER MULTI-STOP GOOGLE MAPS ROUTES -->
-        ${dualRoutesMapsHtml}
-
-        <!-- Single Spot Live Links Instruction Box -->
-        <div style="background:#EFF6FF; border:1.5px solid #3B82F6; border-radius:12px; padding:0.85rem 1.25rem; margin-bottom:1.5rem; font-size:0.85rem; color:#1E40AF; display:flex; align-items:center; gap:0.5rem;">
-          <span style="font-size:1.2rem;">🗺️</span>
-          <span><strong>Pro-Tip:</strong> Tap individual venue buttons (e.g., <strong>📍 Eiffel Tower ↗</strong>) to view live operating hours, recent photos, and real-time reviews on Google Maps!</span>
-        </div>
-
-        <div style="margin-bottom:1.5rem;">
-          ${itineraryHtml}
-        </div>
       </div>
     `;
 
     setTimeout(() => {
       resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
-  }
-};
+  },
+
+  renderSpotItemsHtml(spotsArray, routeType, cityClean) {
+    if (!spotsArray || spotsArray.length === 0) {
+      return '<div style="font-size:0.85rem; color:#9CA3AF; padding:0.75rem; text-align:center; border:1px dashed #E5E7EB; border-radius:8px;">No spots in this route. Add spots or re-select.</div>';
+    }
+
+    return spotsArray.map((spot, idx) => {
+      const query = `${spot.name} ${cityClean}`;
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+      return `
+        <div style="display:flex; align-items:center; justify-content:space-between; background:#F8FAFC; border:1.5px solid #E2E8F0; padding:0.5rem 0.75rem; border-radius:10px; font-size:0.85rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem; flex:1; min-width:0;">
+            
+            <!-- Reorder Up / Down Buttons -->
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <button type="button" onclick="AITravelEngine.moveSpot('${routeType}', ${idx}, -1)" ${idx === 0 ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : ''} style="background:none; border:none; padding:0; cursor:pointer; font-size:0.75rem; line-height:1; color:#475569;">▲</button>
+              <button type="button" onclick="AITravelEngine.moveSpot('${routeType}', ${idx}, 1)" ${idx === spotsArray.length - 1 ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : ''} style="background:none; border:none; padding:0; cursor:pointer; font-size:0.75rem; line-height:1; color:#475569;">▼</button>
+            </div>
+
+            <span style="font-weight:800; background:#E2E8F0; color:#334155; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; border-radius:50%; font-size:0.75rem; flex-shrink:0;">${idx + 1}</span>
+
+            <span style="font-weight:700; color:#1E293B; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;">${escapeHtml(spot.name)}</span>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.4rem; flex-shrink:0;">
+            <!-- Individual Spot Google Maps Link -->
+            <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="color:#2563EB; font-weight:700; text-decoration:none; font-size:0.78rem; background:#EFF6FF; border:1px solid #BFDBFE; padding:0.15rem 0.45rem; border-radius:6px;">📍 Maps ↗</a>
+            
+            <!-- Delete / Remove Button (❌) -->
+            <button type="button" onclick="AITravelEngine.removeSpot('${routeType}', ${idx})" title="Remove spot from route" style="background:#FEE2E2; color:#DC2626; border:1px solid #FCA5A5; width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.75rem; font-weight:800;">✕</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  moveSpot(routeType, index, direction) {
+    const list = routeType === 'A' ? this.routeA_spots : this.routeB_spots;
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= list.length) return;
+
+    const temp = list[index];
+    list[index] = list[newIndex];
+    list[newIndex] = temp;
+
+    this.refreshRouteCard(routeType);
+  },
+
+  removeSpot(routeType, index) {
+    const list = routeType === 'A' ? this.routeA_spots : this.routeB_spots;
+    list.splice(index, 1);
+    this.refreshRouteCard(routeType);
+  },
+
+  refreshRouteCard(routeType) {
+    const destination = document.getElementById('aiPlanDestination')?.value || 'Paris, France';
+    const transportMode = document.getElementById('aiPlanTransport')?.value || 'transit';
+    const cityClean = destination.split(',')[0].trim();
+
+    const listContainer = document.getElementById(routeType === 'A' ? 'routeA_itemList' : 'routeB_itemList');
+    const mapsBtn = document.getElementById(routeType === 'A' ? 'btn_maps_RouteA' : 'btn_maps_RouteB');
+
+    const spotsList = routeType === 'A' ? this.routeA_spots : this.routeB_spots;
+
+    if (listContainer) {
+      listContainer.innerHTML = this.renderSpotItemsHtml(spotsList, routeType, cityClean);
+    }
+
+    if (mapsBtn) {
+      const names = spotsList.map(s => s.name);
+      const mapsUrl = this.buildMasterGoogleMapsPath(names, destination, transportMode);
+      mapsBtn.href = mapsUrl;
+      mapsBtn.innerText = `🗺️ Open Route ${routeType} in Google Maps (${spotsList.length} Stops) ↗`;
+    }
+  },
+
+  buildMasterGoogleMapsPath(venueNames, destination, transportMode) {
+    if (!venueNames || venueNames.length === 0) {
+      const cityClean = destination.split(',')[0].trim();
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cityClean)}`;
+    }
+
+    const cityClean = destination.split(',')[0].trim();
+    const formattedStops = venueNames.map(name => {
+      const cleanName = name.replace(/\([^\)]*\)/g, '').trim();
+      return encodeURIComponent(`${cleanName}, ${cityClean}`);
+    });
+
+    const isCar = transportMode === 'car';
+    const travelModeParam = isCar ? '&dirflg=d' : '&dirflg=r';
+
+    if (formattedStops.length === 1) {
+      return `https://www.google.com/maps/search/?api=1&query=${formattedStops[0]}`;
+    }
+
+    const pathString = formattedStops.join('/');
+    return `https://www.google.com/maps/dir/${pathString}/?api=1${travelModeParam}`;
+  },
 
 function configureGeminiKey() {
   const key = prompt('Optional: Enter your Gemini 1.5 Flash API Key to enable live Gemini API calls:\n(Leave empty for built-in 0 Margin Travel Engine)', AITravelEngine.config.apiKey);
