@@ -1773,111 +1773,152 @@ const AITravelEngine = {
     return `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;" title="View Live Google Maps Hours, Reviews & Photos">📍 ${escapeHtml(placeName)}${ratingTag} <span style="font-size:0.75rem;">↗</span></a>`;
   },
 
-  // MASTER FEATURE: Generate Dual Turn-by-Turn Routes for Google Maps (Route A: Selected Only & Route B: Full 1-Day AI Itinerary)
+  // MASTER DUAL ROUTE GENERATOR: Route A (Must-Visit Selected Spots) & Route B (Full 1-Day AI Recommended Course)
   generateMultiStopMapsLink(mustVisitVenues, fullDayVenues, city, transportMode) {
-    if ((!mustVisitVenues || mustVisitVenues.length === 0) && (!fullDayVenues || fullDayVenues.length === 0)) return '';
-
     const cleanCity = city.split(',')[0].trim();
 
-    // ROUTE A: Must-Visit Selected Spots Only Route
-    const cleanMust = (mustVisitVenues || []).map(v => v.replace(/[()]/g, '').trim());
+    // 1. ROUTE A: Must-Visit Selected Spots Only
+    const cleanMust = (mustVisitVenues || []).map(v => v.replace(/[()]/g, '').trim()).filter(Boolean);
     const pathSegmentsA = cleanMust.map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('/');
     const masterUrlA = `https://www.google.com/maps/dir/${pathSegmentsA}/`;
 
-    // ROUTE B: Full 1-Day AI Recommended Itinerary Route (All Destinations)
-    const cleanFull = (fullDayVenues || []).map(v => v.replace(/[()]/g, '').trim());
+    // 2. ROUTE B: Full 1-Day AI Recommended Course (All Destinations)
+    const cleanFull = (fullDayVenues || []).map(v => v.replace(/[()]/g, '').trim()).filter(Boolean);
     const pathSegmentsB = cleanFull.map(v => encodeURIComponent(`${v}, ${cleanCity}`)).join('/');
     const masterUrlB = `https://www.google.com/maps/dir/${pathSegmentsB}/`;
 
     // Badges for Route A
     const badgesA = cleanMust.map((v, idx) => `
-      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFF; color:#047857; border:1px solid #A7F3D0; padding:0.2rem 0.55rem; border-radius:6px; font-weight:700; font-size:0.8rem; margin:0.15rem;">
-        <span style="background:#047857; color:#FFF; border-radius:999px; width:17px; height:17px; display:inline-flex; justify-content:center; align-items:center; font-size:0.68rem;">${idx + 1}</span>
+      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#ECFDF5; color:#047857; border:1px solid #A7F3D0; padding:0.25rem 0.6rem; border-radius:6px; font-weight:700; font-size:0.82rem; margin:0.15rem;">
+        <span style="background:#047857; color:#FFF; border-radius:999px; width:18px; height:18px; display:inline-flex; justify-content:center; align-items:center; font-size:0.7rem;">${idx + 1}</span>
         ${escapeHtml(v)}
       </span>
     `).join(' ➔ ');
 
     // Badges for Route B
     const badgesB = cleanFull.map((v, idx) => `
-      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFF; color:#B45309; border:1px solid #FDE68A; padding:0.2rem 0.55rem; border-radius:6px; font-weight:700; font-size:0.8rem; margin:0.15rem;">
-        <span style="background:#B45309; color:#FFF; border-radius:999px; width:17px; height:17px; display:inline-flex; justify-content:center; align-items:center; font-size:0.68rem;">${idx + 1}</span>
+      <span style="display:inline-flex; align-items:center; gap:0.2rem; background:#FFFBEB; color:#B45309; border:1px solid #FDE68A; padding:0.25rem 0.6rem; border-radius:6px; font-weight:700; font-size:0.82rem; margin:0.15rem;">
+        <span style="background:#B45309; color:#FFF; border-radius:999px; width:18px; height:18px; display:inline-flex; justify-content:center; align-items:center; font-size:0.7rem;">${idx + 1}</span>
         ${escapeHtml(v)}
       </span>
     `).join(' ➔ ');
 
-    // Leg-by-Leg Transit links for Route B
-    let legItemsHtml = '';
-    for (let i = 0; i < cleanFull.length - 1; i++) {
-      const fromSpot = cleanFull[i];
-      const toSpot = cleanFull[i + 1];
-      const legUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(fromSpot + ', ' + cleanCity)}&destination=${encodeURIComponent(toSpot + ', ' + cleanCity)}&travelmode=${transportMode === 'car' ? 'driving' : 'transit'}`;
-      
-      legItemsHtml += `
+    // Leg-by-Leg Transit links for Route A
+    let legItemsAHtml = '';
+    for (let i = 0; i < cleanMust.length - 1; i++) {
+      const legUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(cleanMust[i] + ', ' + cleanCity)}&destination=${encodeURIComponent(cleanMust[i + 1] + ', ' + cleanCity)}&travelmode=${transportMode === 'car' ? 'driving' : 'transit'}`;
+      legItemsAHtml += `
         <div style="background:#FFF; border:1px solid #CBD5E1; border-radius:8px; padding:0.4rem 0.75rem; font-size:0.82rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-top:0.4rem;">
-          <span style="font-weight:700; color:var(--text-primary);">Leg ${i + 1}: ${escapeHtml(fromSpot)} ➔ ${escapeHtml(toSpot)}</span>
-          <a href="${legUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:none; background:#F0F9FF; padding:0.15rem 0.5rem; border-radius:4px; border:1px solid #BAE6FD;">
-            ${transportMode === 'car' ? '🚗 Drive Leg' : '轨 Transit Leg'} ↗
+          <span style="font-weight:700; color:var(--text-primary);">Leg ${i + 1}: ${escapeHtml(cleanMust[i])} ➔ ${escapeHtml(cleanMust[i + 1])}</span>
+          <a href="${legUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:none; background:#F0F9FF; padding:0.15rem 0.55rem; border-radius:4px; border:1px solid #BAE6FD;">
+            ${transportMode === 'car' ? '🚗 Drive Leg' : '🚆 Transit Leg'} ↗
+          </a>
+        </div>
+      `;
+    }
+
+    // Leg-by-Leg Transit links for Route B
+    let legItemsBHtml = '';
+    for (let i = 0; i < cleanFull.length - 1; i++) {
+      const legUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(cleanFull[i] + ', ' + cleanCity)}&destination=${encodeURIComponent(cleanFull[i + 1] + ', ' + cleanCity)}&travelmode=${transportMode === 'car' ? 'driving' : 'transit'}`;
+      legItemsBHtml += `
+        <div style="background:#FFF; border:1px solid #CBD5E1; border-radius:8px; padding:0.4rem 0.75rem; font-size:0.82rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-top:0.4rem;">
+          <span style="font-weight:700; color:var(--text-primary);">Leg ${i + 1}: ${escapeHtml(cleanFull[i])} ➔ ${escapeHtml(cleanFull[i + 1])}</span>
+          <a href="${legUrl}" target="_blank" rel="noopener noreferrer" style="color:#0284C7; font-weight:700; text-decoration:none; background:#F0F9FF; padding:0.15rem 0.55rem; border-radius:4px; border:1px solid #BAE6FD;">
+            ${transportMode === 'car' ? '🚗 Drive Leg' : '🚆 Transit Leg'} ↗
           </a>
         </div>
       `;
     }
 
     return `
-      <div style="background:linear-gradient(135deg, #FEF3C7, #D1FAE5); border:2.5px solid var(--border-ink); border-radius:18px; padding:1.75rem; text-align:center; margin-bottom:1.75rem; box-shadow:var(--shadow-sketch);">
-        <div style="font-size:1.4rem; color:var(--primary-forest); font-family:var(--font-serif); margin-bottom:0.75rem;" class="font-serif">
-          🗺️ Dual Google Maps Navigation Routes
+      <div style="background:linear-gradient(135deg, #FEF3C7, #D1FAE5); border:2.5px solid var(--border-ink); border-radius:20px; padding:1.75rem; margin-bottom:1.75rem; box-shadow:var(--shadow-sketch);">
+        
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <div style="font-size:1.45rem; color:var(--primary-forest); font-family:var(--font-serif); font-weight:800;" class="font-serif">
+            🗺️ Dual Multi-Stop Google Maps Navigation Routes
+          </div>
+          <p style="font-size:0.9rem; color:var(--text-secondary); max-width:650px; margin:0.35rem auto 0;">
+            Select either <strong>Route A (Must-Visit Spots Only)</strong> or <strong>Route B (Full 1-Day AI Course)</strong> below to open all stops in sequential order in Google Maps!
+          </p>
         </div>
 
-        <!-- DUAL ROUTE SELECTION BUTTONS -->
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem; margin-bottom:1.25rem;">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; margin-bottom:1rem;">
           
-          <!-- ROUTE A CARD -->
-          <div style="background:#FFF; border:2px solid #047857; border-radius:14px; padding:1.25rem; text-align:left; display:flex; flex-direction:column; justify-content:space-between;">
+          <!-- ROUTE A CARD: MUST-VISIT SPOTS ONLY -->
+          <div style="background:#FFF; border:2.5px solid #047857; border-radius:16px; padding:1.5rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(4,120,87,0.1);">
             <div>
-              <div style="font-weight:800; color:#047857; font-size:1rem; margin-bottom:0.4rem;" class="font-serif">
-                📍 Route A: Selected Spots Only (${cleanMust.length} Stops)
+              <div style="display:inline-block; background:#047857; color:#FFF; font-weight:800; font-size:0.75rem; padding:0.2rem 0.65rem; border-radius:999px; margin-bottom:0.5rem;">
+                ROUTE A — MUST-VISIT SPOTS ONLY
               </div>
-              <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.75rem;">
-                Loads <strong>ONLY</strong> your ${cleanMust.length} checked candidate spots directly into Google Maps:
+              <h4 style="font-size:1.15rem; color:#047857; font-family:var(--font-serif); margin-bottom:0.35rem;" class="font-serif">
+                📍 選択スポットのみのルート (${cleanMust.length}箇所)
+              </h4>
+              <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.85rem;">
+                Step 2であなたが選択した<strong>「絶対行きたいスポットのみ」</strong>をGoogleマップで順番にナビゲートします。
               </p>
-              <div style="margin-bottom:1rem; line-height:1.8;">
+              
+              <div style="margin-bottom:1.25rem; line-height:1.8;">
                 ${badgesA}
               </div>
             </div>
-            <a href="${masterUrlA}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.75rem 1.25rem; font-size:0.95rem; text-decoration:none; text-align:center; width:100%; justify-content:center;">
-              📍 Open Route A (${cleanMust.length} Selected Spots) ↗
-            </a>
+
+            <div>
+              <a href="${masterUrlA}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding:0.85rem 1.25rem; font-size:1rem; text-decoration:none; text-align:center; width:100%; justify-content:center; background:#047857; border-color:#064E3B;">
+                📍 Open Route A in Google Maps (${cleanMust.length} Spots) ↗
+              </a>
+
+              ${cleanMust.length > 1 ? `
+                <details style="margin-top:0.75rem; text-align:left; background:#F0FDF4; border-radius:8px; padding:0.4rem 0.65rem; border:1px solid #A7F3D0;">
+                  <summary style="font-weight:700; color:#047857; cursor:pointer; font-size:0.82rem;">
+                    🚆 Route A 区間別ナビ (${cleanMust.length - 1} Segment)
+                  </summary>
+                  <div style="margin-top:0.4rem;">
+                    ${legItemsAHtml}
+                  </div>
+                </details>
+              ` : ''}
+            </div>
           </div>
 
-          <!-- ROUTE B CARD -->
-          <div style="background:#FFF; border:2px solid #B45309; border-radius:14px; padding:1.25rem; text-align:left; display:flex; flex-direction:column; justify-content:space-between;">
+          <!-- ROUTE B CARD: FULL 1-DAY AI RECOMMENDED COURSE -->
+          <div style="background:#FFF; border:2.5px solid #B45309; border-radius:16px; padding:1.5rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 12px rgba(180,83,9,0.1);">
             <div>
-              <div style="font-weight:800; color:#B45309; font-size:1rem; margin-bottom:0.4rem;" class="font-serif">
-                ✨ Route B: Full 1-Day AI Recommended Route (${cleanFull.length} Total Stops)
+              <div style="display:inline-block; background:#B45309; color:#FFF; font-weight:800; font-size:0.75rem; padding:0.2rem 0.65rem; border-radius:999px; margin-bottom:0.5rem;">
+                ROUTE B — FULL 1-DAY AI RECOMMENDED COURSE
               </div>
-              <p style="font-size:0.83rem; color:var(--text-secondary); margin-bottom:0.75rem;">
-                Loads your selected spots <strong>PLUS AI-curated landmarks & dining</strong> for a full 1-day experience:
+              <h4 style="font-size:1.15rem; color:#B45309; font-family:var(--font-serif); margin-bottom:0.35rem;" class="font-serif">
+                ✨ 1日フルコースAIルート (${cleanFull.length}箇所)
+              </h4>
+              <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.85rem;">
+                選択スポットに加え、<strong>AIが提案する朝の名所・ランチ・カフェ・夕方散策</strong>を含めた1日の完璧なルートをGoogleマップでナビゲートします。
               </p>
-              <div style="margin-bottom:1rem; line-height:1.8;">
+
+              <div style="margin-bottom:1.25rem; line-height:1.8;">
                 ${badgesB}
               </div>
             </div>
-            <a href="${masterUrlB}" target="_blank" rel="noopener noreferrer" class="btn btn-emerald" style="padding:0.75rem 1.25rem; font-size:0.95rem; text-decoration:none; text-align:center; width:100%; justify-content:center; background:#B45309;">
-              ✨ Open Route B (Full 1-Day AI Itinerary) ↗
-            </a>
+
+            <div>
+              <a href="${masterUrlB}" target="_blank" rel="noopener noreferrer" class="btn btn-emerald" style="padding:0.85rem 1.25rem; font-size:1rem; text-decoration:none; text-align:center; width:100%; justify-content:center; background:#B45309; border-color:#78350F;">
+                ✨ Open Route B in Google Maps (${cleanFull.length} Full Stops) ↗
+              </a>
+
+              ${cleanFull.length > 1 ? `
+                <details style="margin-top:0.75rem; text-align:left; background:#FFFBEB; border-radius:8px; padding:0.4rem 0.65rem; border:1px solid #FDE68A;">
+                  <summary style="font-weight:700; color:#B45309; cursor:pointer; font-size:0.82rem;">
+                    🚆 Route B 区間別ナビ (${cleanFull.length - 1} Segments)
+                  </summary>
+                  <div style="margin-top:0.4rem;">
+                    ${legItemsBHtml}
+                  </div>
+                </details>
+              ` : ''}
+            </div>
           </div>
 
         </div>
 
-        <!-- Leg by Leg Collapsible Accordion -->
-        <details style="text-align:left; max-width:100%; background:rgba(255,255,255,0.7); border-radius:10px; padding:0.5rem 0.85rem; border:1px solid #CBD5E1;">
-          <summary style="font-weight:700; color:var(--primary-forest); cursor:pointer; font-size:0.88rem;">
-            🚆 View Leg-by-Leg Direct Transit Links (${cleanFull.length - 1} Segments)
-          </summary>
-          <div style="margin-top:0.5rem;">
-            ${legItemsHtml}
-          </div>
-        </details>
       </div>
     `;
   },
