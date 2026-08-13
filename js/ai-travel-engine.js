@@ -1906,7 +1906,7 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
 
     if (mustVisitNames.length === 0) {
       if (destLower.includes('paris')) {
-        mustVisitNames = ['Sainte-Chapelle', 'Musée d'Orsay', 'Le Petit Marché'];
+        mustVisitNames = ['Sainte-Chapelle', "Musée d'Orsay", 'Le Petit Marché'];
       } else if (destLower.includes('berlin')) {
         mustVisitNames = ['Brandenburg Gate', 'Museum Island', 'Reichstag Building'];
       } else if (destLower.includes('amsterdam')) {
@@ -1964,6 +1964,10 @@ Format cleanly in HTML using <h4>, <ul>, <li>, and <strong> tags within 500 word
         </div>
       </div>
     `;
+
+    setTimeout(() => {
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   }
 };
 
