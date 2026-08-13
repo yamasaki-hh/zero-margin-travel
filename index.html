@@ -166,7 +166,831 @@
             </p>
 
             <div id="candidateSpotsGrid" class="grid-3" style="display:grid !important; visibility:visible !important;">
-              <!-- Dynamically populated candidate spots cards -->
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_1', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=600&q=80" alt="Eiffel Tower" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_1" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_1', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Eiffel Tower</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Iconic 330m iron lattice tower offering panoramic views of Paris.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Tickets: €18–€28</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Eiffel%20Tower%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Eiffel Tower <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_2', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80" alt="Arc de Triomphe" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_2" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_2', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Arc de Triomphe</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Triumphal arch honoring those who fought for France, set atop Champs-Élysées.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Rooftop: €13</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Arc%20de%20Triomphe%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Arc de Triomphe <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_3', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=600&q=80" alt="Sainte-Chapelle" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.8</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_3" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_3', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Sainte-Chapelle</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">13th-century Gothic royal chapel famed for 1,113 soaring stained glass windows.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €11.50</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Sainte-Chapelle%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Sainte-Chapelle <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_4', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80" alt="Sacré-Cœur Basilica &amp; Montmartre" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_4" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_4', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Sacré-Cœur Basilica &amp; Montmartre</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Domed white basilica atop Montmartre hill overlooking bohemian artist squares.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free entry</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Sacré-Cœur%20Basilica%20&%20Montmartre%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Sacré-Cœur Basilica &amp; Montmartre <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_5', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1478358161113-b0e11994a36b?auto=format&fit=crop&w=600&q=80" alt="Notre-Dame Cathedral" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_5" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_5', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Notre-Dame Cathedral</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Masterpiece of French Gothic architecture on Île de la Cité.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free parvis access</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Notre-Dame%20Cathedral%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Notre-Dame Cathedral <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_6', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80" alt="Palais-Royal Courtyard &amp; Gardens" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_6" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_6', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Palais-Royal Courtyard &amp; Gardens</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">17th-century palace courtyard featuring Buren's striped columns and rose gardens.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free access</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Palais-Royal%20Courtyard%20&%20Gardens%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Palais-Royal Courtyard &amp; Gardens <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_7', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80" alt="Panthéon Paris" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_7" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_7', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Panthéon Paris</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Neoclassical mausoleum containing tombs of Victor Hugo, Voltaire &amp; Marie Curie.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €11.50</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Panthéon%20Paris%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Panthéon Paris <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_8', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=600&q=80" alt="Jardin du Luxembourg" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.8</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_8" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_8', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Jardin du Luxembourg</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">60-acre park featuring Medici Fountain, tree-lined promenades and sailboat basin.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free access</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Jardin%20du%20Luxembourg%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Jardin du Luxembourg <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_9', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=600&q=80" alt="Opéra Garnier (Palais Garnier)" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_9" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_9', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Opéra Garnier (Palais Garnier)</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Opulent 1,979-seat opera house featuring Chagall ceiling and grand marble staircase.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Self-tour: €14</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Opéra%20Garnier%20Palais%20Garnier%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Opéra Garnier Palais Garnier <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_10', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1549144511-f099e773c147?auto=format&fit=crop&w=600&q=80" alt="Pont Alexandre III" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.8</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_10" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_10', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Pont Alexandre III</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Beaux-Arts bridge decorated with gilded nymph statues over the Seine.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free access</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Pont%20Alexandre%20III%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Pont Alexandre III <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_11', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80" alt="Les Invalides &amp; Napoleon's Tomb" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_11" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_11', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Les Invalides &amp; Napoleon's Tomb</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Golden-domed complex housing France's Military Museum and Napoleon's tomb.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €14</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Les%20Invalides%20&%20Napoleon's%20Tomb%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Les Invalides &amp; Napoleon's Tomb <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_12', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80" alt="Pont des Arts" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_12" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_12', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Pont des Arts</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Iconic pedestrian wooden bridge connecting the Louvre and Institut de France.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free access</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Pont%20des%20Arts%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Pont des Arts <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_13', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1509299349698-dd22323b5963?auto=format&fit=crop&w=600&q=80" alt="Catacombes de Paris" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Landmark</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_13" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_13', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Catacombes de Paris</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Underground ossuary holding the remains of over six million Parisians.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €29</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Catacombes%20de%20Paris%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Catacombes de Paris <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_14', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=600&q=80" alt="Louvre Museum &amp; Glass Pyramid" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_14" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_14', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Louvre Museum &amp; Glass Pyramid</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">World's largest art museum housing Mona Lisa, Venus de Milo &amp; Winged Victory.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €17–€22</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Louvre%20Museum%20&%20Glass%20Pyramid%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Louvre Museum &amp; Glass Pyramid <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_15', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1584024419139-34e3ead8f78a?auto=format&fit=crop&w=600&q=80" alt="Musée d'Orsay" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.8</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_15" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_15', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Musée d'Orsay</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Beaux-Arts railway station featuring Impressionist masterpieces by Monet, Degas &amp; Van Gogh.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €16</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Musée%20d'Orsay%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Musée d'Orsay <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_16', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?auto=format&fit=crop&w=600&q=80" alt="Centre Pompidou" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_16" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_16', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Centre Pompidou</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">High-tech colored pipe architecture housing Europe's largest modern art collection.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €15</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Centre%20Pompidou%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Centre Pompidou <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_17', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="Musée de l'Orangerie" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_17" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_17', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Musée de l'Orangerie</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Monet's massive Water Lilies (Nymphéas) murals displayed in custom oval rooms.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €12.50</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Musée%20de%20l'Orangerie%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Musée de l'Orangerie <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_18', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=600&q=80" alt="Musée Rodin" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_18" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_18', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Musée Rodin</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Rose gardens surrounding Hôtel Biron displaying Rodin's 'The Thinker' and 'The Gates of Hell'.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €13</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Musée%20Rodin%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Musée Rodin <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_19', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1561055657-b9e0bf0fa360?auto=format&fit=crop&w=600&q=80" alt="Musée Picasso Paris" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_19" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_19', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Musée Picasso Paris</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Over 5,000 works by Pablo Picasso housed inside historic Hôtel Salé mansion.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Entry: €14</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Musée%20Picasso%20Paris%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Musée Picasso Paris <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_20', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=600&q=80" alt="Musée Carnavalet" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Museum & Art</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_20" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_20', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Musée Carnavalet</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Dedicated museum of Parisian history located in two adjacent Marais mansions.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Free permanent access</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Musée%20Carnavalet%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Musée Carnavalet <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_21', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80" alt="Le Petit Marché" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_21" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_21', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Le Petit Marché</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Trendy Marais bistro specializing in seared duck breast, tuna steak &amp; banana crumble.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Mains: €18–€26</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Le%20Petit%20Marché%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Le Petit Marché <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_22', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Le Train Bleu" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_22" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_22', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Le Train Bleu</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">1900 Belle Époque frescoed dining hall inside Gare de Lyon railway station.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Mains: €34–€52</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Le%20Train%20Bleu%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Le Train Bleu <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_23', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Chez Janou" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_23" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_23', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Chez Janou</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Lively Provençal bistro near Place des Vosges famous for endless chocolate mousse bowl.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Mains: €18–€24</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Chez%20Janou%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Chez Janou <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_24', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Bouillon Chartier" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.4</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_24" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_24', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Bouillon Chartier</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Historic 1896 dining hall serving classic French comfort food at unbeatable low prices.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Mains: €9–€14</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Bouillon%20Chartier%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Bouillon Chartier <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_25', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" alt="Frenchie Bar à Vins" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_25" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_25', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Frenchie Bar à Vins</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Rustic-chic wine bar on Rue du Nil with small plates &amp; artisanal natural wines.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Plates: €14–€24</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Frenchie%20Bar%20à%20Vins%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Frenchie Bar à Vins <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_26', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80" alt="Les Deux Magots" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.4</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Café & Bakery</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_26" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_26', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Les Deux Magots</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Legendary Saint-Germain cafe once frequented by Ernest Hemingway &amp; Jean-Paul Sartre.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Coffee: €6–€10</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Les%20Deux%20Magots%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Les Deux Magots <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_27', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="L'As du Fallafel" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_27" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_27', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>L'As du Fallafel</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">World-famous Jewish Quarter falafel stand stuffed with fried eggplant &amp; tahini.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Pita: €9.50</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=L'As%20du%20Fallafel%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 L'As du Fallafel <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_28', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Pink Mamma" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Restaurant</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_28" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_28', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Pink Mamma</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Four-story Italian trattoria featuring glass skylight roof and Florentine T-bone steak.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Mains: €16–€28</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Pink%20Mamma%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Pink Mamma <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_29', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=600&q=80" alt="Marché des Enfants Rouges" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Café & Bakery</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_29" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_29', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Marché des Enfants Rouges</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Paris's oldest covered food market serving authentic fresh savory galettes &amp; crêpes.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Dishes: €8–€15</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Marché%20des%20Enfants%20Rouges%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Marché des Enfants Rouges <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_30', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" alt="Cédric Grolet Le Meurice" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.6</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Café & Bakery</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_30" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_30', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Cédric Grolet Le Meurice</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">World's best pastry chef boutique producing hyper-realistic sculpted fruit desserts.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Pastries: €14–€18</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Cédric%20Grolet%20Le%20Meurice%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Cédric Grolet Le Meurice <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_31', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=600&q=80" alt="Angelina Paris" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Café & Bakery</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_31" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_31', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Angelina Paris</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Belle Époque tearoom world-renowned for thick African hot chocolate &amp; Mont-Blanc chestnut pastry.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Hot Choc: €9.50</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Angelina%20Paris%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Angelina Paris <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_32', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80" alt="Du Pain et des Idées" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.7</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Café & Bakery</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_32" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_32', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Du Pain et des Idées</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">1889 bakery crafting signature escargot chocolate-pistachio pastries and wood-fired sourdough.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Pastries: €3.50–€6</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Du%20Pain%20et%20des%20Idées%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Du Pain et des Idées <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
+
+      <div class="card spot-candidate-card" style="border:2.5px solid var(--border-ink); background:#FFF; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative;" onclick="AITravelEngine.toggleSpotSelection('p_33', 4)">
+        <div>
+          <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+            <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80" alt="Carette Trocadéro" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;">
+            <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">★4.5</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">Café & Bakery</span>
+          </div>
+
+          <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="chk_p_33" onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('p_33', 4)" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+            <span>Carette Trocadéro</span>
+          </h4>
+
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">Famous arcade cafe near Eiffel Tower known for whipped cream hot chocolate &amp; French macarons.</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+          <span style="font-weight:700; color:var(--primary-wood);">Hot Choc: €10</span>
+          <a href="https://www.google.com/maps/search/?api=1&query=Carette%20Trocadéro%20Paris" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();" style="display:inline-flex; align-items:center; gap:0.25rem; background:#EFF6FF; color:#1D4ED8; border:1px solid #93C5FD; padding:0.15rem 0.55rem; border-radius:6px; font-weight:700; text-decoration:none; font-size:0.85rem;">📍 Carette Trocadéro <span style="font-size:0.75rem;">↗</span></a>
+        </div>
+      </div>
             </div>
           </div>
 
@@ -208,8 +1032,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/ai-travel-engine.js?v=9.0"></script>
-  <script src="js/travel-app.js?v=9.0"></script>
+  <script src="js/ai-travel-engine.js?v=10.0"></script>
+  <script src="js/travel-app.js?v=10.0"></script>
   <script>
     // Inline execution fallback to guarantee candidate spots grid renders instantly on DOM load
     window.addEventListener('load', function() {
