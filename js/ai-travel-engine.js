@@ -1925,79 +1925,107 @@ const AITravelEngine = {
 
   lastCity: '',
 
-  // Step 2: Render Interactive Candidate Spots with Selection Checkboxes & Lightweight Images
+  lastCity: '',
+
+  // Step 2: Render Interactive Candidate Spots with Selection Checkboxes & Lightweight Images (100% Bulletproof)
   renderCandidateSpots() {
-    const city = document.getElementById('aiPlanDestination')?.value || 'Paris, France';
-    const days = parseFloat(document.getElementById('aiPlanDays')?.value) || 1;
-    const targetAudience = document.getElementById('aiPlanAudience')?.value || 'none';
+    try {
+      const selectElem = document.getElementById('aiPlanDestination');
+      const city = selectElem ? selectElem.value : 'Paris, France';
+      const daysElem = document.getElementById('aiPlanDays');
+      const days = daysElem ? (parseFloat(daysElem.value) || 1) : 1;
+      const audienceElem = document.getElementById('aiPlanAudience');
+      const targetAudience = audienceElem ? audienceElem.value : 'none';
 
-    // Clear stale selections if city changed
-    if (this.lastCity && this.lastCity !== city) {
-      this.selectedMustVisitIds.clear();
-    }
-    this.lastCity = city;
+      // Clear stale selections if city changed
+      if (this.lastCity && this.lastCity !== city) {
+        this.selectedMustVisitIds.clear();
+      }
+      this.lastCity = city;
 
-    let maxCap = 4;
-    if (days === 0.5) maxCap = 2;
-    if (days === 2.0) maxCap = 7;
+      let maxCap = 4;
+      if (days === 0.5) maxCap = 2;
+      if (days === 2.0) maxCap = 7;
 
-    const spots = candidateSpotsDatabase[city] || candidateSpotsDatabase['Paris, France'];
-    const container = document.getElementById('candidateSpotsGrid');
-    const counterBadge = document.getElementById('spotsCounterBadge');
+      // Robust Fuzzy Lookup for Candidate Spots Database Key
+      let spots = candidateSpotsDatabase[city];
+      if (!spots || spots.length === 0) {
+        const cleanCityName = city.split(',')[0].trim().toLowerCase();
+        for (const k in candidateSpotsDatabase) {
+          if (k.toLowerCase().includes(cleanCityName)) {
+            spots = candidateSpotsDatabase[k];
+            break;
+          }
+        }
+      }
+      if (!spots || spots.length === 0) {
+        spots = candidateSpotsDatabase['Paris, France'] || [];
+      }
 
-    if (!container) return;
+      const container = document.getElementById('candidateSpotsGrid');
+      const counterBadge = document.getElementById('spotsCounterBadge');
 
-    let filteredSpots = spots;
-    if (targetAudience === 'kids') {
-      filteredSpots = spots.filter(s => s.family);
-    } else if (targetAudience === 'adults') {
-      filteredSpots = spots.filter(s => s.adult);
-    }
+      if (!container) return;
 
-    if (counterBadge) {
-      const selectedCount = this.selectedMustVisitIds.size;
-      counterBadge.innerHTML = `Selected: <strong>${selectedCount} / ${maxCap}</strong> (Max ${maxCap} Must-Visit Spots)`;
-      counterBadge.style.color = selectedCount >= maxCap ? '#C2410C' : '#047857';
-    }
+      let filteredSpots = spots;
+      if (targetAudience === 'kids') {
+        filteredSpots = spots.filter(s => s.family);
+      } else if (targetAudience === 'adults') {
+        filteredSpots = spots.filter(s => s.adult);
+      }
 
-    container.innerHTML = filteredSpots.map(s => {
-      const isChecked = this.selectedMustVisitIds.has(s.id);
-      const imgUrl = s.image || SVG_FALLBACK_IMAGE;
+      // If filtering produces empty array, fallback to all spots for that city
+      if (!filteredSpots || filteredSpots.length === 0) {
+        filteredSpots = spots;
+      }
 
-      return `
-        <div class="card spot-candidate-card" style="border:2.5px solid ${isChecked ? '#B45309' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:${isChecked ? '0 0 0 3px #FDE68A' : 'none'};" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
-          ${isChecked ? `
-            <div style="position:absolute; top:-10px; left:-10px; background:#047857; color:#FFF; font-weight:800; font-size:0.75rem; padding:0.25rem 0.65rem; border-radius:999px; border:2px solid #FFF; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:10;">
-              ✓ SELECTED
+      if (counterBadge) {
+        const selectedCount = this.selectedMustVisitIds.size;
+        counterBadge.innerHTML = `Selected: <strong>${selectedCount} / ${maxCap}</strong> (Max ${maxCap} Must-Visit Spots)`;
+        counterBadge.style.color = selectedCount >= maxCap ? '#C2410C' : '#047857';
+      }
+
+      container.innerHTML = filteredSpots.map(s => {
+        const isChecked = this.selectedMustVisitIds.has(s.id);
+        const imgUrl = s.image || SVG_FALLBACK_IMAGE;
+
+        return `
+          <div class="card spot-candidate-card" style="border:2.5px solid ${isChecked ? '#B45309' : 'var(--border-ink)'}; background:${isChecked ? '#FEF3C7' : '#FFF'}; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:${isChecked ? '0 0 0 3px #FDE68A' : 'none'};" onclick="AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})">
+            ${isChecked ? `
+              <div style="position:absolute; top:-10px; left:-10px; background:#047857; color:#FFF; font-weight:800; font-size:0.75rem; padding:0.25rem 0.65rem; border-radius:999px; border:2px solid #FFF; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:10;">
+                ✓ SELECTED
+              </div>
+            ` : ''}
+
+            <div>
+              <!-- Lightweight Spot Thumbnail Image with Native Lazy Loading & SVG Fallback -->
+              <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
+                <img src="${imgUrl}" alt="${escapeHtml(s.name)}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='${SVG_FALLBACK_IMAGE}';">
+                <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">${s.rating}</span>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">${s.category}</span>
+              </div>
+
+              <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+                <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
+                <span>${escapeHtml(s.name)}</span>
+              </h4>
+
+              <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">${escapeHtml(s.desc)}</p>
             </div>
-          ` : ''}
 
-          <div>
-            <!-- Lightweight Spot Thumbnail Image with Native Lazy Loading & SVG Fallback -->
-            <div style="width:100%; height:150px; overflow:hidden; border-radius:12px; margin-bottom:0.75rem; background:#FAF7F2; position:relative;">
-              <img src="${imgUrl}" alt="${escapeHtml(s.name)}" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='${SVG_FALLBACK_IMAGE}';">
-              <span style="position:absolute; top:8px; right:8px; font-size:0.75rem; font-weight:800; background:rgba(255,255,255,0.92); color:#047857; padding:0.2rem 0.55rem; border-radius:6px; border:1px solid #047857; box-shadow:0 2px 4px rgba(0,0,0,0.1);">${s.rating}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
+              <span style="font-weight:700; color:var(--primary-wood);">${escapeHtml(s.price)}</span>
+              ${this.createMapsLink(s.name.split(' (')[0], city.split(',')[0])}
             </div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-              <span style="font-size:0.75rem; font-weight:700; background:#E0F2FE; color:#0369A1; padding:0.15rem 0.55rem; border-radius:6px; border:1px solid #0284C7;">${s.category}</span>
-            </div>
-
-            <h4 style="font-size:1.05rem; margin-bottom:0.35rem; font-family:var(--font-sans); color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
-              <input type="checkbox" id="chk_${s.id}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); AITravelEngine.toggleSpotSelection('${s.id}', ${maxCap})" style="width:20px; height:20px; cursor:pointer; accent-color:#047857;">
-              <span>${escapeHtml(s.name)}</span>
-            </h4>
-
-            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.75rem;">${escapeHtml(s.desc)}</p>
           </div>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; border-top:1px dashed #EADEC9; padding-top:0.5rem; margin-top:auto;">
-            <span style="font-weight:700; color:var(--primary-wood);">${escapeHtml(s.price)}</span>
-            ${this.createMapsLink(s.name.split(' (')[0], city.split(',')[0])}
-          </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error in renderCandidateSpots:', err);
+    }
   },
 
   toggleSpotSelection(spotId, maxCap) {
@@ -2260,10 +2288,19 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
 }
 
+
 window.AITravelEngine = AITravelEngine;
 
-window.addEventListener('DOMContentLoaded', () => {
+function initAITravelEngine() {
   if (typeof AITravelEngine !== 'undefined') {
     AITravelEngine.renderCandidateSpots();
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAITravelEngine);
+} else {
+  initAITravelEngine();
+}
+
+window.addEventListener('load', initAITravelEngine);
